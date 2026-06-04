@@ -3,211 +3,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manhajul Hidaya</title>
-
-    <meta property="og:image" content="https://നിങ്ങളുടെ-വെബ്സൈറ്റ്-ലിങ്ക്/logo-b.png">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Manhajul Hidaya">
-</head>
- 
+    <title>Manhaj Fest & DHIU Menu</title>
     
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <style>
-        /* ==========================================================================
-           MODERN GREEN THEME VARIABLES & GLOBAL STYLES
-           ========================================================================== */
         :root {
             --primary-green: #059669; 
-            --light-green: #10b981;   
-            --pale-green: #d1fae5;    
-            --bg-color: #f8fafc;      
-            --card-bg: #ffffff;       
-            --text-dark: #0f172a;     
-            --text-muted: #64748b;    
-            --yellow-gold: #f4c542;   
-            --white: #ffffff;
-            
-            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+            --light-green: #10b981; 
+            --pale-green: #d1fae5;
+            --bg-color: #f8fafc; 
+            --card-bg: #ffffff; 
+            --text-dark: #0f172a; 
+            --text-muted: #64748b;
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05); 
             --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
             --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            
-            --radius-md: 12px;
-            --radius-lg: 20px;
+            --radius-md: 12px; 
+            --radius-lg: 20px; 
+            --sheet-bg: #ffffff; 
+            --sheet-border: #f1f5f9;
         }
 
-        * { 
-    margin: 0; 
-    padding: 0; 
-    box-sizing: border-box; 
-    font-family: 'Poppins', sans-serif; 
-}
+        html { 
+            scroll-behavior: smooth; 
+        }
 
-html, body {
-    max-width: 100%;
-    overflow-x: hidden; /* This traps the animations inside the screen bounds */
-}
+        body { 
+            width: 100%;
+            max-width: 100vw;
+            overflow-x: hidden !important;
+            background-color: var(--bg-color); 
+            color: var(--text-dark); 
+            line-height: 1.6; 
+            font-family: 'Poppins', sans-serif; 
+            -webkit-font-smoothing: antialiased; 
+            position: relative;
+        }
 
-html { 
-    scroll-behavior: smooth; 
-}
+        img {
+            max-width: 100%;
+            height: auto;
+        }
 
-body { 
-    color: var(--text-dark); 
-    background-color: var(--bg-color); 
-    line-height: 1.6; 
-    -webkit-font-smoothing: antialiased; 
-    position: relative;
-}
-        
-        .container { width: 90%; max-width: 1200px; margin: 0 auto; }
-        .text-center { text-align: center; }
-
-        .sub-title { color: #b45309; text-transform: uppercase; font-weight: 600; font-size: 14px; letter-spacing: 1px; display: block; margin-bottom: 5px; }
-
-        /* --- NAVBAR & BUTTONS --- */
+        /* Top Navbar */
         .top-navbar-green { background-color: var(--primary-green); padding: 8px 0; font-size: 13px; }
-        .top-navbar-green .header-flex { display: flex; justify-content: space-between; align-items: center; }
         .top-navbar-green .social-links a { color: rgba(255, 255, 255, 0.9); margin-left: 20px; font-size: 16px; transition: color 0.3s ease; }
         .top-navbar-green .social-links a:hover { color: var(--pale-green); }
-
-        .main-navbar { background-color: var(--white); border-bottom: 1px solid rgba(0,0,0,0.05); padding: 15px 0; box-shadow: var(--shadow-sm); }
-        .main-navbar .nav-link { font-weight: 500; color: var(--text-dark) !important; }
-        .main-navbar .nav-item.active .nav-link, .main-navbar .nav-link:hover { color: var(--primary-green) !important; }
-
-        .btn-yellow {
-            display: inline-block; background: var(--yellow-gold); color: #000; padding: 12px 28px;
-            border-radius: 8px; text-decoration: none; font-weight: bold; border: none; cursor: pointer;
-            text-transform: uppercase; font-size: 13px; transition: all 0.3s ease; box-shadow: 0 4px 14px rgba(244, 197, 66, 0.4);
+        
+        /* Main Navbar */
+        .main-navbar { background-color: var(--card-bg) !important; border-bottom: 1px solid rgba(0,0,0,0.05); }
+        
+        .navbar-brand {
+            max-width: 75%;
         }
-        .btn-yellow:hover { transform: translateY(-2px); background-color: #ffd659; box-shadow: 0 6px 20px rgba(244, 197, 66, 0.6); }
 
-        /* --- HERO SECTION --- */
-        .hero-section { position: relative; overflow: hidden; width: 100%; height: 70vh; display: flex; align-items: center; justify-content: center; border-radius: 0 0 var(--radius-lg) var(--radius-lg); box-shadow: var(--shadow-md); }
-        .bg-video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; }
-        .overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.55); z-index: 0; }
-        .hero-content { position: relative; color: var(--white); z-index: 1; text-align: center; }
-        .hero-content h1 { font-size: clamp(1.8rem, 5vw, 3rem); line-height: 1.3; margin-bottom: 25px; font-weight: 700; letter-spacing: 1px; text-shadow: 2px 2px 10px rgba(0,0,0,0.3); }
-        .audio-btn {
-            position: absolute; bottom: 30px; right: 30px; z-index: 10; background-color: rgba(0, 0, 0, 0.6);
-            color: var(--white); border: 2px solid var(--white); border-radius: 50%; width: 45px; height: 45px;
-            font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease;
+        .navbar-brand img {
+            height: auto;
+            max-height: 45px;
+            width: 100%;
+            object-fit: contain;
+            object-position: left;
         }
-        .audio-btn:hover { background-color: var(--primary-green); border-color: var(--primary-green); transform: scale(1.1); }
 
-        /* --- INFO CARDS --- */
-        .info-cards-section { margin-top: -50px; position: relative; z-index: 5; padding-bottom: 40px; }
-        .cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
-        .info-card { padding: 40px; box-shadow: var(--shadow-md); position: relative; border-radius: var(--radius-lg); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease; border: 1px solid #f1f5f9; }
-        .info-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
-        .green-card { background: linear-gradient(135deg, var(--primary-green) 0%, var(--light-green) 100%); color: var(--white); border: none; }
-        .light-card { background-color: var(--white); color: var(--text-dark); }
-        .info-card h3 { margin-bottom: 15px; font-size: 22px; font-weight: 700; }
-        .arrow-icon {
-            position: absolute; bottom: 25px; right: 25px; background: rgba(255,255,255,0.25);
-            width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; transition: 0.3s;
+        @media (max-width: 991px) {
+            .navbar-brand {
+                max-width: 80%;
+            }
+            .navbar-brand img {
+                max-height: 40px;
+            }
         }
-        .info-card:hover .arrow-icon { transform: translateX(3px); }
-        .green-arrow { background: var(--pale-green); color: var(--primary-green); }
 
-        /* --- CONTENT SECTIONS --- */
-        .director-section, .about-section, .news-section { padding: 80px 0; }
-        .director-grid, .about-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 50px; align-items: center; }
-        .director-image img, .about-image img { width: 100%; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); }
-        .director-text h2 { font-size: 28px; color: var(--text-dark); margin-bottom: 20px; font-weight: 700; }
-        .director-text p, .about-text p { margin-bottom: 15px; color: var(--text-muted); text-align: justify; }
-        .about-section { background-color: var(--white); }
+        .navbar-light .navbar-nav .nav-link { color: var(--text-dark) !important; font-weight: 500; font-size: 14px; letter-spacing: 0.3px; padding: 10px 15px; transition: color 0.3s ease; }
+        .navbar-light .navbar-nav .nav-link:hover, .navbar-light .navbar-nav .nav-item.active .nav-link { color: var(--primary-green) !important; }
+        .navbar-toggler { border: none; outline: none !important; color: var(--primary-green); }
+        .navbar-toggler-icon { background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgb(5,150,105)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E"); }
+        .dropdown-menu { border-radius: var(--radius-md); border: none; box-shadow: var(--shadow-md); padding: 10px; }
+        .dropdown-item { border-radius: 6px; padding: 8px 15px; font-size: 14px; font-weight: 500; }
+        .dropdown-item:hover { background-color: var(--pale-green); color: var(--primary-green); }
 
-        /* --- BANNERS & COUNTER --- */
-        .join-banner { background: linear-gradient(135deg, var(--primary-green) 0%, var(--light-green) 100%); color: var(--white); padding: 35px 0; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); }
-        .cta-banner { background-color: #0f172a; color: var(--white); padding: 40px 0; }
-        .banner-flex { display: flex; justify-content: space-between; align-items: center; }
-        .banner-text { display: flex; align-items: center; font-size: 22px; font-weight: 600; }
-        .banner-text i { margin-right: 15px; font-size: 28px; color: var(--yellow-gold); }
+        /* Hero Section */
+        .hero-section { background: linear-gradient(135deg, var(--primary-green) 0%, var(--light-green) 100%); min-height: 60vh; display: flex; align-items: center; justify-content: center; text-align: center; color: white; position: relative; padding: 60px 20px; border-radius: 0 0 30px 30px; box-shadow: var(--shadow-md); margin-bottom: 40px; }
+        .hero-content h1 { font-family: 'Pacifico', cursive; font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 400; margin-bottom: 10px; letter-spacing: 2px; text-shadow: 2px 2px 10px rgba(0,0,0,0.1); }
+        .hero-subtitle { font-size: clamp(1.1rem, 3vw, 1.5rem); color: var(--pale-green); text-transform: uppercase; font-weight: 600; margin-bottom: 30px; letter-spacing: 1px; }
+        .btn-action { display: inline-block; background: var(--card-bg); color: var(--primary-green); padding: 14px 35px; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 15px; box-shadow: var(--shadow-md); transition: all 0.3s ease; }
+        .btn-action:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); color: var(--primary-green); text-decoration: none; }
 
-        .counter-section { background-color: #0f172a; color: var(--white); padding: 60px 0; }
-        .counter-grid { display: grid; grid-template-columns: repeat(4, 1fr); text-align: center; }
-        .counter-item h3 { font-size: 42px; color: var(--light-green); margin-bottom: 5px; font-weight: 700; }
-        .counter-item p { font-size: 14px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; }
+        /* General Styling */
+        .section-title { font-size: 2rem; color: var(--text-dark); margin-bottom: 15px; font-weight: 700; text-align: center; }
 
-        /* --- TESTIMONIALS & NEWS --- */
-        .testimonial-section { padding: 80px 0; background: linear-gradient(135deg, var(--primary-green) 0%, var(--light-green) 100%); color: var(--white); position: relative; }
-        .testimonial-slider { max-width: 800px; margin: 30px auto 20px; height: auto; position: relative; }
-        .slide { display: none; text-align: center; }
-        .slide.active { display: block; animation: fadeIn 0.5s ease; }
-        .slide p { font-size: 18px; font-style: italic; line-height: 1.7; color: var(--pale-green); }
-        .slider-dots { text-align: center; margin-top: 25px; }
-        .dot { cursor: pointer; height: 10px; width: 10px; margin: 0 6px; background-color: rgba(255,255,255,0.4); border-radius: 50%; display: inline-block; transition: 0.3s; }
-        .dot.active, .dot:hover { background-color: var(--yellow-gold); width: 20px; border-radius: 5px; }
+        /* About Section */
+        .about-section { padding: 60px 0; overflow: hidden; }
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; }
+        .about-grid > div { min-width: 0; }
+        .about-text .section-title { text-align: left; }
+        
+        .image-placeholder-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; min-width: 0; }
+        .placeholder-box { border-radius: var(--radius-lg); height: 150px; box-shadow: var(--shadow-sm); transition: transform 0.3s ease, box-shadow 0.3s ease; overflow: hidden; display: block; }
+        .placeholder-box:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
+        .placeholder-box img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-        .news-list { margin: 40px 0; }
-        .news-item { display: flex; background: var(--white); margin-bottom: 20px; padding: 25px; border-left: 5px solid var(--light-green); border-radius: var(--radius-md); transition: transform 0.3s, box-shadow 0.3s; box-shadow: var(--shadow-sm); align-items: center; }
-        .news-item:hover { transform: translateX(6px); box-shadow: var(--shadow-md); }
-        .date-box { background: var(--pale-green); padding: 12px 20px; text-align: center; font-size: 24px; font-weight: 700; margin-right: 25px; border-radius: 8px; color: var(--primary-green); min-width: 90px; line-height: 1.2; }
-        .date-box span { display: block; font-size: 13px; font-weight: 500; color: var(--text-muted); text-transform: uppercase; }
-        .news-details h4 { margin-bottom: 6px; font-size: 19px; color: var(--text-dark); font-weight: 600; }
-        .news-details p { color: var(--text-muted); margin-bottom: 0; font-size: 14px; }
+        /* Counters */
+        .counter-section { padding: 40px 0; margin-bottom: 40px; }
+        .counter-card { background: var(--card-bg); border-radius: var(--radius-lg); padding: 40px 20px; box-shadow: var(--shadow-md); }
+        .counter-grid { display: grid; grid-template-columns: repeat(3, 1fr); text-align: center; gap: 30px; min-width: 0; }
+        .counter-item h3 { font-size: 3rem; color: var(--primary-green); margin-bottom: 5px; font-weight: 700; }
+        .counter-item p { font-size: 1rem; color: var(--text-muted); font-weight: 500; text-transform: uppercase; letter-spacing: 1px; margin: 0; }
 
-        /* --- ANIMATIONS & UTILITIES --- */
-        .animate-fade-in { animation: fadeIn 1s ease-out forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .scroll-animate { opacity: 0; transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); will-change: transform, opacity; }
-        .slide-up { transform: translateY(40px); }
-        .slide-left { transform: translateX(-40px); }
-        .slide-right { transform: translateX(40px); }
-        .scale-up { transform: scale(0.95); }
-        .fade-in { transform: translateY(0); }
-        .scroll-animate.animated { opacity: 1; transform: translate(0) scale(1); }
+        /* Entertainment Section */
+        .entertainment-section { padding: 60px 0; overflow: hidden; }
+        .ent-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 35px; margin-top: 40px; min-width: 0; }
+        .ent-grid > div { min-width: 0; }
+        .ent-card { background: var(--card-bg); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-md); border: 1px solid #f1f5f9; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .ent-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
+        .card-banner-placeholder { height: 180px; background: linear-gradient(45deg, var(--pale-green), #e2e8f0); display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--primary-green); font-weight: bold; font-size: 18px; }
+        .card-banner-placeholder i { font-size: 30px; margin-bottom: 10px; }
+        .card-body { padding: 30px; }
+        .card-body h3 { font-size: 1.3rem; color: var(--text-dark); margin-bottom: 15px; font-weight: 700; }
+        .card-body ul { list-style-type: none; padding: 0; color: var(--text-muted); margin-bottom: 0; }
+        .card-body ul li { padding: 8px 0; border-bottom: 1px solid #f1f5f9; position: relative; padding-left: 25px; }
+        .card-body ul li:last-child { border-bottom: none; }
+        .card-body ul li::before { content: '\f058'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; left: 0; color: var(--light-green); }
+
+        /* Results Section */
+        .results-section { padding: 80px 20px; }
+        .form-group-custom { max-width: 500px; margin: 0 auto 20px auto; }
+        .form-group-custom label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--text-dark); font-size: 1rem; }
+        .custom-select-box { background-color: var(--card-bg); color: var(--text-dark); padding: 16px 20px; border-radius: var(--radius-md); display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-size: 1rem; font-weight: 500; box-shadow: var(--shadow-sm); border: 1px solid #e2e8f0; transition: all 0.2s ease; }
+        .custom-select-box:hover { border-color: var(--light-green); box-shadow: var(--shadow-md); }
+        .custom-select-box:active { transform: scale(0.98); }
+        .custom-select-box i { color: var(--primary-green); }
+        #imageDisplay { max-width: 500px; margin: 40px auto; text-align: center; display: none; }
+        #resultTitle { margin-bottom: 20px; font-size: 1.3rem; color: var(--text-dark); font-weight: 700; }
+        #resultImage { max-width: 100%; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); }
+
+        /* Overlay & Bottom Sheet */
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(3px); z-index: 1050; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+        .overlay.active { opacity: 1; pointer-events: auto; }
+        .bottom-sheet { position: fixed; bottom: -100%; left: 0; width: 100%; background-color: var(--sheet-bg); color: var(--text-dark); border-radius: 24px 24px 0 0; z-index: 1060; transition: bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1); max-height: 80vh; display: flex; flex-direction: column; box-shadow: 0 -10px 40px rgba(0,0,0,0.1); }
+        .bottom-sheet.active { bottom: 0; }
+        .sheet-header { padding: 25px 20px 15px; font-weight: 700; border-bottom: 1px solid var(--sheet-border); display: flex; justify-content: space-between; align-items: center; font-size: 1.2rem; }
+        .sheet-header::before { content: ''; position: absolute; top: 10px; left: 50%; transform: translateX(-50%); width: 40px; height: 5px; background-color: #cbd5e1; border-radius: 10px; }
+        .sheet-content { overflow-y: auto; padding-bottom: 20px; }
+        .sheet-option { padding: 16px 25px; border-bottom: 1px solid var(--sheet-border); display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: background 0.2s; font-weight: 500; }
+        .sheet-option:hover { background-color: #f8fafc; }
+        .sheet-option i { color: #cbd5e1; font-size: 1.2rem; }
+        .sheet-option.selected { background-color: var(--pale-green); color: var(--primary-green); }
+        .sheet-option.selected i { color: var(--primary-green); }
+        
         .slide-scroll { word-break: break-word; }
         .char { display: inline-block; white-space: pre-wrap; opacity: 0.1; transition: opacity 0.15s ease-out; }
-        .whatsapp-float { position: fixed; bottom: 25px; right: 25px; background-color: #25d366; color: white; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 100; transition: 0.3s; text-decoration: none; }
-        .whatsapp-float:hover { transform: scale(1.1); }
 
-        /* ==========================================================================
-           PROFESSIONAL FOOTER CSS (CRITICAL FIX FOR BIG LOGO-W)
-           ========================================================================== */
-        .custom-footer {
-            background-color: #0f172a;
-            color: #e2e8f0;
-            padding: 40px 0 20px;
-            line-height: 1.4;
-        }
+        /* Professional Footer CSS */
+        .custom-footer { background-color: #0f172a; color: #e2e8f0; padding: 40px 0 20px; line-height: 1.4; width: 100%; overflow: hidden; }
         .footer-container { display: flex; justify-content: space-between; max-width: 1200px; margin: 0 auto; padding: 0 20px; flex-wrap: wrap; gap: 40px; }
-        .footer-left { flex: 1.5; min-width: 300px; }
-        
-        /* സി.എസ്.എസ് വീണ്ടും നിർവചിച്ചു ലോഗോയുടെ വലിപ്പം 90px ആയി ലോക്ക് ചെയ്തിരിക്കുന്നു */
-        img.footer-emblem-fixed { 
-            width: 90px !important;
-            max-width: 90px !important;
-            height: auto !important; 
-            display: block !important; 
-            margin-bottom: 15px !important; 
-        }
-        
-        img.logo-arabic-fixed { 
-            width: 180px !important;
-            max-width: 180px !important;
-            height: auto !important; 
-            display: block !important; 
-            margin-bottom: 15px !important; 
-        }
-
+        .footer-left { flex: 1.5; min-width: 250px; }
+        img.footer-emblem-fixed { width: 90px !important; max-width: 90px !important; height: auto !important; display: block !important; margin-bottom: 15px !important; }
+        img.logo-arabic-fixed { width: 180px !important; max-width: 180px !important; height: auto !important; display: block !important; margin-bottom: 15px !important; }
         .footer-desc { font-size: 14px; line-height: 1.6; color: #cbd5e1; padding-right: 20px; }
         .footer-center { flex: 1; min-width: 150px; }
         .footer-links { list-style: none; padding: 0; margin: 0; }
         .footer-links li { margin-bottom: 12px; }
         .footer-links a { color: #f8fafc; text-decoration: none; font-size: 14px; font-weight: 400; transition: color 0.3s ease; }
         .footer-links a:hover { color: #10b981; }
-        
-        .footer-right { flex: 1.5; min-width: 250px; font-size: 14px; color: #f8fafc; }
+        .footer-right { flex: 1.5; min-width: 200px; font-size: 14px; color: #f8fafc; }
         .footer-address { margin-bottom: 20px; line-height: 1.8; color: #f8fafc; }
         .footer-contact-item { margin-bottom: 8px; display: block; color: #f8fafc; text-decoration: none; transition: color 0.3s ease; }
         .footer-contact-item:hover { color: #10b981; }
-        
         .footer-bottom { max-width: 1200px; margin: 30px auto 0; padding: 20px 20px 0; border-top: 1px solid rgba(255, 255, 255, 0.1); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
         .copyright-text { font-size: 13px; color: #f8fafc; display: flex; align-items: center; gap: 8px; }
         .divider { color: #64748b; }
@@ -217,17 +182,11 @@ body {
         .scroll-top-btn { background: none; border: none; color: #f8fafc; font-size: 20px; cursor: pointer; margin-left: 10px; transition: color 0.3s ease; padding: 0; }
         .scroll-top-btn:hover { color: #10b981; }
 
-        /* --- MOBILE RESPONSIVE --- */
         @media (max-width: 768px) {
-            .container { width: 92% !important; }
-            .hero-section { height: 55vh !important; }
-            .info-cards-section { margin-top: -30px !important; }
-            .cards-grid, .director-grid, .about-grid { grid-template-columns: 1fr !important; gap: 25px !important; }
-            .counter-grid { grid-template-columns: 1fr 1fr !important; gap: 20px !important; }
-            .banner-flex { flex-direction: column !important; text-align: center !important; gap: 20px !important; }
-            .about-text, .director-text { text-align: left !important; }
-            .slide-scroll { white-space: normal !important; }
-            
+            .about-grid, .ent-grid { grid-template-columns: 1fr; gap: 35px; }
+            .counter-grid { grid-template-columns: 1fr; gap: 20px; }
+            .hero-content h1 { font-size: 2.8rem; }
+            .hero-section { border-radius: 0 0 20px 20px; padding: 40px 20px; }
             .footer-container { flex-direction: column; gap: 30px; }
             .footer-bottom { flex-direction: column; justify-content: center; text-align: center; }
             .copyright-text { flex-direction: column; gap: 5px; }
@@ -238,318 +197,490 @@ body {
 </head>
 <body>
 
-    <div class="top-navbar-green">
-        <div class="container d-flex justify-content-between align-items-center">
-            <div class="text-white font-weight-bold" style="text-transform: uppercase;">
-                manhaj festival
+<div class="top-navbar-green">
+    <div class="container d-flex justify-content-between align-items-center">
+        <div class="text-white font-weight-bold" style="text-transform: uppercase;">
+            Manhajul Hidaya 
+        </div>
+        <div class="social-links">
+            <a href="#" target="_blank" title="YouTube" class="text-white mr-3"><i class="fab fa-youtube"></i></a>
+            <a href="#" target="_blank" title="Instagram" class="text-white"><i class="fab fa-instagram"></i></a>
+        </div>
+    </div>
+</div>
+
+<nav class="navbar navbar-expand-lg navbar-light main-navbar sticky-top bg-white shadow-sm">
+    <div class="container">
+        <a class="navbar-brand" href="index.html">
+            <img src="caligraphy-dars-g.png" alt="DHIU Calligraphy Logo">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active"><a class="nav-link" href="index.html">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="manhaj-projects.html">Manhaj Projects</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown">Manhaj Festival</a>
+                    <div class="dropdown-menu shadow-sm">
+                        <a class="dropdown-item" href="Manhajul-fest.html">Alif 2k26 (Home)</a>
+                        <a class="dropdown-item" href="Manhajul-fest.html#about">ABOUT Fest</a>
+                        <a class="dropdown-item" href="Manhajul-fest.html#programs">WHAT IS WAITING FOR YOU?</a>
+                        <a class="dropdown-item" href="Manhajul-fest.html#results">Check Results</a>
+                    </div>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="admission.html">Admission Form</a></li>
+                <li class="nav-item"><a class="nav-link" href="contact.html">Contact Us</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<section class="hero-section">
+    <div class="hero-content">
+        <h1>Alif 2k26</h1>
+        <div class="hero-subtitle">manhaj art fiesta</div>
+        <a href="#results" class="btn-action">Check Results</a>
+    </div>
+</section>
+
+<section class="about-section" id="about">
+    <div class="container">
+        <div class="about-grid">
+            <div class="about-text">
+                <h2 class="section-title">ABOUT Fest</h2>
+                <div class="slide-scroll" style="font-size: 1.05rem; color: var(--text-muted);">
+                    The "ALIF" Arts Festival is a captivating celebration of Islamic culture and creativity, showcasing the rich artistic heritage of the Muslim world. This vibrant festival features an array of exhibitions, performances, and workshops that highlight the beauty and diversity of Islamic art, including intricate calligraphy, stunning architecture, elegant textiles, and evocative poetry.
+                </div>
             </div>
-            <div class="social-links">
-                <a href="index.html#" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
-                <a href="index.html#" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+            <div class="image-placeholder-grid">
+                <div class="placeholder-box">
+                    <img src="festhome1.png" alt="Gallery 1">
+                </div>
+                <div class="placeholder-box">
+                    <img src="festhome2.png" alt="Gallery 2">
+                </div>
+                <div class="placeholder-box">
+                    <img src="festhome3.png" alt="Gallery 3">
+                </div>
+                <div class="placeholder-box">
+                    <img src="festhome4.png" alt="Gallery 4">
+                </div>
             </div>
         </div>
     </div>
+</section>
 
-    <nav class="navbar navbar-expand-lg navbar-light main-navbar sticky-top">
-        <div class="container">
-            <a class="navbar-brand" href="index.html">
-                <img src="caligraphy-dars-g.png" alt="Logo" style="height: 40px;" onerror="this.src='https://via.placeholder.com/150x40?text=LOGO'">
-            </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active"><a class="nav-link" href="index.html">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="manhaj-projects.html">Manhaj Projects</a></li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="index.html#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Manhaj Festival 
-                        </a>
-                        <div class="dropdown-menu shadow-sm" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="Manhajul-fest.html">Alif 2k26 (Home)</a>
-                            <a class="dropdown-item" href="Manhajul-fest.html#about">ABOUT Fest</a>
-                            <a class="dropdown-item" href="Manhajul-fest.html#programs">WHAT IS WAITING FOR YOU?</a>
-                            <a class="dropdown-item" href="Manhajul-fest.html#results">Check Results</a>
-                        </div>
-                    </li>
-                    <li class="nav-item"><a class="nav-link" href="admission.html">Admission Form</a></li>
-                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact Us</a></li>
-                </ul>
+<section class="counter-section">
+    <div class="container">
+        <div class="counter-card">
+            <div class="counter-grid">
+                <div class="counter-item"><h3 data-target="3">3</h3><p>Days</p></div>
+                <div class="counter-item"><h3 data-target="3">3</h3><p>Stages</p></div>
+                <div class="counter-item"><h3 data-target="33">33</h3><p>Artists</p></div>
             </div>
         </div>
-    </nav>
+    </div>
+</section>
 
-    <section class="hero-section">
-        <video id="bgVideo" class="bg-video" autoplay loop muted playsinline>
-            <source src="manhajul.webm" type="video/webm">
-        </video>
-        <div class="overlay"></div>
-        <button id="muteBtn" class="audio-btn"><i class="fas fa-volume-mute"></i></button>
-        <div class="container hero-content animate-fade-in">
-            <h1>MANHAJUL HIDAYA<br>DA'WA CAMPUS</h1>
-            <a href="index.html#about" class="btn-yellow">Read More</a>
-        </div>
-    </section>
-
-    <section class="info-cards-section">
-        <div class="container cards-grid">
-            <div class="info-card green-card scroll-animate slide-left">
-                <h3>MANHAJ PROJECTS</h3>
-                <div class="slide-scroll">Manhaj Projects is a collection of various initiatives implemented by Manhajul Hidaya, aimed at the spiritual, educational, and literary development of the students...</div>
-                <a href="manhaj-projects.html" class="arrow-icon"><i class="fas fa-arrow-right" style="color: var(--primary-green);"></i></a>
-            </div>
-            <div class="info-card light-card scroll-animate slide-right">
-                <h3>MANHAJ FESTIVAL</h3>
-                <div class="slide-scroll">Alif (Manhaj Festival) is a premier arts and cultural festival organized by Manhajul Hidaya, dedicated to nurturing and showcasing the creative talents of its students.</div>
-                <a href="Manhajul-fest.html" class="arrow-icon green-arrow"><i class="fas fa-arrow-right"></i></a>
-            </div>
-        </div>
-    </section>
-
-    <section class="director-section">
-        <div class="container director-grid">
-            <div class="director-image scroll-animate slide-left">
-                <img src="usthad.jpg" alt="Director" onerror="this.src='https://via.placeholder.com/600x400?text=Director+Image'">
-            </div>
-            <div class="director-text scroll-animate slide-right">
-                <span class="sub-title">DIRECTOR</span>
-                <h2>ALI ABDUNOOR BUKHARI POOKKOTTUR</h2>
-                <div class="slide-scroll">Usthad Ali Abdunnur Bukhari Pookkottur, a renowned Islamic scholar, orator, and educator from Kerala, India, is celebrated for his expertise in Islamic theology, jurisprudence, and the Arabic language. He has authored numerous insightful works on Islamic topics and delivered impactful lectures at various seminars and conferences, captivating audiences with his profound knowledge.Actively involved in Islamic education, he has taught at several institutions in Kerala, nurturing students and promoting Islamic values. Respected for his dedication to scholarship and education, he continues to inspire and foster a deeper understanding of Islamic teachings.</div>
-            </div>
-        </div>
-    </section>
-
-    <section class="container">
-        <div class="join-banner scroll-animate fade-in">
-            <div class="container banner-flex">
-                <div class="banner-text">
-                    <i class="fas fa-handshake"></i>
-                    <span>Fill Admission Form</span>
-                </div>
-                <a href="admission.html"><button class="btn-yellow">Join Now</button></a>
-            </div>
-        </div>
-    </section>
-
-    <section class="about-section" id="about">
-        <div class="container about-grid">
-            <div class="about-text scroll-animate slide-left">
-                <span class="sub-title">ABOUT US</span>
-                <div class="slide-scroll">Manhajul Hidaya is an Islamic institution affiliated with Bukhari Islamic Dawah College. The institution aims to produce Islamic scholars who can contribute positively to society. To achieve this goal, Manhajul Hidaya offers language studies in English, Arabic, Urdu, and other languages.By providing these language studies, the institution enables students to gain a deeper understanding of Islamic texts, communicate effectively with people from diverse backgrounds, and spread the message of Islam globally.</div>
-                <br><button class="btn-yellow" style="margin-top: 10px;">Read More</button>
-            </div>
-            <div class="about-image scroll-animate slide-right">
-                <img src="dars.jpg" alt="About Campus" onerror="this.src='https://via.placeholder.com/600x400?text=Campus+Image'">
-            </div>
-        </div>
-    </section>
-
-    <section class="counter-section">
-        <div class="container counter-grid">
-            <div class="counter-item scroll-animate scale-up"><h3>30+</h3><p>Alumni</p></div>
-            <div class="counter-item scroll-animate scale-up"><h3>48+</h3><p>Students</p></div>
-            <div class="counter-item scroll-animate scale-up"><h3>2+</h3><p>Institutions</p></div>
-            <div class="counter-item scroll-animate scale-up"><h3>10+</h3><p>Years</p></div>
-        </div>
-    </section>
-
-    <section class="testimonial-section scroll-animate fade-in">
-        <div class="container text-center">
-            <span class="sub-title" style="color: var(--yellow-gold);">TESTIMONIALS</span>
-            <h2 style="font-weight: 700; margin-bottom: 10px;">What People Say</h2>
-            <div class="testimonial-slider">
-                <div class="slide active"><p>"Affiliated with Bukhari Dawah College, Manhajul Hidaya creates scholars who benefit society. By teaching languages like Arabic, English, and Urdu, it helps students share the message of Islam globally."</p></div>
-                <div class="slide"><p>"The goal of Manhajul Hidaya is to raise inspiring Islamic scholars. Through multilingual education, it prepares students to spread the message of Islam across the globe."</p></div>
-            </div>
-            <div class="slider-dots">
-                <span class="dot active" onclick="currentSlide(0)"></span>
-                <span class="dot" onclick="currentSlide(1)"></span>
-            </div>
-        </div>
-    </section>
-
-    <section class="news-section">
-        <div class="container">
-            <h2 class="text-center scroll-animate fade-in" style="font-weight: 700; margin-bottom: 20px;">News</h2>
-            <div class="news-list scroll-animate slide-up">
-                <div class="news-item">
-                    <div class="date-box">04 <span>May</span></div>
-                    <div class="news-details">
-                        <h4>Admission Open for 2026-27 Academic Year</h4>
-                        <p>Applications are invited for various courses at Manhajul Hidaya</p>
-                    </div>
+<section class="entertainment-section" id="entertainment">
+    <div class="container">
+        <h2 class="section-title">WHAT IS WAITING FOR YOU?</h2>
+        <p class="text-center" style="color: var(--text-muted); max-width: 600px; margin: 0 auto;">Alif Festival offers you an unforgettable adventure and colorful memories, literally.</p>
+        
+        <div class="ent-grid">
+            <div class="ent-card">
+                <div class="card-banner-placeholder"><i class="fas fa-palette"></i> ART FIGHT</div>
+                <div class="card-body">
+                    <h3>Creative Arts</h3>
+                    <ul>
+                        <li>English Essay Writing</li>
+                        <li>Essay Writing</li>
+                        <li>Translation</li>
+                        <li>Poster Designing</li>
+                        <li>Spelling 'B'</li>
+                        <li>Poem Making</li>
+                        <li>Pencil Drawing</li>
+                        <li>Caption Writing</li>
+                        <li>Water Colouring</li>
+                        <li>Hifz</li>
+                        <li>Calligraphy</li>
+                        <li>Sarf Test</li>
+                    </ul>
                 </div>
             </div>
-            <div class="text-center scroll-animate slide-up">
-                <a href="admission.html" style="text-decoration: none;"><button class="btn-yellow">Admission Details</button></a>
-            </div>
-        </div>
-    </section>
-
-    <section class="cta-banner scroll-animate fade-in">
-        <div class="container banner-flex">
-            <h2 style="font-weight: 600; font-size: clamp(1.3rem, 4vw, 1.8rem);">Get better opinion from our expert team.</h2>
-            <a href="contact.html" style="text-decoration: none;"><button class="btn-yellow">Contact Us</button></a>
-        </div>
-    </section>
-
-    <footer class="custom-footer">
-        <div class="footer-container">
-            
-            <div class="footer-left">
-                <img src="https://manhajulhidaya.vercel.app/Logo-w.png" alt="Manhajul Hidaya Emblem" class="footer-emblem-fixed" onerror="this.src='logo.png'">
-                <img src="caligraphy-dars-w.png" alt="Arabic Calligraphy" class="logo-arabic-fixed" onerror="this.src='https://via.placeholder.com/200x50?text=Calligraphy'">
-              
-                <p class="footer-desc">
-                    An institution dedicated to synthesis of traditional values and dynamic contemporary educational advancements, nurturing generation with values and quality education.
-                </p>
-            </div>
-
-            <div class="footer-center">
-                <ul class="footer-links">
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="index.html#about">About</a></li>
-                    <li><a href="manhaj-projects.html">Projects</a></li>
-                    <li><a href="Manhajul-fest.html">Events</a></li>
-                    <li><a href="index.html#">Colleges</a></li>
-                    <li><a href="contact.html">Contact Us</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-right">
-                <div class="footer-address">
-                    Al Manhajul Hidaya,<br>
-                    Nediyiruppu, Malappuram DT,<br>
-                    Kerala, India – 673638
+            <div class="ent-card">
+                <div class="card-banner-placeholder"><i class="fas fa-microphone-alt"></i> STAGE EVENTS</div>
+                <div class="card-body">
+                    <h3>Stage Performances</h3>
+                    <ul>
+                        <li>Madh Song</li>
+                        <li>Qira'ath</li>
+                        <li>Arabic Elocution</li>
+                        <li>Khutba</li>
+                        <li>Thadrees</li>
+                        <li>Va'al</li>
+                        <li>Qawali</li>
+                        <li>Mala Recitation</li>
+                        <li>English Elocution</li>
+                        <li>Mappila Pattu</li>
+                    </ul>
                 </div>
-                
-                <a href="tel:+919895580156" class="footer-contact-item">+91 9895580156</a>
-                <a href="mailto:manhajulhidayacm@gmail.com" class="footer-contact-item">manhajulhidayacm@gmail.com</a>
-            </div>
-
-        </div>
-
-        <div class="footer-bottom">
-            <div class="copyright-text">
-                <span>© 2026 Al Manhajul Hidaya</span>
-                <span class="divider">|</span>
-                <span>All Rights Reserved</span>
-            </div>
-            
-            <div class="footer-social">
-                <a href="index.html#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                <a href="index.html#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                <a href="index.html#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-                
-                <button class="scroll-top-btn" id="scrollTopBtn" aria-label="Scroll to top">
-                    <i class="fa-solid fa-chevron-up"></i>
-                </button>
             </div>
         </div>
-    </footer>
+    </div>
+</section>
 
-    <a href="https://wa.me/919895580156" class="whatsapp-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+<section class="results-section" id="results">
+    <div class="container">
+        <h2 class="section-title">Check Results</h2>
+        <p class="text-center mb-5" style="color: var(--text-muted);">Select category and item to view the latest results.</p>
 
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+        <div class="form-group-custom">
+            <label>Category</label>
+            <div class="custom-select-box" onclick="openSheet('categorySheet')">
+                <span id="categoryText">Select Category</span>
+                <i class="fa-solid fa-chevron-down"></i>
+            </div>
+        </div>
 
-    <script>
-        // Scroll to Top Smooth Action
-        document.getElementById('scrollTopBtn').addEventListener('click', function() {
+        <div class="form-group-custom">
+            <label>Item</label>
+            <div class="custom-select-box" onclick="openSheet('itemSheet')">
+                <span id="itemText">Select Item</span>
+                <i class="fa-solid fa-chevron-down"></i>
+            </div>
+        </div>
+
+        <div id="imageDisplay">
+            <h4 id="resultTitle"></h4>
+            <img id="resultImage" src="" alt="Result Image">
+        </div>
+    </div>
+</section>
+
+<footer class="custom-footer">
+    <div class="footer-container">
+        <div class="footer-left">
+            <img src="Logo-w.png" alt="Manhajul Hidaya Emblem" class="footer-emblem-fixed" onerror="this.onerror=null; this.src='logo.png';">
+            <img src="caligraphy-dars-w.png" alt="Arabic Calligraphy" class="logo-arabic-fixed" onerror="this.onerror=null; this.src='https://via.placeholder.com/200x50?text=Calligraphy';">
+            <p class="footer-desc">
+                An institution dedicated to synthesis of traditional values and dynamic contemporary educational advancements, nurturing generation with values and quality education.
+            </p>
+        </div>
+        <div class="footer-center">
+            <ul class="footer-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="manhaj-projects.html">Projects</a></li>
+                <li><a href="Manhajul-fest.html">Events</a></li>
+                <li><a href="#">Colleges</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+            </ul>
+        </div>
+        <div class="footer-right">
+            <div class="footer-address">
+                Al Manhajul Hidaya,<br>
+                Nediyiruppu, Malappuram DT,<br>
+                Kerala, India – 673638
+            </div>
+            <a href="tel:+919895580156" class="footer-contact-item">+91 9895580156</a>
+            <a href="mailto:manhajulhidayacm@gmail.com" class="footer-contact-item">manhajulhidayacm@gmail.com</a>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <div class="copyright-text">
+            <span>© 2026 Al Manhajul Hidaya</span>
+            <span class="divider">|</span>
+            <span>All Rights Reserved</span>
+        </div>
+        <div class="footer-social">
+            <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+            <button class="scroll-top-btn" id="scrollTopBtn" aria-label="Scroll to top"><i class="fa-solid fa-chevron-up"></i></button>
+        </div>
+    </div>
+</footer>
+
+<div class="overlay" id="overlay" onclick="closeAllSheets()"></div>
+
+<div class="bottom-sheet" id="categorySheet">
+    <div class="sheet-header">Select Category</div>
+    <div class="sheet-content" id="categoryOptions"></div>
+</div>
+
+<div class="bottom-sheet" id="itemSheet">
+    <div class="sheet-header">Select Item</div>
+    <div class="sheet-content" id="itemOptions"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
+
+<script>
+    const scrollTopBtn = document.getElementById('scrollTopBtn');
+    if(scrollTopBtn) {
+        scrollTopBtn.addEventListener('click', function() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
+    }
 
-        document.addEventListener("DOMContentLoaded", function() {
-            // Video Control System
-            var video = document.getElementById("bgVideo");
-            var muteBtn = document.getElementById("muteBtn");
-            if (muteBtn && video) {
-                document.body.addEventListener('click', function() {
-                    if (video.muted) { video.muted = false; muteBtn.innerHTML = '<i class="fas fa-volume-up"></i>'; }
-                }, { once: true });
-                muteBtn.addEventListener("click", function(e) {
-                    e.stopPropagation();
-                    video.muted = !video.muted;
-                    muteBtn.innerHTML = video.muted ? '<i class="fas fa-volume-mute"></i>' : '<i class="fas fa-volume-up"></i>';
-                });
-            }
-
-            // Scroll Animation Observer
-            const animationElements = document.querySelectorAll('.scroll-animate');
-            const animationObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => { entry.target.classList.toggle('animated', entry.isIntersecting); });
-            }, { threshold: 0.15 });
-            animationElements.forEach(el => animationObserver.observe(el));
-
-            // Dynamic Counter
-            const counters = document.querySelectorAll('.counter-item h3');
-            const runCounters = (el) => {
-                const target = parseInt(el.innerText.replace(/\D/g, ''));
-                let count = 0; const step = target / 40;
-                const update = () => {
-                    if (count < target) { count += step; el.innerText = Math.ceil(count); setTimeout(update, 30); } 
-                    else { el.innerText = target + "+"; }
-                }; update();
-            };
-            const section = document.querySelector('.counter-section');
-            let counted = false;
-            if (section) {
-                new IntersectionObserver((entries) => {
-                    if (entries[0].isIntersecting && !counted) { counters.forEach(runCounters); counted = true; }
-                }, { threshold: 0.3 }).observe(section);
-            }
-
-            // Testimonial Slider Loop
-            let current = 0;
-            const slides = document.querySelectorAll('.slide');
-            const dots = document.querySelectorAll('.dot');
-            window.currentSlide = function(i) {
-                if(slides.length === 0) return;
-                slides.forEach(s => s.classList.remove('active'));
-                dots.forEach(d => d.classList.remove('active'));
-                current = (i + slides.length) % slides.length;
-                slides[current].classList.add('active');
-                dots[current].classList.add('active');
-            };
-            if (slides.length > 0) setInterval(() => { currentSlide(current + 1); }, 5000);
-
-            // Typography Reveal Effects
-            document.querySelectorAll('.slide-scroll').forEach(el => {
-                const text = el.textContent.trim().replace(/\s+/g, ' ');
-                el.innerHTML = '';
-                text.split('').forEach(char => {
-                    const span = document.createElement('span'); span.classList.add('char'); span.textContent = char; el.appendChild(span);
-                });
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll('.slide-scroll').forEach(el => {
+            const text = el.textContent.trim().replace(/\s+/g, ' ');
+            el.innerHTML = '';
+            text.split('').forEach(char => {
+                const span = document.createElement('span');
+                span.classList.add('char');
+                span.textContent = char; 
+                el.appendChild(span);
             });
-            const scrollElements = document.querySelectorAll('.slide-scroll');
-            function animateTextScroll() {
-                scrollElements.forEach(slide => {
-                    const chars = slide.querySelectorAll('.char');
-                    if (chars.length === 0) return;
-                    const rect = slide.getBoundingClientRect();
-                    const start = window.innerHeight * 0.90; const end = window.innerHeight * 0.25;  
-                    let progress = (start - rect.top) / (start - end);
-                    progress = Math.max(0, Math.min(progress, 1)); 
-                    chars.forEach((char, index) => {
-                        const charProgress = index / chars.length;
-                        char.style.opacity = progress > charProgress ? 1 : 0.1;
-                    });
-                });
-            }
-            let isScrolling = false;
-            window.addEventListener('scroll', () => {
-                if (!isScrolling) { window.requestAnimationFrame(() => { animateTextScroll(); isScrolling = false; }); isScrolling = true; }
-            });
-            window.addEventListener('resize', animateTextScroll);
-            animateTextScroll();
         });
 
-        window.addEventListener('load', function() {
-            var video = document.getElementById("bgVideo");
-            if (video) video.play().catch(() => {});
+        const scrollElements = document.querySelectorAll('.slide-scroll');
+        function animateTextScroll() {
+            scrollElements.forEach(slide => {
+                const chars = slide.querySelectorAll('.char');
+                if (chars.length === 0) return;
+                const rect = slide.getBoundingClientRect();
+                const start = window.innerHeight * 0.90; 
+                const end = window.innerHeight * 0.25;  
+                let progress = (start - rect.top) / (start - end);
+                progress = Math.max(0, Math.min(progress, 1)); 
+                chars.forEach((char, index) => {
+                    const charProgress = index / chars.length;
+                    char.style.opacity = progress > charProgress ? 1 : 0.1;
+                });
+            });
+        }
+
+        const counters = document.querySelectorAll('.counter-item h3');
+        const runCounters = (el) => {
+            const target = parseInt(el.getAttribute('data-target'));
+            let count = 0;
+            const step = target / 30;
+            const update = () => {
+                if (count < target) {
+                    count += step;
+                    el.innerText = Math.ceil(count);
+                    setTimeout(update, 40);
+                } else {
+                    el.innerText = target;
+                }
+            };
+            update();
+        };
+
+        const counterSection = document.querySelector('.counter-section');
+        let counted = false;
+        if (counterSection) {
+            const observer = new IntersectionObserver((entries) => {
+                if (entries[0].isIntersecting && !counted) {
+                    counters.forEach(runCounters);
+                    counted = true;
+                }
+            }, { threshold: 0.3 });
+            observer.observe(counterSection);
+        }
+
+        window.addEventListener('scroll', animateTextScroll);
+        window.addEventListener('resize', animateTextScroll);
+        animateTextScroll();
+    });
+
+    const resultsData = {
+        // High School Results
+        "High School-English Essay Writing": { title: "High School - English Essay Writing", img: "hs_english_essay.jpg" },
+        "High School-Essay Writing": { title: "High School - Essay Writing", img: "hs_essay.jpg" },
+        "High School-Translation": { title: "High School - Translation", img: "hs_translation.jpg" },
+        "High School-Poster Designing": { title: "High School - Poster Designing", img: "hs_poster.jpg" },
+        "High School-Spelling 'B'": { title: "High School - Spelling 'B'", img: "hs_spelling_b.jpg" },
+        "High School-Poem Making": { title: "High School - Poem Making", img: "hs_poem.jpg" },
+        "High School-Pencil Drawing": { title: "High School - Pencil Drawing", img: "hs_pencil.jpg" },
+        "High School-Caption Writing": { title: "High School - Caption Writing", img: "hs_caption.jpg" },
+        "High School-Water Colouring": { title: "High School - Water Colouring", img: "hs_water_colour.jpg" },
+        "High School-Hifz": { title: "High School - Hifz", img: "hs_hifz.jpg" },
+        "High School-Calligraphy": { title: "High School - Calligraphy", img: "hs_calligraphy.jpg" },
+        "High School-Sarf Test": { title: "High School - Sarf Test", img: "hs_sarf.jpg" },
+        "High School-Madh Song": { title: "High School - Madh Song", img: "hs_madh_song.jpg" },
+        "High School-Qira'ath": { title: "High School - Qira'ath", img: "hs_qiraath.jpg" },
+        "High School-Arabic Elocution": { title: "High School - Arabic Elocution", img: "hs_arabic_elocution.jpg" },
+        "High School-Khutba": { title: "High School - Khutba", img: "hs_khutba.jpg" },
+        "High School-Thadrees": { title: "High School - Thadrees", img: "hs_thadrees.jpg" },
+        "High School-Va'al": { title: "High School - Va'al", img: "hs_vaal.jpg" },
+        "High School-Qawali": { title: "High School - Qawali", img: "hs_qawali.jpg" },
+        "High School-Mala Recitation": { title: "High School - Mala Recitation", img: "hs_mala.jpg" },
+        "High School-English Elocution": { title: "High School - English Elocution", img: "hs_english_elocution.jpg" },
+        "High School-Mappila Pattu": { title: "High School - Mappila Pattu", img: "hs_mappila_pattu.jpg" },
+
+        // Junior Results
+        "Junior-English Essay Writing": { title: "Junior - English Essay Writing", img: "junior_english_essay.jpg" },
+        "Junior-Essay Writing": { title: "Junior - Essay Writing", img: "junior_essay.jpg" },
+        "Junior-Translation": { title: "Junior - Translation", img: "junior_translation.jpg" },
+        "Junior-Poster Designing": { title: "Junior - Poster Designing", img: "junior_poster.jpg" },
+        "Junior-Spelling 'B'": { title: "Junior - Spelling 'B'", img: "junior_spelling_b.jpg" },
+        "Junior-Poem Making": { title: "Junior - Poem Making", img: "junior_poem.jpg" },
+        "Junior-Pencil Drawing": { title: "Junior - Pencil Drawing", img: "junior_pencil.jpg" },
+        "Junior-Caption Writing": { title: "Junior - Caption Writing", img: "junior_caption.jpg" },
+        "Junior-Water Colouring": { title: "Junior - Water Colouring", img: "junior_water_colour.jpg" },
+        "Junior-Hifz": { title: "Junior - Hifz", img: "junior_hifz.jpg" },
+        "Junior-Calligraphy": { title: "Junior - Calligraphy", img: "junior_calligraphy.jpg" },
+        "Junior-Sarf Test": { title: "Junior - Sarf Test", img: "junior_sarf.jpg" },
+        "Junior-Madh Song": { title: "Junior - Madh Song", img: "junior_madh_song.jpg" },
+        "Junior-Qira'ath": { title: "Junior - Qira'ath", img: "junior_qiraath.jpg" },
+        "Junior-Arabic Elocution": { title: "Junior - Arabic Elocution", img: "junior_arabic_elocution.jpg" },
+        "Junior-Khutba": { title: "Junior - Khutba", img: "junior_khutba.jpg" },
+        "Junior-Thadrees": { title: "Junior - Thadrees", img: "junior_thadrees.jpg" },
+        "Junior-Va'al": { title: "Junior - Va'al", img: "junior_vaal.jpg" },
+        "Junior-Qawali": { title: "Junior - Qawali", img: "junior_qawali.jpg" },
+        "Junior-Mala Recitation": { title: "Junior - Mala Recitation", img: "junior_mala.jpg" },
+        "Junior-English Elocution": { title: "Junior - English Elocution", img: "junior_english_elocution.jpg" },
+        "Junior-Mappila Pattu": { title: "Junior - Mappila Pattu", img: "junior_mappila_pattu.jpg" },
+
+        // Senior Results
+        "Senior-English Essay Writing": { title: "Senior - English Essay Writing", img: "senior_english_essay.jpg" },
+        "Senior-Essay Writing": { title: "Senior - Essay Writing", img: "senior_essay.jpg" },
+        "Senior-Translation": { title: "Senior - Translation", img: "senior_translation.jpg" },
+        "Senior-Poster Designing": { title: "Senior - Poster Designing", img: "senior_poster.jpg" },
+        "Senior-Spelling 'B'": { title: "Senior - Spelling 'B'", img: "senior_spelling_b.jpg" },
+        "Senior-Poem Making": { title: "Senior - Poem Making", img: "senior_poem.jpg" },
+        "Senior-Pencil Drawing": { title: "Senior - Pencil Drawing", img: "senior_pencil.jpg" },
+        "Senior-Caption Writing": { title: "Senior - Caption Writing", img: "senior_caption.jpg" },
+        "Senior-Water Colouring": { title: "Senior - Water Colouring", img: "senior_water_colour.jpg" },
+        "Senior-Hifz": { title: "Senior - Hifz", img: "senior_hifz.jpg" },
+        "Senior-Calligraphy": { title: "Senior - Calligraphy", img: "senior_calligraphy.jpg" },
+        "Senior-Sarf Test": { title: "Senior - Sarf Test", img: "senior_sarf.jpg" },
+        "Senior-Madh Song": { title: "Senior - Madh Song", img: "senior_madh_song.jpg" },
+        "Senior-Qira'ath": { title: "Senior - Qira'ath", img: "senior_qiraath.jpg" },
+        "Senior-Arabic Elocution": { title: "Senior - Arabic Elocution", img: "senior_arabic_elocution.jpg" },
+        "Senior-Khutba": { title: "Senior - Khutba", img: "senior_khutba.jpg" },
+        "Senior-Thadrees": { title: "Senior - Thadrees", img: "senior_thadrees.jpg" },
+        "Senior-Va'al": { title: "Senior - Va'al", img: "senior_vaal.jpg" },
+        "Senior-Qawali": { title: "Senior - Qawali", img: "senior_qawali.jpg" },
+        "Senior-Mala Recitation": { title: "Senior - Mala Recitation", img: "senior_mala.jpg" },
+        "Senior-English Elocution": { title: "Senior - English Elocution", img: "senior_english_elocution.jpg" },
+        "Senior-Mappila Pattu": { title: "Senior - Mappila Pattu", img: "senior_mappila_pattu.jpg" }
+    };
+
+    // UPDATED CATEGORY LIST
+    const categories = [
+        "Select Category", 
+        "High School", 
+        "Junior", 
+        "Senior"
+    ];
+    
+    // UPDATED ITEMS LIST
+    const items = [
+        "Select Item", 
+        "English Essay Writing", 
+        "Essay Writing", 
+        "Translation", 
+        "Poster Designing", 
+        "Spelling 'B'", 
+        "Poem Making", 
+        "Pencil Drawing", 
+        "Caption Writing", 
+        "Water Colouring", 
+        "Hifz", 
+        "Calligraphy", 
+        "Sarf Test",
+        "Madh Song", 
+        "Qira'ath", 
+        "Arabic Elocution", 
+        "Khutba", 
+        "Thadrees", 
+        "Va'al", 
+        "Qawali", 
+        "Mala Recitation", 
+        "English Elocution", 
+        "Mappila Pattu"
+    ];
+
+    let currentCategory = "";
+    let currentItem = "";
+
+    function renderOptions(dataArray, containerId, textElementId, sheetId, type) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = ''; 
+
+        dataArray.forEach((item, index) => {
+            const div = document.createElement('div');
+            div.className = 'sheet-option';
+            if(index === 0) div.classList.add('selected'); 
+
+            const textSpan = document.createElement('span');
+            textSpan.innerText = item;
+            
+            const icon = document.createElement('i');
+            icon.className = index === 0 ? 'fa-solid fa-check-circle' : 'fa-regular fa-circle';
+
+            div.appendChild(textSpan);
+            div.appendChild(icon);
+
+            div.onclick = () => {
+                document.getElementById(textElementId).innerText = item;
+                
+                if (type === 'category') {
+                    currentCategory = (item === "Select Category") ? "" : item;
+                } else {
+                    currentItem = (item === "Select Item") ? "" : item;
+                }
+
+                const allOptions = container.querySelectorAll('.sheet-option');
+                allOptions.forEach(opt => {
+                    opt.classList.remove('selected');
+                    opt.querySelector('i').className = 'fa-regular fa-circle';
+                });
+                div.classList.add('selected');
+                icon.className = 'fa-solid fa-check-circle';
+
+                closeAllSheets();
+                setTimeout(checkAndShowResult, 300);
+            };
+            container.appendChild(div);
         });
-    </script>
+    }
+
+    renderOptions(categories, 'categoryOptions', 'categoryText', 'categorySheet', 'category');
+    renderOptions(items, 'itemOptions', 'itemText', 'itemSheet', 'item');
+
+    function checkAndShowResult() {
+        const displayDiv = document.getElementById('imageDisplay');
+        const imgEl = document.getElementById('resultImage');
+        const titleEl = document.getElementById('resultTitle');
+
+        if (currentCategory && currentItem) {
+            const key = `${currentCategory}-${currentItem}`;
+            
+            if (resultsData[key]) {
+                titleEl.innerText = resultsData[key].title;
+                imgEl.src = resultsData[key].img;
+                displayDiv.style.display = 'block';
+            } else {
+                titleEl.innerText = `${currentCategory} - ${currentItem}`;
+                imgEl.src = "https://via.placeholder.com/600x400/e2e8f0/059669?text=Result+Will+Be+Updated+Soon"; 
+                displayDiv.style.display = 'block';
+            }
+        } else {
+            displayDiv.style.display = 'none';
+        }
+    }
+
+    const overlay = document.getElementById('overlay');
+    function openSheet(sheetId) {
+        overlay.classList.add('active');
+        document.getElementById(sheetId).classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeAllSheets() {
+        overlay.classList.remove('active');
+        document.querySelectorAll('.bottom-sheet').forEach(sheet => sheet.classList.remove('active'));
+        document.body.style.overflow = 'auto';
+    }
+</script>
 </body>
 </html>
