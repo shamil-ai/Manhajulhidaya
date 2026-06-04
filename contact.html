@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ബന്ധപ്പെടുക - മൻഹജുൽ ഹിദായ</title>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-green: #059669; --light-green: #10b981; --pale-green: #d1fae5; 
+            --bg-color: #f8fafc; --card-bg: #ffffff; --text-dark: #0f172a; 
+            --text-muted: #64748b; --yellow-gold: #f4c542;
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --radius-md: 12px; --radius-lg: 20px; --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        html, body {
+    max-width: 100%;
+    overflow-x: hidden; /* ഇത് പേജ് വശങ്ങളിലേക്ക് മാറുന്നത് തടയുന്നു */
+}
+
+html { 
+    scroll-behavior: smooth; 
+}
+
+body { 
+    background-color: var(--bg-color); 
+    color: var(--text-dark); 
+    line-height: 1.6; 
+    font-family: 'Poppins', sans-serif; 
+    -webkit-font-smoothing: antialiased; 
+    position: relative;
+}
+.container { width: 90%; max-width: 1200px; margin: 0 auto; }
+        .text-center { text-align: center; }
+        .main-navbar { background-color: var(--card-bg) !important; border-bottom: 1px solid rgba(0,0,0,0.05); padding: 15px 0; box-shadow: var(--shadow-sm); }
+        .main-navbar .nav-link { color: var(--text-dark) !important; font-weight: 500; transition: var(--transition); }
+        .main-navbar .nav-item.active .nav-link, .main-navbar .nav-link:hover { color: var(--primary-green) !important; }
+
+        .scroll-animate { opacity: 1; transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); will-change: transform, opacity; }
+        @media (min-width: 768px) { .scroll-animate { opacity: 0; } .slide-up { transform: translateY(40px); } }
+        .scroll-animate.animated { opacity: 1; transform: translate(0) scale(1); }
+        .text-reveal { font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; color: #ffffff; letter-spacing: 1px; margin: 0; text-transform: uppercase; text-shadow: 2px 2px 8px rgba(0,0,0,0.3); }
+
+        .hero-section { position: relative; overflow: hidden; width: 100%; height: 38vh; display: flex; align-items: center; justify-content: center; border-radius: 0 0 var(--radius-lg) var(--radius-lg); box-shadow: var(--shadow-md); }
+        .bg-video { position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; width: auto; height: auto; transform: translate(-50%, -50%); object-fit: cover; z-index: 0; }
+        .overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); z-index: 1; }
+        .hero-content { position: relative; color: #ffffff; z-index: 2; text-align: center; }
+        .audio-btn { position: absolute; bottom: 20px; right: 20px; z-index: 10; background-color: rgba(0, 0, 0, 0.6); color: #ffffff; border: 2px solid #ffffff; border-radius: 50%; width: 42px; height: 42px; font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; }
+        .audio-btn:hover { background-color: var(--primary-green); border-color: var(--primary-green); transform: scale(1.1); }
+
+        .grid-wrapper { display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; background: var(--card-bg); border-radius: var(--radius-lg); padding: 40px; box-shadow: var(--shadow-lg); margin-top: -40px; position: relative; z-index: 20; border: 1px solid #f1f5f9; }
+        .form-container h2 { font-size: 1.8rem; color: var(--text-dark); margin-bottom: 30px; position: relative; font-weight: 700; }
+        .form-container h2::after { content: ''; position: absolute; bottom: -8px; left: 0; width: 40px; height: 3.5px; background-color: var(--light-green); border-radius: 2px; }
+        .input-group-custom { position: relative; margin-bottom: 25px; }
+        .input-group-custom input, .input-group-custom textarea { width: 100%; padding: 14px; border: 1.5px solid #e2e8f0; background: none; border-radius: 8px; outline: none; font-size: 0.95rem; color: var(--text-dark); transition: all 0.3s ease; }
+        .input-group-custom textarea { resize: none; height: 130px; }
+        .input-group-custom label { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none; transition: var(--transition); background-color: var(--card-bg); padding: 0 5px; font-size: 0.95rem; }
+        .input-group-custom textarea ~ label { top: 25px; }
+        .input-group-custom input:focus ~ label, .input-group-custom input:valid ~ label, .input-group-custom textarea:focus ~ label, .input-group-custom textarea:valid ~ label { top: 0; font-size: 0.85rem; color: var(--primary-green); font-weight: 500; }
+        .input-group-custom input:focus, .input-group-custom textarea:focus { border-color: var(--light-green); box-shadow: 0 0 8px rgba(16, 185, 129, 0.15); }
+        .submit-btn { background-color: var(--primary-green); color: white; border: none; padding: 14px 32px; font-size: 0.95rem; font-weight: 600; border-radius: 8px; cursor: pointer; transition: var(--transition); display: inline-flex; align-items: center; gap: 10px; box-shadow: 0 4px 14px rgba(5, 150, 105, 0.25); }
+        .submit-btn:hover { background-color: var(--light-green); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(5, 150, 105, 0.35); }
+        .map-container { border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-sm); position: relative; height: 100%; min-height: 350px; transition: var(--transition); border: 1px solid #e2e8f0; }
+        .map-container iframe { width: 100%; height: 100%; border: 0; }
+
+        .info-cards-section { max-width: 1200px; margin: 50px auto 60px; padding: 0 20px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; }
+        .info-card { background: var(--card-bg); padding: 35px 25px; border-radius: var(--radius-lg); text-align: center; box-shadow: var(--shadow-md); transition: var(--transition); border: 1px solid #f1f5f9; }
+        .info-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: var(--pale-green); }
+        .icon-wrapper { width: 60px; height: 60px; background: var(--pale-green); color: var(--primary-green); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; margin: 0 auto 20px; transition: var(--transition); }
+        .info-card:hover .icon-wrapper { background: var(--primary-green); color: white; transform: rotateY(360deg); }
+        .info-card h3 { font-size: 1.2rem; margin-bottom: 8px; color: var(--text-dark); font-weight: 600; }
+        .info-card p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; }
+        .whatsapp-float { position: fixed; bottom: 25px; right: 25px; background-color: #25d366; color: white; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 100; transition: 0.3s; text-decoration: none; }
+        .whatsapp-float:hover { transform: scale(1.1); }
+
+        /* PROFESSIONAL FOOTER CSS */
+        .custom-footer { background-color: #0f172a; color: #e2e8f0; padding: 40px 0 20px; line-height: 1.4; }
+        .footer-container { display: flex; justify-content: space-between; max-width: 1200px; margin: 0 auto; padding: 0 20px; flex-wrap: wrap; gap: 40px; }
+        .footer-left { flex: 1.5; min-width: 300px; }
+        img.footer-emblem-fixed { width: 90px !important; max-width: 90px !important; height: auto !important; display: block !important; margin-bottom: 15px !important; }
+        img.logo-arabic-fixed { width: 180px !important; max-width: 180px !important; height: auto !important; display: block !important; margin-bottom: 15px !important; }
+        .footer-desc { font-size: 14px; line-height: 1.6; color: #cbd5e1; padding-right: 20px; }
+        .footer-center { flex: 1; min-width: 150px; }
+        .footer-links { list-style: none; padding: 0; margin: 0; }
+        .footer-links li { margin-bottom: 12px; }
+        .footer-links a { color: #f8fafc; text-decoration: none; font-size: 14px; font-weight: 400; transition: color 0.3s ease; }
+        .footer-links a:hover { color: #10b981; }
+        .footer-right { flex: 1.5; min-width: 250px; font-size: 14px; color: #f8fafc; }
+        .footer-address { margin-bottom: 20px; line-height: 1.8; color: #f8fafc; }
+        .footer-contact-item { margin-bottom: 8px; display: block; color: #f8fafc; text-decoration: none; transition: color 0.3s ease; }
+        .footer-contact-item:hover { color: #10b981; }
+        .footer-bottom { max-width: 1200px; margin: 30px auto 0; padding: 20px 20px 0; border-top: 1px solid rgba(255, 255, 255, 0.1); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .copyright-text { font-size: 13px; color: #f8fafc; display: flex; align-items: center; gap: 8px; }
+        .divider { color: #64748b; }
+        .footer-social { display: flex; align-items: center; gap: 20px; }
+        .footer-social a { color: #f8fafc; font-size: 16px; text-decoration: none; transition: transform 0.3s ease, color 0.3s ease; }
+        .footer-social a:hover { color: #10b981; transform: translateY(-3px); }
+        .scroll-top-btn { background: none; border: none; color: #f8fafc; font-size: 20px; cursor: pointer; margin-left: 10px; transition: color 0.3s ease; padding: 0; }
+        .scroll-top-btn:hover { color: #10b981; }
+
+        @media (max-width: 992px) {
+            .grid-wrapper { grid-template-columns: 1fr; padding: 30px; }
+            .info-cards-section { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .footer-container { flex-direction: column; gap: 30px; }
+            .footer-bottom { flex-direction: column; justify-content: center; text-align: center; }
+            .copyright-text { flex-direction: column; gap: 5px; }
+            .divider { display: none; }
+            .footer-desc { padding-right: 0; }
+        }
+        @media (max-width: 600px) {
+            .info-cards-section { grid-template-columns: 1fr; gap: 20px; }
+            .hero-section { height: 32vh; }
+            .grid-wrapper { padding: 20px; margin-top: -30px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-navbar-green" style="background-color: #008651; padding: 8px 0;">
+        <div class="container d-flex justify-content-between align-items-center">
+            <div class="text-white font-weight-bold" style="text-transform: uppercase; font-size: 14px;">
+                Manhajul Hidaya 
+            </div>
+            <div class="social-links">
+                <a href="contact.html#" target="_blank" title="YouTube" class="text-white mr-3"><i class="fab fa-youtube"></i></a>
+                <a href="contact.html#" target="_blank" title="Instagram" class="text-white"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-light main-navbar sticky-top bg-white shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="caligraphy-dars-g.png" alt="DHIU Calligraphy Logo" style="height: 40px;" onerror="this.src='https://via.placeholder.com/150x40?text=LOGO'">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active"><a class="nav-link" href="index.html">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="manhaj-projects.html">Manhaj Projects</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="contact.html#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown">Manhaj Festival</a>
+                    <div class="dropdown-menu shadow-sm">
+                        <a class="dropdown-item" href="Manhajul-fest.html">Alif 2k26 (Home)</a>
+                        <a class="dropdown-item" href="Manhajul-fest.html#about">ABOUT Fest</a>
+                        <a class="dropdown-item" href="Manhajul-fest.html#programs">WHAT IS WAITING FOR YOU?</a>
+                        <a class="dropdown-item" href="Manhajul-fest.html#results">Check Results</a>
+                    </div>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="admission.html">Admission Form</a></li>
+                <li class="nav-item"><a class="nav-link" href="contact.html">Contact Us</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    <section class="hero-section">
+        <video autoplay muted loop playsinline id="bgVideo" class="bg-video">
+            <source src="manhajul.webm" type="video/webm">
+        </video>
+        <div class="overlay"></div>
+        <div class="hero-content">
+            <h1 class="text-reveal">Contact Us</h1>
+        </div>
+        <button id="muteBtn" class="audio-btn"><i class="fas fa-volume-mute"></i></button>
+    </section>
+
+    <div class="container">
+        <div class="grid-wrapper scroll-animate slide-up">
+            <div class="form-container">
+                <h2>Get In Touch</h2>
+                <form id="contactForm">
+                    <div class="input-group-custom">
+                        <input type="text" id="name" name="Name" required autocomplete="off">
+                        <label for="name">Name *</label>
+                    </div>
+                    <div class="input-group-custom">
+                        <input type="email" id="email" name="Email" required autocomplete="off">
+                        <label for="email">Email Address *</label>
+                    </div>
+                    <div class="input-group-custom">
+                        <input type="tel" id="phone" name="Phone" required autocomplete="off">
+                        <label for="phone">Phone Number *</label>
+                    </div>
+                    <div class="input-group-custom">
+                        <textarea id="address" name="Message" required autocomplete="off"></textarea>
+                        <label for="address">Address / Message *</label>
+                    </div>
+                    <button type="submit" class="submit-btn" id="submitBtn">
+                        <span>Send Message</span><i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </form>
+            </div>
+            <div class="map-container">
+                <iframe src="https://maps.google.com/maps?q=Nediyiruppu,+Malappuram,+Kerala&t=&z=13&ie=UTF8&iwloc=&output=embed" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <section class="container text-center" style="margin-top: 50px; margin-bottom: 50px;">
+        <h2 style="font-size: 19px; color: var(--primary-green); padding: 0 10px; line-height: 1.6; font-weight: 600;">
+            Connecting traditional Islamic knowledge with contemporary standard technical education methods.
+        </h2>
+    </section>
+
+    <section class="info-cards-section">
+        <div class="info-card">
+            <div class="icon-wrapper"><i class="fa-solid fa-location-dot"></i></div>
+            <h3>Our Location</h3>
+            <p>NEDIYIRUPPU, MALAPPURAM,<br>KERALA 673638</p>
+        </div>
+        <div class="info-card">
+            <div class="icon-wrapper"><i class="fa-solid fa-envelope"></i></div>
+            <h3>Email Us</h3>
+            <p>manhajulhidayacm@gmail.com</p>
+        </div>
+        <div class="info-card">
+            <div class="icon-wrapper"><i class="fa-solid fa-phone"></i></div>
+            <h3>Call Us</h3>
+            <p>+91 98955 80156</p>
+        </div>
+    </section>
+
+    <!-- PROFESSIONAL FOOTER SECTION -->
+    <footer class="custom-footer">
+        <div class="footer-container">
+            <div class="footer-left">
+                <img src="https://manhajulhidaya.vercel.app/Logo-w.png" alt="Manhajul Hidaya Emblem" class="footer-emblem-fixed" onerror="this.src='logo.png'">
+                <img src="caligraphy-dars-w.png" alt="Arabic Calligraphy" class="logo-arabic-fixed" onerror="this.src='https://via.placeholder.com/200x50?text=Calligraphy'">
+                <p class="footer-desc">
+                    An institution dedicated to synthesis of traditional values and dynamic contemporary educational advancements, nurturing generation with values and quality education.
+                </p>
+            </div>
+            <div class="footer-center">
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.html#about">About</a></li>
+                    <li><a href="manhaj-projects.html">Projects</a></li>
+                    <li><a href="Manhajul-fest.html">Events</a></li>
+                    <li><a href="contact.html#">Colleges</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-right">
+                <div class="footer-address">
+                    Al Manhajul Hidaya,<br>
+                    Nediyiruppu, Malappuram DT,<br>
+                    Kerala, India – 673638
+                </div>
+                <a href="tel:+919895580156" class="footer-contact-item">+91 9895580156</a>
+                <a href="mailto:manhajulhidayacm@gmail.com" class="footer-contact-item">manhajulhidayacm@gmail.com</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="copyright-text">
+                <span>© 2026 Al Manhajul Hidaya</span>
+                <span class="divider">|</span>
+                <span>All Rights Reserved</span>
+            </div>
+            <div class="footer-social">
+                <a href="contact.html#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="contact.html#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="contact.html#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                <button class="scroll-top-btn" id="scrollTopBtn" aria-label="Scroll to top"><i class="fa-solid fa-chevron-up"></i></button>
+            </div>
+        </div>
+    </footer>
+
+    <a href="https://wa.me/+919895580156" class="whatsapp-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Scroll to Top Smooth Action
+        const scrollTopBtn = document.getElementById('scrollTopBtn');
+        if(scrollTopBtn) {
+            scrollTopBtn.addEventListener('click', function() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzb94Sok6ISvimL9XAgrJNkPsporv0DPuda3RaG5324gBZebL_VVe7JPQRNEzmdrAj-/exec';
+        const form = document.getElementById('contactForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = submitBtn.querySelector('span');
+        const btnIcon = submitBtn.querySelector('i');
+
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            submitBtn.disabled = true;
+            btnText.textContent = 'Sending...';
+            btnIcon.className = 'fa-solid fa-spinner fa-spin';
+
+            fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: new FormData(form) })
+            .then(response => {
+                alert('Thank you! Your message has been sent successfully.');
+                form.reset(); 
+                document.querySelectorAll('.input-group-custom input, .input-group-custom textarea').forEach(input => { input.blur(); });
+            })
+            .catch(error => {
+                console.error('Error!', error);
+                alert('Error! Unable to connect to server.');
+            })
+            .finally(() => {
+                submitBtn.disabled = false;
+                btnText.textContent = 'Send Message';
+                btnIcon.className = 'fa-solid fa-paper-plane';
+            });
+        });
+
+        window.addEventListener('scroll', () => {
+            const animates = document.querySelectorAll('.scroll-animate');
+            animates.forEach(el => {
+                const rect = el.getBoundingClientRect();
+                if (rect.top < window.innerHeight - 40) { el.classList.add('animated'); }
+            });
+        });
+        window.dispatchEvent(new Event('scroll'));
+
+        const video = document.getElementById("bgVideo");
+        const muteBtn = document.getElementById("muteBtn");
+        if (muteBtn && video) {
+            muteBtn.addEventListener("click", function() {
+                video.muted = !video.muted;
+                muteBtn.innerHTML = video.muted ? '<i class="fas fa-volume-mute"></i>' : '<i class="fas fa-volume-up"></i>';
+            });
+        }
+    </script>
+</body>
+</html>
