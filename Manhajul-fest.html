@@ -55,7 +55,28 @@
         
         /* Main Navbar */
         .main-navbar { background-color: var(--card-bg) !important; border-bottom: 1px solid rgba(0,0,0,0.05); }
-        .navbar-brand img { height: 45px; width: auto; object-fit: contain; }
+        
+        .navbar-brand {
+            max-width: 75%;
+        }
+
+        .navbar-brand img {
+            height: auto;
+            max-height: 45px;
+            width: 100%;
+            object-fit: contain;
+            object-position: left;
+        }
+
+        @media (max-width: 991px) {
+            .navbar-brand {
+                max-width: 80%;
+            }
+            .navbar-brand img {
+                max-height: 40px;
+            }
+        }
+
         .navbar-light .navbar-nav .nav-link { color: var(--text-dark) !important; font-weight: 500; font-size: 14px; letter-spacing: 0.3px; padding: 10px 15px; transition: color 0.3s ease; }
         .navbar-light .navbar-nav .nav-link:hover, .navbar-light .navbar-nav .nav-item.active .nav-link { color: var(--primary-green) !important; }
         .navbar-toggler { border: none; outline: none !important; color: var(--primary-green); }
