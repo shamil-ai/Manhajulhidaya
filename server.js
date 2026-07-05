@@ -1,7 +1,7 @@
 const express = require('express');
 const { Pool } = require('pg');
 const cookieParser = require('cookie-parser');
-const jwt = require('jsonwebtoken'); // Secure JWT Authentication
+const jwt = require('jsonwebtoken'); 
 
 const app = express();
 const PORT = process.env.PORT || 10000;
@@ -25,10 +25,8 @@ app.use((req, res, next) => {
 // ==========================================
 // ENVIRONMENT VARIABLE VALIDATION 
 // ==========================================
-// Prevents the server from starting with insecure fallback credentials
 if (!process.env.ADMIN_USERNAME || !process.env.ADMIN_PASSWORD || !process.env.JWT_SECRET) {
     console.error("🚨 FATAL ERROR: Missing required environment variables.");
-    console.error("Please set ADMIN_USERNAME, ADMIN_PASSWORD, and JWT_SECRET in your Render dashboard or .env file.");
     process.exit(1);
 }
 
@@ -68,11 +66,9 @@ const authMiddleware = (req, res, next) => {
     if (!token) return res.redirect('/login');
 
     try {
-        // Verify the JWT token cryptographically
         jwt.verify(token, JWT_SECRET);
         next();
     } catch (err) {
-        // If token is invalid or expired, clear it and redirect
         res.clearCookie('admin_session');
         res.redirect('/login');
     }
@@ -82,14 +78,13 @@ const authMiddleware = (req, res, next) => {
 // AUTHENTICATION APIs & PAGES
 // ==========================================
 
-// 1. Serve Login Page 
 app.get('/login', (req, res) => {
     const token = req.cookies.admin_session;
     
     if (token) {
         try {
             jwt.verify(token, JWT_SECRET);
-            return res.redirect('/'); // Already logged in securely
+            return res.redirect('/'); 
         } catch (err) {
             res.clearCookie('admin_session');
         }
@@ -101,7 +96,7 @@ app.get('/login', (req, res) => {
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Admin Login | Grafyxora</title>
+        <title>Admin Login | Manhajulhidaya</title>
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
         <style>
             * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
@@ -161,19 +156,17 @@ app.get('/login', (req, res) => {
     `);
 });
 
-// 2. Handle Login Verification 
 app.post('/api/login', (req, res) => {
     const { username, password } = req.body;
     
     if (username === adminUsername && password === adminPassword) {
-        // Create secure JWT token
         const token = jwt.sign({ username }, JWT_SECRET, { expiresIn: '1d' });
         
         res.cookie('admin_session', token, { 
             httpOnly: true, 
             secure: process.env.NODE_ENV === 'production', 
-            maxAge: 24 * 60 * 60 * 1000, // 1 Day
-            sameSite: 'strict' // Prevents CSRF attacks
+            maxAge: 24 * 60 * 60 * 1000, 
+            sameSite: 'strict' 
         });
         return res.status(200).json({ success: true });
     }
@@ -181,7 +174,6 @@ app.post('/api/login', (req, res) => {
     res.status(401).json({ success: false, message: "Unauthorized" });
 });
 
-// 3. Handle Logout
 app.get('/logout', (req, res) => {
     res.clearCookie('admin_session');
     res.redirect('/login');
@@ -194,12 +186,16 @@ app.get('/logout', (req, res) => {
 app.post('/submit', async (req, res) => {
     const { name, email, contact, message } = req.body;
     try {
-        const query = `INSERT INTO contacts (name, email, contact, message) VALUES ($1, $2, $3, $4) RETURNING *;`;
+        // CHANGED HERE: Insert into "Manhaj form" instead of contacts
+        const query = `INSERT INTO "Manhaj form" (name, email, contact, message) VALUES ($1, $2, $3, $4) RETURNING *;`;
         const result = await pool.query(query, [name, email, contact, message]);
         const telegramMsg = `📩 <b>പുതിയ കോൺടാക്റ്റ് മെസ്സേജ്!</b>\n👤 <b>Name:</b> ${name}\n📞 <b>Phone:</b> ${contact}`;
         await sendTelegramMessage(telegramMsg);
         res.status(200).json({ message: "Success", data: result.rows[0] });
-    } catch (error) { res.status(500).json({ error: "Failed to save contact data" }); }
+    } catch (error) { 
+        console.error("Submit Error:", error);
+        res.status(500).json({ error: "Failed to save contact data" }); 
+    }
 });
 
 app.post('/log-visit-advanced', async (req, res) => {
@@ -212,9 +208,7 @@ app.post('/log-visit-advanced', async (req, res) => {
             const geo = await (await fetch(`http://ip-api.com/json/${ip}`)).json();
             if (geo.status === 'success') { country = geo.country; city = geo.city; }
         }
-    } catch (error) {
-        console.error("Geo-IP lookup failed:", error.message);
-    }
+    } catch (error) {}
     try {
         const query = `INSERT INTO visitors_advanced_log (visitor_id, ip_address, country, city, device, os, network_type, battery_level) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`;
         await pool.query(query, [data.visitor_id || 'Unknown', ip, country, city, data.device || 'Unknown', data.os || 'Unknown', data.network_type || 'Unknown', data.battery_level || 'Unknown']);
@@ -223,11 +217,12 @@ app.post('/log-visit-advanced', async (req, res) => {
 });
 
 // ==========================================
-// PRIVATE APIs (CRUD Operations) - Protected
+// PRIVATE APIs (CRUD Operations)
 // ==========================================
 app.delete('/api/messages/:id', authMiddleware, async (req, res) => {
     try {
-        await pool.query('DELETE FROM contacts WHERE id = $1', [req.params.id]);
+        // CHANGED HERE
+        await pool.query('DELETE FROM "Manhaj form" WHERE id = $1', [req.params.id]);
         res.json({ message: "Deleted successfully" });
     } catch (error) { res.status(500).json({ error: "Failed to delete" }); }
 });
@@ -235,18 +230,20 @@ app.delete('/api/messages/:id', authMiddleware, async (req, res) => {
 app.put('/api/messages/:id', authMiddleware, async (req, res) => {
     const { name, contact, message } = req.body;
     try {
-        await pool.query('UPDATE contacts SET name = $1, contact = $2, message = $3 WHERE id = $4', [name, contact, message, req.params.id]);
+        // CHANGED HERE
+        await pool.query('UPDATE "Manhaj form" SET name = $1, contact = $2, message = $3 WHERE id = $4', [name, contact, message, req.params.id]);
         res.json({ message: "Updated successfully" });
     } catch (error) { res.status(500).json({ error: "Failed to update" }); }
 });
 
 // ==========================================
-// MAIN PREMIUM UI DASHBOARD (Protected)
+// MAIN PREMIUM UI DASHBOARD 
 // ==========================================
 app.get('/', authMiddleware, async (req, res) => {
     try {
         const visitors = await pool.query('SELECT * FROM visitors_advanced_log ORDER BY visit_time DESC LIMIT 50');
-        const messages = await pool.query('SELECT * FROM contacts ORDER BY id DESC LIMIT 50');
+        // CHANGED HERE
+        const messages = await pool.query('SELECT * FROM "Manhaj form" ORDER BY id DESC LIMIT 50');
 
         const totalVisits = visitors.rows.length;
         const totalMessages = messages.rows.length;
@@ -284,7 +281,6 @@ app.get('/', authMiddleware, async (req, res) => {
                 * { box-sizing: border-box; margin: 0; padding: 0; }
                 body { font-family: var(--font-main); background-color: var(--bg-base); color: var(--text-main); display: flex; min-height: 100vh; overflow-x: hidden; }
                 
-                /* Sidebar */
                 .sidebar { width: 260px; background-color: var(--bg-base); border-right: 1px solid var(--border-subtle); padding: 24px 16px; position: fixed; height: 100vh; display: flex; flex-direction: column; }
                 .brand { display: flex; align-items: center; gap: 12px; font-weight: 600; font-size: 16px; color: #fff; margin-bottom: 40px; padding-left: 8px; }
                 .brand .logo-icon { background: var(--brand-primary); color: #000; padding: 4px; border-radius: 6px; display: flex; align-items: center; justify-content: center; }
@@ -294,14 +290,11 @@ app.get('/', authMiddleware, async (req, res) => {
                 .nav-item:hover { background: var(--bg-surface-hover); color: var(--text-main); }
                 .nav-item.active { background: rgba(62, 207, 142, 0.1); color: var(--brand-primary); }
                 
-                /* Logout Button at bottom */
                 .logout-btn { color: var(--danger); margin-top: auto; border: 1px solid rgba(245, 101, 101, 0.2); }
                 .logout-btn:hover { background: rgba(245, 101, 101, 0.1); color: var(--danger); border-color: rgba(245, 101, 101, 0.5);}
 
-                /* Main Content Area */
                 .main-layout { flex: 1; margin-left: 260px; display: flex; flex-direction: column; }
                 
-                /* Top Header */
                 .topbar { height: 64px; border-bottom: 1px solid var(--border-subtle); display: flex; align-items: center; justify-content: space-between; padding: 0 32px; background: rgba(17, 19, 21, 0.8); backdrop-filter: blur(8px); position: sticky; top: 0; z-index: 10; }
                 .breadcrumb { font-size: 14px; color: var(--text-muted); }
                 .breadcrumb span { color: var(--text-main); font-weight: 500; }
@@ -309,17 +302,14 @@ app.get('/', authMiddleware, async (req, res) => {
                 .status-badge { font-size: 12px; background: rgba(62,207,142,0.15); color: var(--brand-primary); padding: 4px 10px; border-radius: 20px; display: flex; align-items: center; gap: 6px; border: 1px solid rgba(62,207,142,0.3); }
                 .status-dot { width: 6px; height: 6px; background: var(--brand-primary); border-radius: 50%; box-shadow: 0 0 8px var(--brand-primary); }
 
-                /* Content Padding */
                 .content { padding: 32px; max-width: 1200px; margin: 0 auto; width: 100%; }
 
-                /* Stats Grid */
                 .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-bottom: 32px; }
                 .stat-card { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 20px; transition: transform 0.2s, box-shadow 0.2s; }
                 .stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); border-color: #3e3e42; }
                 .stat-title { color: var(--text-muted); font-size: 13px; font-weight: 500; display: flex; justify-content: space-between; margin-bottom: 12px; }
                 .stat-value { font-size: 28px; font-weight: 600; color: #fff; }
 
-                /* Sections & Tables */
                 .section-container { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 12px; margin-bottom: 32px; overflow: hidden; }
                 .section-header { padding: 20px 24px; border-bottom: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; }
                 .section-title { font-size: 16px; font-weight: 500; display: flex; align-items: center; gap: 8px; }
@@ -335,10 +325,8 @@ app.get('/', authMiddleware, async (req, res) => {
                 .sub-text { display: block; font-size: 12px; color: var(--text-muted); margin-top: 4px; }
                 .badge { background: rgba(255,255,255,0.05); border: 1px solid var(--border-subtle); padding: 2px 8px; border-radius: 4px; font-size: 11px; color: var(--text-muted); }
 
-                /* Chart */
                 .chart-wrapper { padding: 24px; height: 350px; }
 
-                /* Action Buttons */
                 .actions { display: flex; gap: 8px; }
                 .btn-icon { background: transparent; border: 1px solid var(--border-subtle); color: var(--text-muted); padding: 6px; border-radius: 6px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; }
                 .btn-icon:hover { background: var(--bg-surface-hover); color: var(--text-main); }
@@ -353,25 +341,22 @@ app.get('/', authMiddleware, async (req, res) => {
         </head>
         <body>
 
-            <!-- SIDEBAR -->
             <aside class="sidebar">
                 <div class="brand">
                     <div class="logo-icon"><i data-lucide="database" size="18"></i></div>
-                    Grafyxora Admin
+                    Manhajulhidaya Admin
                 </div>
                 <div class="nav-menu">
                     <div class="nav-item active"><i data-lucide="layout-dashboard" size="18"></i> Overview</div>
-                    <div class="nav-item" onclick="document.getElementById('messages-sec').scrollIntoView({behavior: 'smooth'})"><i data-lucide="message-square" size="18"></i> Messages</div>
+                    <div class="nav-item" onclick="document.getElementById('messages-sec').scrollIntoView({behavior: 'smooth'})"><i data-lucide="message-square" size="18"></i> Forms & Messages</div>
                     <div class="nav-item" onclick="document.getElementById('visitors-sec').scrollIntoView({behavior: 'smooth'})"><i data-lucide="users" size="18"></i> Visitor Logs</div>
                     <a href="/logout" class="nav-item logout-btn"><i data-lucide="log-out" size="18"></i> Logout Session</a>
                 </div>
             </aside>
 
-            <!-- MAIN CONTENT -->
             <main class="main-layout">
-                <!-- TOP NAVBAR -->
                 <header class="topbar">
-                    <div class="breadcrumb">Grafyxora / <span>Dashboard</span></div>
+                    <div class="breadcrumb">Manhajulhidaya / <span>Dashboard</span></div>
                     <div class="topbar-actions">
                         <div class="status-badge">
                             <div class="status-dot"></div> Production
@@ -380,7 +365,6 @@ app.get('/', authMiddleware, async (req, res) => {
                 </header>
 
                 <div class="content">
-                    <!-- STATS WIDGETS -->
                     <div class="stats-grid">
                         <div class="stat-card">
                             <div class="stat-title">Total Visitors <i data-lucide="bar-chart-2" size="16"></i></div>
@@ -391,12 +375,11 @@ app.get('/', authMiddleware, async (req, res) => {
                             <div class="stat-value">${uniqueIPs}</div>
                         </div>
                         <div class="stat-card">
-                            <div class="stat-title">Inbox Messages <i data-lucide="mail" size="16"></i></div>
+                            <div class="stat-title">Form Submissions <i data-lucide="mail" size="16"></i></div>
                             <div class="stat-value">${totalMessages}</div>
                         </div>
                     </div>
 
-                    <!-- ANALYTICS CHART -->
                     <div class="section-container">
                         <div class="section-header">
                             <div class="section-title"><i data-lucide="activity" size="18" style="color:var(--brand-primary)"></i> Traffic Overview</div>
@@ -406,10 +389,9 @@ app.get('/', authMiddleware, async (req, res) => {
                         </div>
                     </div>
 
-                    <!-- MESSAGES TABLE -->
                     <div class="section-container" id="messages-sec">
                         <div class="section-header">
-                            <div class="section-title"><i data-lucide="inbox" size="18"></i> Client Messages</div>
+                            <div class="section-title"><i data-lucide="inbox" size="18"></i> Manhaj Form Data</div>
                         </div>
                         <div class="table-responsive">
                             <table>
@@ -421,8 +403,8 @@ app.get('/', authMiddleware, async (req, res) => {
                                 ${messages.rows.map(row => `
                                     <tr id="msg-row-${row.id}">
                                         <td>
-                                            <div class="text-bold" id="name-${row.id}">${row.name}</div>
-                                            <span class="sub-text" id="contact-${row.id}">${row.contact || row.email}</span>
+                                            <div class="text-bold" id="name-${row.id}">${row.name || 'No Name'}</div>
+                                            <span class="sub-text" id="contact-${row.id}">${row.contact || row.email || 'N/A'}</span>
                                         </td>
                                         <td>
                                             <div style="color: #c9cbcd;" id="message-${row.id}">${row.message || 'No content provided.'}</div>
@@ -439,7 +421,6 @@ app.get('/', authMiddleware, async (req, res) => {
                         </div>
                     </div>
 
-                    <!-- VISITOR LOGS TABLE -->
                     <div class="section-container" id="visitors-sec">
                         <div class="section-header">
                             <div class="section-title"><i data-lucide="globe" size="18"></i> Global Access Logs</div>
@@ -475,7 +456,6 @@ app.get('/', authMiddleware, async (req, res) => {
             <script>
                 lucide.createIcons();
                 
-                // Chart.js Setup (Supabase Green Theme)
                 const ctx = document.getElementById('trafficChart').getContext('2d');
                 let gradient = ctx.createLinearGradient(0, 0, 0, 350);
                 gradient.addColorStop(0, 'rgba(62, 207, 142, 0.3)'); 
@@ -509,7 +489,6 @@ app.get('/', authMiddleware, async (req, res) => {
                     }
                 });
 
-                // CRUD Operations
                 async function editMsg(id) {
                     const newName = prompt("Edit Name:", document.getElementById('name-'+id).innerText);
                     if(!newName) return;
@@ -543,7 +522,10 @@ app.get('/', authMiddleware, async (req, res) => {
         </html>
         `;
         res.send(html);
-    } catch (error) { res.status(500).send("Error fetching data from database!"); }
+    } catch (error) { 
+        console.error(error);
+        res.status(500).send("Error fetching data from database!"); 
+    }
 });
 
 app.listen(PORT, () => { console.log(`Server running on port ${PORT}`); });
