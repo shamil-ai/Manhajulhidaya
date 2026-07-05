@@ -1,6 +1,7 @@
 const express = require('express');
 const { Pool } = require('pg');
 const cookieParser = require('cookie-parser');
+const jwt = require('jsonwebtoken'); // Secure JWT Authentication
 
 const app = express();
 const PORT = process.env.PORT || 10000;
@@ -8,9 +9,11 @@ const PORT = process.env.PORT || 10000;
 app.set('trust proxy', true);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser()); // Cookie Parser Middleware
+app.use(cookieParser());
 
+// ==========================================
 // CORS Setup
+// ==========================================
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
@@ -19,13 +22,28 @@ app.use((req, res, next) => {
     next();
 });
 
-// Database Setup
+// ==========================================
+// ENVIRONMENT VARIABLE VALIDATION 
+// ==========================================
+// Prevents the server from starting with insecure fallback credentials
+if (!process.env.ADMIN_USERNAME || !process.env.ADMIN_PASSWORD || !process.env.JWT_SECRET) {
+    console.error("🚨 FATAL ERROR: Missing required environment variables.");
+    console.error("Please set ADMIN_USERNAME, ADMIN_PASSWORD, and JWT_SECRET in your Render dashboard or .env file.");
+    process.exit(1);
+}
+
+const adminUsername = process.env.ADMIN_USERNAME;
+const adminPassword = process.env.ADMIN_PASSWORD;
+const JWT_SECRET = process.env.JWT_SECRET;
+
+// ==========================================
+// Database & Telegram Setup
+// ==========================================
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: { rejectUnauthorized: false }
 });
 
-// Telegram Bot Setup
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
 
@@ -42,30 +60,39 @@ async function sendTelegramMessage(message) {
 }
 
 // ==========================================
-// ADMIN LOGIN SECURITY (Cookie Based)
+// ADMIN LOGIN SECURITY (JWT Based) 
 // ==========================================
-const adminUsername = process.env.ADMIN_USERNAME || 'shamil';
-const adminPassword = process.env.ADMIN_PASSWORD || 'shamil123';
-
-// Auth Middleware using Cookies
 const authMiddleware = (req, res, next) => {
     const token = req.cookies.admin_session;
-    // Simple verification (In production, use JWT)
-    if (token && token === Buffer.from(`${adminUsername}:${adminPassword}`).toString('base64')) {
-        return next();
+    
+    if (!token) return res.redirect('/login');
+
+    try {
+        // Verify the JWT token cryptographically
+        jwt.verify(token, JWT_SECRET);
+        next();
+    } catch (err) {
+        // If token is invalid or expired, clear it and redirect
+        res.clearCookie('admin_session');
+        res.redirect('/login');
     }
-    res.redirect('/login');
 };
 
 // ==========================================
 // AUTHENTICATION APIs & PAGES
 // ==========================================
 
-// 1. Serve Login Page
+// 1. Serve Login Page 
 app.get('/login', (req, res) => {
     const token = req.cookies.admin_session;
-    if (token && token === Buffer.from(`${adminUsername}:${adminPassword}`).toString('base64')) {
-        return res.redirect('/');
+    
+    if (token) {
+        try {
+            jwt.verify(token, JWT_SECRET);
+            return res.redirect('/'); // Already logged in securely
+        } catch (err) {
+            res.clearCookie('admin_session');
+        }
     }
     
     res.send(`
@@ -134,18 +161,23 @@ app.get('/login', (req, res) => {
     `);
 });
 
-// 2. Handle Login Verification
+// 2. Handle Login Verification 
 app.post('/api/login', (req, res) => {
     const { username, password } = req.body;
+    
     if (username === adminUsername && password === adminPassword) {
-        const token = Buffer.from(`${username}:${password}`).toString('base64');
+        // Create secure JWT token
+        const token = jwt.sign({ username }, JWT_SECRET, { expiresIn: '1d' });
+        
         res.cookie('admin_session', token, { 
             httpOnly: true, 
             secure: process.env.NODE_ENV === 'production', 
-            maxAge: 24 * 60 * 60 * 1000 // 1 Day
+            maxAge: 24 * 60 * 60 * 1000, // 1 Day
+            sameSite: 'strict' // Prevents CSRF attacks
         });
         return res.status(200).json({ success: true });
     }
+    
     res.status(401).json({ success: false, message: "Unauthorized" });
 });
 
@@ -157,7 +189,7 @@ app.get('/logout', (req, res) => {
 
 
 // ==========================================
-// PUBLIC APIs (വെബ്സൈറ്റിൽ നിന്നും വരുന്നവ)
+// PUBLIC APIs 
 // ==========================================
 app.post('/submit', async (req, res) => {
     const { name, email, contact, message } = req.body;
@@ -180,7 +212,9 @@ app.post('/log-visit-advanced', async (req, res) => {
             const geo = await (await fetch(`http://ip-api.com/json/${ip}`)).json();
             if (geo.status === 'success') { country = geo.country; city = geo.city; }
         }
-    } catch (error) {}
+    } catch (error) {
+        console.error("Geo-IP lookup failed:", error.message);
+    }
     try {
         const query = `INSERT INTO visitors_advanced_log (visitor_id, ip_address, country, city, device, os, network_type, battery_level) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`;
         await pool.query(query, [data.visitor_id || 'Unknown', ip, country, city, data.device || 'Unknown', data.os || 'Unknown', data.network_type || 'Unknown', data.battery_level || 'Unknown']);
