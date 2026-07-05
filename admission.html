@@ -89,7 +89,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item active"><a class="nav-link" href="index.html">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="manhaj-projects.html">Manhaj Projects</a></li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="admission.html#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown">Manhaj Festival</a>
@@ -100,7 +100,7 @@
                         <a class="dropdown-item" href="Manhajul-fest.html#results">Check Results</a>
                     </div>
                 </li>
-                <li class="nav-item"><a class="nav-link" href="admission.html">Admission Form</a></li>
+                <li class="nav-item active"><a class="nav-link" href="admission.html">Admission Form</a></li>
                 <li class="nav-item"><a class="nav-link" href="contact.html">Contact Us</a></li>
             </ul>
         </div>
@@ -110,7 +110,7 @@
 <div class="main-wrapper">
     <div class="form-container">
         <h2>ADMISSION FORM</h2>
-        <form id="admission.html">
+        <form id="admissionForm">
             <div class="input-group-custom"><input type="email" id="email" placeholder="Email" required></div>
             <div class="input-group-custom"><input type="text" id="name" placeholder="Name" required></div>
             <div class="input-group-custom"><label for="dob">Date of Birth</label><input type="date" id="dob" required></div>
@@ -209,9 +209,8 @@
     });
 </script>
 
-<!-- GOOGLE SHEETS SUBMISSION SCRIPT -->
+<!-- RENDER SERVER SUBMISSION SCRIPT -->
 <script>
-    // Scroll to Top Smooth Action
     const scrollTopBtn = document.getElementById('scrollTopBtn');
     if(scrollTopBtn) {
         scrollTopBtn.addEventListener('click', function() {
@@ -219,7 +218,7 @@
         });
     }
 
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwT5TyUptDy_kRl2ZdK76olqAo68vm974IMKbFbHsq_br_ff3fW4AWq24MaS2K5-pc_sQ/exec";
+    const WEB_APP_URL = "https://manhajulhidaya.onrender.com/submit";
     const form = document.getElementById("admissionForm");
     const submitBtn = document.getElementById("submitBtn");
     const successMsg = document.getElementById("successMsg");
@@ -235,37 +234,52 @@
         if (file) {
             const reader = new FileReader();
             reader.onload = function(e) {
-                const base64Data = e.target.result.split(",")[1];
-                sendData(base64Data, file.name, file.type);
+                const base64Data = e.target.result;
+                sendData(base64Data);
             };
             reader.readAsDataURL(file);
         } else {
-            sendData("", "", "");
+            sendData("");
         }
     });
 
-    function sendData(base64Data, fileName, fileType) {
+    function sendData(fullBase64Photo) {
         const formData = {
-            email: document.getElementById("email").value, name: document.getElementById("name").value,
-            dob: document.getElementById("dob").value, appEmail: document.getElementById("appEmail").value,
-            phone: document.getElementById("phone").value, whatsapp: document.getElementById("whatsapp").value,
-            address: document.getElementById("address").value, fatherName: document.getElementById("fatherName").value,
-            motherName: document.getElementById("motherName").value, classSelect: document.getElementById("classSelect").value,
-            qualification: document.getElementById("qualification").value, photoData: base64Data,
-            photoName: fileName, photoType: fileType
+            email: document.getElementById("email").value, 
+            name: document.getElementById("name").value,
+            dob: document.getElementById("dob").value, 
+            appEmail: document.getElementById("appEmail").value,
+            phone: document.getElementById("phone").value, 
+            whatsapp: document.getElementById("whatsapp").value,
+            address: document.getElementById("address").value, 
+            fatherName: document.getElementById("fatherName").value,
+            motherName: document.getElementById("motherName").value, 
+            classSelect: document.getElementById("classSelect").value,
+            qualification: document.getElementById("qualification").value, 
+            photo: fullBase64Photo
         };
 
         fetch(WEB_APP_URL, {
-            method: "POST", mode: "no-cors",
+            method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(formData)
-        }).then(() => {
-            successMsg.style.display = "block"; form.reset();
-            submitBtn.disabled = false; submitBtn.innerText = "Submit";
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+        })
+        .then(data => {
+            successMsg.style.display = "block"; 
+            form.reset();
+            submitBtn.disabled = false; 
+            submitBtn.innerText = "Submit";
             setTimeout(() => { successMsg.style.display = "none"; }, 5000);
-        }).catch(err => {
-            console.error("Error:", err); alert("Something went wrong!");
-            submitBtn.disabled = false; submitBtn.innerText = "Submit";
+        })
+        .catch(err => {
+            console.error("Error:", err); 
+            alert("Something went wrong! Please try again.");
+            submitBtn.disabled = false; 
+            submitBtn.innerText = "Submit";
         });
     }
 </script>
