@@ -7,13 +7,12 @@ const app = express();
 const PORT = process.env.PORT || 10000;
 
 app.set('trust proxy', true);
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+
+// Changed to 10mb to accept base64 photos
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
 app.use(cookieParser());
 
-// ==========================================
-// CORS Setup
-// ==========================================
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
@@ -22,9 +21,6 @@ app.use((req, res, next) => {
     next();
 });
 
-// ==========================================
-// ENVIRONMENT VARIABLE VALIDATION 
-// ==========================================
 if (!process.env.ADMIN_USERNAME || !process.env.ADMIN_PASSWORD || !process.env.JWT_SECRET) {
     console.error("🚨 FATAL ERROR: Missing required environment variables.");
     process.exit(1);
@@ -34,9 +30,6 @@ const adminUsername = process.env.ADMIN_USERNAME;
 const adminPassword = process.env.ADMIN_PASSWORD;
 const JWT_SECRET = process.env.JWT_SECRET;
 
-// ==========================================
-// Database & Telegram Setup
-// ==========================================
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: { rejectUnauthorized: false }
@@ -57,14 +50,9 @@ async function sendTelegramMessage(message) {
     } catch (err) { console.error('Telegram Error:', err); }
 }
 
-// ==========================================
-// ADMIN LOGIN SECURITY (JWT Based) 
-// ==========================================
 const authMiddleware = (req, res, next) => {
     const token = req.cookies.admin_session;
-    
     if (!token) return res.redirect('/login');
-
     try {
         jwt.verify(token, JWT_SECRET);
         next();
@@ -74,13 +62,8 @@ const authMiddleware = (req, res, next) => {
     }
 };
 
-// ==========================================
-// AUTHENTICATION APIs & PAGES
-// ==========================================
-
 app.get('/login', (req, res) => {
     const token = req.cookies.admin_session;
-    
     if (token) {
         try {
             jwt.verify(token, JWT_SECRET);
@@ -130,7 +113,6 @@ app.get('/login', (req, res) => {
                 <div id="errorMsg" class="error">Invalid username or password.</div>
             </form>
         </div>
-
         <script>
             document.getElementById('loginForm').addEventListener('submit', async (e) => {
                 e.preventDefault();
@@ -158,19 +140,14 @@ app.get('/login', (req, res) => {
 
 app.post('/api/login', (req, res) => {
     const { username, password } = req.body;
-    
     if (username === adminUsername && password === adminPassword) {
         const token = jwt.sign({ username }, JWT_SECRET, { expiresIn: '1d' });
-        
         res.cookie('admin_session', token, { 
-            httpOnly: true, 
-            secure: process.env.NODE_ENV === 'production', 
-            maxAge: 24 * 60 * 60 * 1000, 
-            sameSite: 'strict' 
+            httpOnly: true, secure: process.env.NODE_ENV === 'production', 
+            maxAge: 24 * 60 * 60 * 1000, sameSite: 'strict' 
         });
         return res.status(200).json({ success: true });
     }
-    
     res.status(401).json({ success: false, message: "Unauthorized" });
 });
 
@@ -180,17 +157,16 @@ app.get('/logout', (req, res) => {
 });
 
 
-// ==========================================
-// PUBLIC APIs 
-// ==========================================
+// NEW SUBMISSION API WITH ALL FIELDS
 app.post('/submit', async (req, res) => {
-    const { name, email, contact, message } = req.body;
+    const { name, email, dob, appEmail, phone, whatsapp, address, photo, fatherName, motherName, classSelect, qualification } = req.body;
     try {
-        // CHANGED HERE: Insert into "Manhaj form" instead of contacts
-        const query = `INSERT INTO "Manhaj form" (name, email, contact, message) VALUES ($1, $2, $3, $4) RETURNING *;`;
-        const result = await pool.query(query, [name, email, contact, message]);
-        const telegramMsg = `📩 <b>പുതിയ കോൺടാക്റ്റ് മെസ്സേജ്!</b>\n👤 <b>Name:</b> ${name}\n📞 <b>Phone:</b> ${contact}`;
+        const query = `INSERT INTO "Manhaj form" (name, email, dob, app_email, phone, whatsapp, address, photo, father_name, mother_name, class_selected, qualification) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING *;`;
+        const result = await pool.query(query, [name, email, dob, appEmail, phone, whatsapp, address, photo, fatherName, motherName, classSelect, qualification]);
+        
+        const telegramMsg = `🎉 <b>പുതിയ അഡ്മിഷൻ ലഭിച്ചു!</b>\n👤 <b>Name:</b> ${name}\n📚 <b>Class:</b> ${classSelect}\n📞 <b>Phone:</b> ${phone}`;
         await sendTelegramMessage(telegramMsg);
+        
         res.status(200).json({ message: "Success", data: result.rows[0] });
     } catch (error) { 
         console.error("Submit Error:", error);
@@ -216,33 +192,16 @@ app.post('/log-visit-advanced', async (req, res) => {
     } catch (error) { res.status(500).json({ error: "Failed to log" }); }
 });
 
-// ==========================================
-// PRIVATE APIs (CRUD Operations)
-// ==========================================
 app.delete('/api/messages/:id', authMiddleware, async (req, res) => {
     try {
-        // CHANGED HERE
         await pool.query('DELETE FROM "Manhaj form" WHERE id = $1', [req.params.id]);
         res.json({ message: "Deleted successfully" });
     } catch (error) { res.status(500).json({ error: "Failed to delete" }); }
 });
 
-app.put('/api/messages/:id', authMiddleware, async (req, res) => {
-    const { name, contact, message } = req.body;
-    try {
-        // CHANGED HERE
-        await pool.query('UPDATE "Manhaj form" SET name = $1, contact = $2, message = $3 WHERE id = $4', [name, contact, message, req.params.id]);
-        res.json({ message: "Updated successfully" });
-    } catch (error) { res.status(500).json({ error: "Failed to update" }); }
-});
-
-// ==========================================
-// MAIN PREMIUM UI DASHBOARD 
-// ==========================================
 app.get('/', authMiddleware, async (req, res) => {
     try {
         const visitors = await pool.query('SELECT * FROM visitors_advanced_log ORDER BY visit_time DESC LIMIT 50');
-        // CHANGED HERE
         const messages = await pool.query('SELECT * FROM "Manhaj form" ORDER BY id DESC LIMIT 50');
 
         const totalVisits = visitors.rows.length;
@@ -260,110 +219,74 @@ app.get('/', authMiddleware, async (req, res) => {
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Project Dashboard | Admin</title>
+            <title>Manhajulhidaya | Admin</title>
             <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
             <script src="https://unpkg.com/lucide@latest"></script>
             <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
             
             <style>
-                :root {
-                    --bg-base: #111315;
-                    --bg-surface: #1c1c1f;
-                    --bg-surface-hover: #2a2a2e;
-                    --border-subtle: #2e2e32;
-                    --brand-primary: #3ecf8e;
-                    --text-main: #ededed;
-                    --text-muted: #8b8d91;
-                    --danger: #f56565;
-                    --font-main: 'Inter', -apple-system, sans-serif;
-                }
-
+                :root { --bg-base: #111315; --bg-surface: #1c1c1f; --bg-surface-hover: #2a2a2e; --border-subtle: #2e2e32; --brand-primary: #3ecf8e; --text-main: #ededed; --text-muted: #8b8d91; --danger: #f56565; --font-main: 'Inter', sans-serif; }
                 * { box-sizing: border-box; margin: 0; padding: 0; }
                 body { font-family: var(--font-main); background-color: var(--bg-base); color: var(--text-main); display: flex; min-height: 100vh; overflow-x: hidden; }
-                
-                .sidebar { width: 260px; background-color: var(--bg-base); border-right: 1px solid var(--border-subtle); padding: 24px 16px; position: fixed; height: 100vh; display: flex; flex-direction: column; }
+                .sidebar { width: 260px; background-color: var(--bg-base); border-right: 1px solid var(--border-subtle); padding: 24px 16px; position: fixed; height: 100vh; display: flex; flex-direction: column; z-index: 100; }
                 .brand { display: flex; align-items: center; gap: 12px; font-weight: 600; font-size: 16px; color: #fff; margin-bottom: 40px; padding-left: 8px; }
                 .brand .logo-icon { background: var(--brand-primary); color: #000; padding: 4px; border-radius: 6px; display: flex; align-items: center; justify-content: center; }
-                
                 .nav-menu { display: flex; flex-direction: column; gap: 4px; flex: 1;}
                 .nav-item { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 6px; color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 500; transition: 0.2s; cursor: pointer; }
                 .nav-item:hover { background: var(--bg-surface-hover); color: var(--text-main); }
                 .nav-item.active { background: rgba(62, 207, 142, 0.1); color: var(--brand-primary); }
-                
                 .logout-btn { color: var(--danger); margin-top: auto; border: 1px solid rgba(245, 101, 101, 0.2); }
                 .logout-btn:hover { background: rgba(245, 101, 101, 0.1); color: var(--danger); border-color: rgba(245, 101, 101, 0.5);}
-
                 .main-layout { flex: 1; margin-left: 260px; display: flex; flex-direction: column; }
-                
                 .topbar { height: 64px; border-bottom: 1px solid var(--border-subtle); display: flex; align-items: center; justify-content: space-between; padding: 0 32px; background: rgba(17, 19, 21, 0.8); backdrop-filter: blur(8px); position: sticky; top: 0; z-index: 10; }
                 .breadcrumb { font-size: 14px; color: var(--text-muted); }
                 .breadcrumb span { color: var(--text-main); font-weight: 500; }
                 .topbar-actions { display: flex; align-items: center; gap: 16px; }
                 .status-badge { font-size: 12px; background: rgba(62,207,142,0.15); color: var(--brand-primary); padding: 4px 10px; border-radius: 20px; display: flex; align-items: center; gap: 6px; border: 1px solid rgba(62,207,142,0.3); }
                 .status-dot { width: 6px; height: 6px; background: var(--brand-primary); border-radius: 50%; box-shadow: 0 0 8px var(--brand-primary); }
-
                 .content { padding: 32px; max-width: 1200px; margin: 0 auto; width: 100%; }
-
                 .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-bottom: 32px; }
                 .stat-card { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 20px; transition: transform 0.2s, box-shadow 0.2s; }
                 .stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); border-color: #3e3e42; }
                 .stat-title { color: var(--text-muted); font-size: 13px; font-weight: 500; display: flex; justify-content: space-between; margin-bottom: 12px; }
                 .stat-value { font-size: 28px; font-weight: 600; color: #fff; }
-
                 .section-container { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 12px; margin-bottom: 32px; overflow: hidden; }
                 .section-header { padding: 20px 24px; border-bottom: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; }
                 .section-title { font-size: 16px; font-weight: 500; display: flex; align-items: center; gap: 8px; }
-                
-                .table-responsive { width: 100%; overflow-x: auto; max-height: 400px; }
+                .table-responsive { width: 100%; overflow-x: auto; max-height: 500px; }
                 table { width: 100%; border-collapse: collapse; text-align: left; }
-                th, td { padding: 16px 24px; font-size: 13px; border-bottom: 1px solid var(--border-subtle); }
+                th, td { padding: 16px 20px; font-size: 13px; border-bottom: 1px solid var(--border-subtle); vertical-align: top; }
                 th { color: var(--text-muted); font-weight: 500; background: var(--bg-base); position: sticky; top: 0; z-index: 5; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px; }
                 tr:hover td { background: rgba(255, 255, 255, 0.02); }
-                tr:last-child td { border-bottom: none; }
-                
-                .text-bold { font-weight: 500; color: var(--text-main); }
-                .sub-text { display: block; font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+                .text-bold { font-weight: 500; color: var(--text-main); margin-bottom: 4px;}
+                .sub-text { display: block; font-size: 12px; color: var(--text-muted); margin-top: 4px; line-height: 1.5; }
                 .badge { background: rgba(255,255,255,0.05); border: 1px solid var(--border-subtle); padding: 2px 8px; border-radius: 4px; font-size: 11px; color: var(--text-muted); }
-
+                .photo-box { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; border: 1px solid var(--border-subtle); }
+                .no-photo { width: 60px; height: 60px; border-radius: 8px; background: var(--bg-base); display: flex; align-items: center; justify-content: center; font-size: 10px; color: var(--text-muted); text-align: center; border: 1px dashed var(--border-subtle); }
                 .chart-wrapper { padding: 24px; height: 350px; }
-
-                .actions { display: flex; gap: 8px; }
-                .btn-icon { background: transparent; border: 1px solid var(--border-subtle); color: var(--text-muted); padding: 6px; border-radius: 6px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; }
-                .btn-icon:hover { background: var(--bg-surface-hover); color: var(--text-main); }
-                .btn-edit:hover { color: #4299e1; border-color: rgba(66, 153, 225, 0.5); }
-                .btn-delete:hover { color: var(--danger); border-color: rgba(245, 101, 101, 0.5); }
-
-                @media (max-width: 768px) {
-                    .sidebar { display: none; }
-                    .main-layout { margin-left: 0; }
-                }
+                .btn-icon { background: transparent; border: 1px solid var(--border-subtle); color: var(--text-muted); padding: 8px; border-radius: 6px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; }
+                .btn-delete:hover { background: rgba(245, 101, 101, 0.1); color: var(--danger); border-color: rgba(245, 101, 101, 0.5); }
+                @media (max-width: 768px) { .sidebar { display: none; } .main-layout { margin-left: 0; } }
             </style>
         </head>
         <body>
-
             <aside class="sidebar">
                 <div class="brand">
                     <div class="logo-icon"><i data-lucide="database" size="18"></i></div>
-                    Manhajulhidaya Admin
+                    Manhajulhidaya
                 </div>
                 <div class="nav-menu">
                     <div class="nav-item active"><i data-lucide="layout-dashboard" size="18"></i> Overview</div>
-                    <div class="nav-item" onclick="document.getElementById('messages-sec').scrollIntoView({behavior: 'smooth'})"><i data-lucide="message-square" size="18"></i> Forms & Messages</div>
-                    <div class="nav-item" onclick="document.getElementById('visitors-sec').scrollIntoView({behavior: 'smooth'})"><i data-lucide="users" size="18"></i> Visitor Logs</div>
-                    <a href="/logout" class="nav-item logout-btn"><i data-lucide="log-out" size="18"></i> Logout Session</a>
+                    <div class="nav-item" onclick="document.getElementById('admissions-sec').scrollIntoView({behavior: 'smooth'})"><i data-lucide="users-2" size="18"></i> Admissions</div>
+                    <div class="nav-item" onclick="document.getElementById('visitors-sec').scrollIntoView({behavior: 'smooth'})"><i data-lucide="globe" size="18"></i> Visitor Logs</div>
+                    <a href="/logout" class="nav-item logout-btn"><i data-lucide="log-out" size="18"></i> Logout</a>
                 </div>
             </aside>
-
             <main class="main-layout">
                 <header class="topbar">
-                    <div class="breadcrumb">Manhajulhidaya / <span>Dashboard</span></div>
-                    <div class="topbar-actions">
-                        <div class="status-badge">
-                            <div class="status-dot"></div> Production
-                        </div>
-                    </div>
+                    <div class="breadcrumb">Admin / <span>Dashboard</span></div>
+                    <div class="topbar-actions"><div class="status-badge"><div class="status-dot"></div> Live</div></div>
                 </header>
-
                 <div class="content">
                     <div class="stats-grid">
                         <div class="stat-card">
@@ -375,45 +298,46 @@ app.get('/', authMiddleware, async (req, res) => {
                             <div class="stat-value">${uniqueIPs}</div>
                         </div>
                         <div class="stat-card">
-                            <div class="stat-title">Form Submissions <i data-lucide="mail" size="16"></i></div>
+                            <div class="stat-title">Admissions Received <i data-lucide="graduation-cap" size="16"></i></div>
                             <div class="stat-value">${totalMessages}</div>
                         </div>
                     </div>
 
-                    <div class="section-container">
+                    <div class="section-container" id="admissions-sec">
                         <div class="section-header">
-                            <div class="section-title"><i data-lucide="activity" size="18" style="color:var(--brand-primary)"></i> Traffic Overview</div>
-                        </div>
-                        <div class="chart-wrapper">
-                            <canvas id="trafficChart"></canvas>
-                        </div>
-                    </div>
-
-                    <div class="section-container" id="messages-sec">
-                        <div class="section-header">
-                            <div class="section-title"><i data-lucide="inbox" size="18"></i> Manhaj Form Data</div>
+                            <div class="section-title"><i data-lucide="file-text" size="18"></i> Admission Applications</div>
                         </div>
                         <div class="table-responsive">
                             <table>
                                 <tr>
-                                    <th>Contact Info</th>
-                                    <th>Message Details</th>
-                                    <th style="width: 100px;">Actions</th>
+                                    <th>Photo</th>
+                                    <th>Applicant Details</th>
+                                    <th>Course & Parents</th>
+                                    <th>Address</th>
+                                    <th>Action</th>
                                 </tr>
                                 ${messages.rows.map(row => `
                                     <tr id="msg-row-${row.id}">
                                         <td>
-                                            <div class="text-bold" id="name-${row.id}">${row.name || 'No Name'}</div>
-                                            <span class="sub-text" id="contact-${row.id}">${row.contact || row.email || 'N/A'}</span>
+                                            ${row.photo ? `<img src="${row.photo}" class="photo-box" alt="Photo">` : `<div class="no-photo">No Photo</div>`}
                                         </td>
                                         <td>
-                                            <div style="color: #c9cbcd;" id="message-${row.id}">${row.message || 'No content provided.'}</div>
+                                            <div class="text-bold" style="font-size: 14px;">${row.name}</div>
+                                            <span class="sub-text">DOB: ${row.dob || 'N/A'}</span>
+                                            <span class="sub-text"><i data-lucide="phone" size="12"></i> ${row.phone} <br> WA: ${row.whatsapp || 'N/A'}</span>
+                                            <span class="sub-text"><i data-lucide="mail" size="12"></i> ${row.email || 'N/A'}</span>
                                         </td>
                                         <td>
-                                            <div class="actions">
-                                                <button class="btn-icon btn-edit" onclick="editMsg(${row.id})" title="Edit"><i data-lucide="pencil" size="14"></i></button>
-                                                <button class="btn-icon btn-delete" onclick="deleteMsg(${row.id})" title="Delete"><i data-lucide="trash-2" size="14"></i></button>
-                                            </div>
+                                            <div class="text-bold" style="color: var(--brand-primary);">${row.class_selected || 'N/A'}</div>
+                                            <span class="sub-text">Qual: ${row.qualification || 'N/A'}</span>
+                                            <span class="sub-text" style="margin-top: 8px;">Father: ${row.father_name || 'N/A'}</span>
+                                            <span class="sub-text">Mother: ${row.mother_name || 'N/A'}</span>
+                                        </td>
+                                        <td>
+                                            <div style="color: #c9cbcd; font-size: 13px; max-width: 250px;">${row.address || 'No address provided.'}</div>
+                                        </td>
+                                        <td>
+                                            <button class="btn-icon btn-delete" onclick="deleteMsg(${row.id})" title="Delete Application"><i data-lucide="trash-2" size="16"></i></button>
                                         </td>
                                     </tr>
                                 `).join('')}
@@ -452,65 +376,10 @@ app.get('/', authMiddleware, async (req, res) => {
                     </div>
                 </div>
             </main>
-
             <script>
                 lucide.createIcons();
-                
-                const ctx = document.getElementById('trafficChart').getContext('2d');
-                let gradient = ctx.createLinearGradient(0, 0, 0, 350);
-                gradient.addColorStop(0, 'rgba(62, 207, 142, 0.3)'); 
-                gradient.addColorStop(1, 'rgba(62, 207, 142, 0.0)');
-                
-                new Chart(ctx, {
-                    type: 'line',
-                    data: { 
-                        labels: ${chartLabels}, 
-                        datasets: [{ 
-                            label: 'Visits', 
-                            data: ${chartData}, 
-                            borderColor: '#3ecf8e', 
-                            backgroundColor: gradient, 
-                            borderWidth: 2, 
-                            pointBackgroundColor: '#1c1c1f',
-                            pointBorderColor: '#3ecf8e',
-                            pointHoverBackgroundColor: '#3ecf8e',
-                            fill: true, 
-                            tension: 0.4 
-                        }] 
-                    },
-                    options: { 
-                        responsive: true, 
-                        maintainAspectRatio: false, 
-                        plugins: { legend: { display: false } }, 
-                        scales: { 
-                            x: { grid: { display: false }, ticks: { color: '#8b8d91' } }, 
-                            y: { grid: { color: '#2e2e32' }, ticks: { color: '#8b8d91' }, beginAtZero: true } 
-                        } 
-                    }
-                });
-
-                async function editMsg(id) {
-                    const newName = prompt("Edit Name:", document.getElementById('name-'+id).innerText);
-                    if(!newName) return;
-                    const newContact = prompt("Edit Contact:", document.getElementById('contact-'+id).innerText);
-                    const newMessage = prompt("Edit Message:", document.getElementById('message-'+id).innerText);
-
-                    if (newName && newContact && newMessage) {
-                        const response = await fetch('/api/messages/' + id, {
-                            method: 'PUT', headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ name: newName, contact: newContact, message: newMessage })
-                        });
-                        if(response.ok) {
-                            document.getElementById('name-'+id).innerText = newName;
-                            document.getElementById('contact-'+id).innerText = newContact;
-                            document.getElementById('message-'+id).innerText = newMessage;
-                            alert("Message details updated.");
-                        } else alert("Failed to update.");
-                    }
-                }
-
                 async function deleteMsg(id) {
-                    if (confirm("Are you sure you want to delete this message?")) {
+                    if (confirm("Are you sure you want to delete this admission application?")) {
                         const response = await fetch('/api/messages/' + id, { method: 'DELETE' });
                         if(response.ok) { 
                             document.getElementById('msg-row-'+id).style.display = 'none';
