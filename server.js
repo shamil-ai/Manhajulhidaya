@@ -2,14 +2,15 @@ const express = require('express');
 const { Pool } = require('pg');
 const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken'); 
-const nodemailer = require('nodemailer'); // For sending emails
+const nodemailer = require('nodemailer'); 
 
 const app = express();
 const PORT = process.env.PORT || 10000;
 
 app.set('trust proxy', true);
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ limit: '10mb', extended: true }));
+// ഫോട്ടോ സൈസ് ലിമിറ്റ് 50MB ആക്കി കൂട്ടി 
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(cookieParser());
 
 app.use((req, res, next) => {
@@ -32,13 +33,13 @@ const pool = new Pool({
 });
 
 // ==========================================
-// EMAIL SETUP (NODEMAILER)
+// EMAIL SETUP
 // ==========================================
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: process.env.EMAIL_USER, // Your Gmail
-        pass: process.env.EMAIL_PASS  // Your Gmail App Password
+        user: process.env.EMAIL_USER, 
+        pass: process.env.EMAIL_PASS  
     }
 });
 
@@ -47,7 +48,7 @@ async function sendEmailAlert(subject, htmlContent, base64Photo = null) {
     
     let mailOptions = {
         from: `"Manhajul Hidaya" <${process.env.EMAIL_USER}>`,
-        to: 'manhajulhidayacm@gmail.com', // Email destination
+        to: 'manhajulhidayacm@gmail.com', 
         subject: subject,
         html: htmlContent
     };
@@ -109,7 +110,7 @@ const authMiddleware = (req, res, next) => {
     catch (err) { res.clearCookie('admin_session'); res.redirect('/login'); }
 };
 
-app.get('/login', (req, res) => { /* Same login page as before */ 
+app.get('/login', (req, res) => { 
     res.send(`
     <!DOCTYPE html>
     <html lang="en">
@@ -118,7 +119,7 @@ app.get('/login', (req, res) => { /* Same login page as before */
         <div class="card">
             <h2 style="text-align:center">Admin Login</h2>
             <form id="loginForm">
-                <input type="text" id="username" placeholder="Username" required>
+                <input type="text" id="username" placeholder="Username" required autocomplete="off">
                 <input type="password" id="password" placeholder="Password" required>
                 <button type="submit">Sign In</button>
             </form>
@@ -143,18 +144,21 @@ app.post('/api/login', (req, res) => {
 app.get('/logout', (req, res) => { res.clearCookie('admin_session'); res.redirect('/login'); });
 
 // ==========================================
-// ADMISSION SUBMISSION
+// ADMISSION SUBMISSION (SPEED OPTIMIZED)
 // ==========================================
 app.post('/submit', async (req, res) => {
     const data = req.body;
     try {
+        // 1. Save to Database
         const query = `INSERT INTO "Manhaj form" (name, email, dob, app_email, phone, whatsapp, address, photo, father_name, mother_name, class_selected, qualification) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING *;`;
-        const result = await pool.query(query, [data.name, data.email, data.dob, data.appEmail, data.phone, data.whatsapp, data.address, data.photo, data.fatherName, data.motherName, data.classSelect, data.qualification]);
+        await pool.query(query, [data.name, data.email, data.dob, data.appEmail, data.phone, data.whatsapp, data.address, data.photo, data.fatherName, data.motherName, data.classSelect, data.qualification]);
         
-        // 1. Send to Telegram
-        await sendTelegramData(data);
+        // 2. ഉടനടി യൂസർക്ക് Success കൊടുക്കുന്നു (ലോഡിങ് ടൈം കുറയ്ക്കാൻ)
+        res.status(200).json({ message: "Success" });
+
+        // 3. ടെലിഗ്രാമും ഇമെയിലും ബാക്ക്ഗ്രൗണ്ടിൽ അയക്കുന്നു (No 'await' here)
+        sendTelegramData(data).catch(err => console.error("BG Telegram Error:", err));
         
-        // 2. Send to Email
         const emailHtml = `
             <div style="font-family: sans-serif; padding: 20px; background: #f4f4f9;">
                 <h2 style="color: #059669;">🎉 പുതിയ അഡ്മിഷൻ ലഭിച്ചു!</h2>
@@ -171,14 +175,16 @@ app.post('/submit', async (req, res) => {
                 </div>
             </div>
         `;
-        await sendEmailAlert(`🎉 പുതിയ അഡ്മിഷൻ: ${data.name}`, emailHtml, data.photo);
+        sendEmailAlert(`🎉 പുതിയ അഡ്മിഷൻ: ${data.name}`, emailHtml, data.photo).catch(err => console.error("BG Email Error:", err));
 
-        res.status(200).json({ message: "Success" });
-    } catch (error) { res.status(500).json({ error: "Failed" }); }
+    } catch (error) { 
+        console.error("Submit Error:", error);
+        res.status(500).json({ error: "Failed" }); 
+    }
 });
 
 // ==========================================
-// VISITOR LOGGING (ADVANCED)
+// VISITOR LOGGING 
 // ==========================================
 app.post('/log-visit-advanced', async (req, res) => {
     const data = req.body;
@@ -194,15 +200,14 @@ app.post('/log-visit-advanced', async (req, res) => {
     } catch (error) {}
     
     try {
-        // 1. Save to Database
         const query = `INSERT INTO visitors_advanced_log (visitor_id, ip_address, country, city, device, os, network_type, battery_level) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`;
         await pool.query(query, [data.visitor_id, ip, country, city, data.device, data.os, `${data.network_type} (${isp})`, data.battery_level]);
-        
-        // 2. Telegram Alert
-        const alertMsg = `🚨 <b>പുതിയ സന്ദർശകൻ എത്തിയിട്ടുണ്ട്!</b>\n🌍 <b>സ്ഥലം:</b> ${city}, ${country}\n📱 <b>ഫോൺ/കമ്പ്യൂട്ടർ:</b> ${data.device} (${data.os})\n🔋 <b>ബാറ്ററി:</b> ${data.battery_level}\n📶 <b>നെറ്റ്‌വർക്ക്:</b> ${data.network_type} (ISP: ${isp})\n🌐 <b>IP:</b> ${ip}`;
-        await sendTelegramText(alertMsg);
+        res.status(200).json({ message: "Logged" }); // Fast response
 
-        // 3. Email Alert
+        // Background alerts
+        const alertMsg = `🚨 <b>പുതിയ സന്ദർശകൻ എത്തിയിട്ടുണ്ട്!</b>\n🌍 <b>സ്ഥലം:</b> ${city}, ${country}\n📱 <b>ഫോൺ/കമ്പ്യൂട്ടർ:</b> ${data.device} (${data.os})\n🔋 <b>ബാറ്ററി:</b> ${data.battery_level}\n📶 <b>നെറ്റ്‌വർക്ക്:</b> ${data.network_type} (ISP: ${isp})\n🌐 <b>IP:</b> ${ip}`;
+        sendTelegramText(alertMsg).catch(e => {});
+
         const emailHtml = `
             <div style="font-family: sans-serif; padding: 20px;">
                 <h3 style="color: #d9534f;">🚨 പുതിയ സന്ദർശകൻ എത്തിയിട്ടുണ്ട്!</h3>
@@ -213,9 +218,8 @@ app.post('/log-visit-advanced', async (req, res) => {
                 <p><b>🌐 IP:</b> ${ip}</p>
             </div>
         `;
-        await sendEmailAlert("🚨 പുതിയ വെബ്സൈറ്റ് സന്ദർശകൻ", emailHtml);
+        sendEmailAlert("🚨 പുതിയ വെബ്സൈറ്റ് സന്ദർശകൻ", emailHtml).catch(e => {});
 
-        res.status(200).json({ message: "Logged" });
     } catch (error) { res.status(500).json({ error: "Failed" }); }
 });
 
