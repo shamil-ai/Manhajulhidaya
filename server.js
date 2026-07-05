@@ -8,11 +8,12 @@ const PORT = process.env.PORT || 10000;
 
 app.set('trust proxy', true);
 
-// Changed to 10mb to accept base64 photos
+// Changed limit to 10mb to accept base64 photos
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 app.use(cookieParser());
 
+// CORS Setup
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
@@ -21,6 +22,7 @@ app.use((req, res, next) => {
     next();
 });
 
+// Environment Variables Verification
 if (!process.env.ADMIN_USERNAME || !process.env.ADMIN_PASSWORD || !process.env.JWT_SECRET) {
     console.error("🚨 FATAL ERROR: Missing required environment variables.");
     process.exit(1);
@@ -38,18 +40,44 @@ const pool = new Pool({
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
 
-async function sendTelegramMessage(message) {
+// ==========================================
+// TELEGRAM NOTIFICATION SYSTEM
+// ==========================================
+async function sendTelegramData(data) {
     if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) return;
-    const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+
     try {
-        await fetch(url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: message, parse_mode: 'HTML' })
-        });
-    } catch (err) { console.error('Telegram Error:', err); }
+        let message = `🎉 <b>പുതിയ അഡ്മിഷൻ ലഭിച്ചു!</b>\n\n👤 <b>Name:</b> ${data.name}\n📚 <b>Class:</b> ${data.classSelect}\n📞 <b>Phone:</b> ${data.phone}\n💬 <b>WhatsApp:</b> ${data.whatsapp || 'N/A'}\n🏠 <b>Address:</b> ${data.address}\n👨‍👩‍👦 <b>Parents:</b> ${data.fatherName} & ${data.motherName}\n🎓 <b>Qualification:</b> ${data.qualification}`;
+
+        // ഫോട്ടോ ഉണ്ടെങ്കിൽ ഫോട്ടോയോടൊപ്പം അയക്കുക
+        if (data.photo && data.photo.includes('base64,')) {
+            const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`;
+            const photoBuffer = Buffer.from(data.photo.split(',')[1], 'base64');
+            
+            const formData = new FormData();
+            formData.append('chat_id', TELEGRAM_CHAT_ID);
+            formData.append('photo', new Blob([photoBuffer]), 'photo.jpg');
+            formData.append('caption', message);
+            formData.append('parse_mode', 'HTML');
+
+            await fetch(url, { method: 'POST', body: formData });
+        } else {
+            // ഫോട്ടോ ഇല്ലെങ്കിൽ ടെക്സ്റ്റ് മാത്രം അയക്കുക
+            const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+            await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: message, parse_mode: 'HTML' })
+            });
+        }
+    } catch (err) { 
+        console.error('Telegram Error:', err); 
+    }
 }
 
+// ==========================================
+// ADMIN LOGIN SECURITY (JWT Based) 
+// ==========================================
 const authMiddleware = (req, res, next) => {
     const token = req.cookies.admin_session;
     if (!token) return res.redirect('/login');
@@ -156,16 +184,17 @@ app.get('/logout', (req, res) => {
     res.redirect('/login');
 });
 
-
-// NEW SUBMISSION API WITH ALL FIELDS
+// ==========================================
+// PUBLIC APIs 
+// ==========================================
 app.post('/submit', async (req, res) => {
     const { name, email, dob, appEmail, phone, whatsapp, address, photo, fatherName, motherName, classSelect, qualification } = req.body;
     try {
         const query = `INSERT INTO "Manhaj form" (name, email, dob, app_email, phone, whatsapp, address, photo, father_name, mother_name, class_selected, qualification) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING *;`;
         const result = await pool.query(query, [name, email, dob, appEmail, phone, whatsapp, address, photo, fatherName, motherName, classSelect, qualification]);
         
-        const telegramMsg = `🎉 <b>പുതിയ അഡ്മിഷൻ ലഭിച്ചു!</b>\n👤 <b>Name:</b> ${name}\n📚 <b>Class:</b> ${classSelect}\n📞 <b>Phone:</b> ${phone}`;
-        await sendTelegramMessage(telegramMsg);
+        // ടെലിഗ്രാമിലേക്ക് മെസ്സേജും ഫോട്ടോയും അയക്കുന്ന ഫങ്ഷൻ വിളിക്കുന്നു
+        await sendTelegramData({ name, email, dob, appEmail, phone, whatsapp, address, photo, fatherName, motherName, classSelect, qualification });
         
         res.status(200).json({ message: "Success", data: result.rows[0] });
     } catch (error) { 
@@ -192,6 +221,9 @@ app.post('/log-visit-advanced', async (req, res) => {
     } catch (error) { res.status(500).json({ error: "Failed to log" }); }
 });
 
+// ==========================================
+// PRIVATE APIs (CRUD Operations)
+// ==========================================
 app.delete('/api/messages/:id', authMiddleware, async (req, res) => {
     try {
         await pool.query('DELETE FROM "Manhaj form" WHERE id = $1', [req.params.id]);
@@ -199,6 +231,9 @@ app.delete('/api/messages/:id', authMiddleware, async (req, res) => {
     } catch (error) { res.status(500).json({ error: "Failed to delete" }); }
 });
 
+// ==========================================
+// MAIN PREMIUM UI DASHBOARD 
+// ==========================================
 app.get('/', authMiddleware, async (req, res) => {
     try {
         const visitors = await pool.query('SELECT * FROM visitors_advanced_log ORDER BY visit_time DESC LIMIT 50');
@@ -207,11 +242,6 @@ app.get('/', authMiddleware, async (req, res) => {
         const totalVisits = visitors.rows.length;
         const totalMessages = messages.rows.length;
         const uniqueIPs = new Set(visitors.rows.map(v => v.ip_address)).size;
-
-        const visitorDates = visitors.rows.map(r => new Date(r.visit_time).toLocaleDateString('en-IN', { timeZone: 'Asia/Kolkata' }));
-        const dateCounts = visitorDates.reduce((acc, date) => { acc[date] = (acc[date] || 0) + 1; return acc; }, {});
-        const chartLabels = JSON.stringify(Object.keys(dateCounts).reverse());
-        const chartData = JSON.stringify(Object.values(dateCounts).reverse());
 
         let html = `
         <!DOCTYPE html>
@@ -222,7 +252,6 @@ app.get('/', authMiddleware, async (req, res) => {
             <title>Manhajulhidaya | Admin</title>
             <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
             <script src="https://unpkg.com/lucide@latest"></script>
-            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
             
             <style>
                 :root { --bg-base: #111315; --bg-surface: #1c1c1f; --bg-surface-hover: #2a2a2e; --border-subtle: #2e2e32; --brand-primary: #3ecf8e; --text-main: #ededed; --text-muted: #8b8d91; --danger: #f56565; --font-main: 'Inter', sans-serif; }
@@ -263,7 +292,6 @@ app.get('/', authMiddleware, async (req, res) => {
                 .badge { background: rgba(255,255,255,0.05); border: 1px solid var(--border-subtle); padding: 2px 8px; border-radius: 4px; font-size: 11px; color: var(--text-muted); }
                 .photo-box { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; border: 1px solid var(--border-subtle); }
                 .no-photo { width: 60px; height: 60px; border-radius: 8px; background: var(--bg-base); display: flex; align-items: center; justify-content: center; font-size: 10px; color: var(--text-muted); text-align: center; border: 1px dashed var(--border-subtle); }
-                .chart-wrapper { padding: 24px; height: 350px; }
                 .btn-icon { background: transparent; border: 1px solid var(--border-subtle); color: var(--text-muted); padding: 8px; border-radius: 6px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; }
                 .btn-delete:hover { background: rgba(245, 101, 101, 0.1); color: var(--danger); border-color: rgba(245, 101, 101, 0.5); }
                 @media (max-width: 768px) { .sidebar { display: none; } .main-layout { margin-left: 0; } }
@@ -319,7 +347,7 @@ app.get('/', authMiddleware, async (req, res) => {
                                 ${messages.rows.map(row => `
                                     <tr id="msg-row-${row.id}">
                                         <td>
-                                            ${row.photo ? `<img src="${row.photo}" class="photo-box" alt="Photo">` : `<div class="no-photo">No Photo</div>`}
+                                            ${row.photo && row.photo.includes('base64') ? `<img src="${row.photo}" class="photo-box" alt="Photo">` : `<div class="no-photo">No Photo</div>`}
                                         </td>
                                         <td>
                                             <div class="text-bold" style="font-size: 14px;">${row.name}</div>
