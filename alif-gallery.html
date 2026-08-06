@@ -32,8 +32,8 @@
 
     <!-- Script to Fetch Photos from Grs Repository Dynamically -->
     <script>
-        // Grs റെപ്പോസിറ്ററിയിലെ gallery.json ഫയൽ ഫെച്ച് ചെയ്യുന്നു
-        fetch('https://raw.githubusercontent.com/shamil-ai/Grs/main/manhajul/gallery.json')
+        // Cache ഒഴിവാക്കാൻ ടൈംസ്റ്റാംപ് ചേർത്ത് Grs റെപ്പോസിറ്ററിയിലെ gallery.json ഫെച്ച് ചെയ്യുന്നു
+        fetch('https://raw.githubusercontent.com/shamil-ai/Grs/main/manhajul/gallery.json?t=' + new Date().getTime())
           .then(response => {
             if (!response.ok) {
               throw new Error('Gallery data not found');
@@ -50,31 +50,33 @@
             for (const folder in data) {
               if (Array.isArray(data[folder])) {
                 data[folder].forEach(imagePath => {
-                  hasPhotos = true;
-                  
-                  // പാത്ത് ക്ലീൻ ചെയ്ത് Grs റെപ്പോസിറ്ററിയുടെ ഡയറക്ട് Raw URL ഉണ്ടാക്കുന്നു
-                  const cleanPath = imagePath.replace(/^manhajul\//, '');
-                  const imageUrl = `https://raw.githubusercontent.com/shamil-ai/Grs/main/manhajul/${cleanPath}`;
+                  // വെബ്ബിൽ സപ്പോർട്ട് ചെയ്യുന്ന .jpg, .jpeg, .png, .webp ഫയലുകൾ മാത്രം എടുക്കുന്നു (.HEIC ഒഴിവാക്കും)
+                  if (/\.(jpg|jpeg|png|webp)$/i.test(imagePath)) {
+                    hasPhotos = true;
+                    
+                    const cleanPath = imagePath.replace(/^manhajul\//, '');
+                    const imageUrl = `https://raw.githubusercontent.com/shamil-ai/Grs/main/manhajul/${cleanPath}`;
 
-                  // ഓരോ ഫോട്ടോയ്ക്കും കാർഡ് എലമെന്റ് നിർമ്മിക്കുന്നു
-                  const card = document.createElement('div');
-                  card.className = "bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition duration-300";
+                    // ഓരോ ഫോട്ടോയ്ക്കും കാർഡ് എലമെന്റ് നിർമ്മിക്കുന്നു
+                    const card = document.createElement('div');
+                    card.className = "bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition duration-300";
 
-                  const img = document.createElement('img');
-                  img.src = imageUrl;
-                  img.alt = "Gallery Event Photo";
-                  img.className = "w-full h-60 object-cover";
-                  img.loading = "lazy"; // പെട്ടെന്ന് ലോഡ് ആകാൻ സഹായിക്കുന്നു
+                    const img = document.createElement('img');
+                    img.src = imageUrl;
+                    img.alt = "Gallery Event Photo";
+                    img.className = "w-full h-60 object-cover";
+                    img.loading = "lazy"; // പെട്ടെന്ന് ലോഡ് ആകാൻ സഹായിക്കുന്നു
 
-                  card.appendChild(img);
-                  container.appendChild(card);
+                    card.appendChild(img);
+                    container.appendChild(card);
+                  }
                 });
               }
             }
 
             // ഫോട്ടോകൾ ഒന്നുമില്ലെങ്കിൽ മെസ്സേജ് കാണിക്കുക
             if (!hasPhotos) {
-              container.innerHTML = '<p class="text-gray-500 col-span-full text-center py-12 text-lg">No photos uploaded yet.</p>';
+              container.innerHTML = '<p class="text-gray-500 col-span-full text-center py-12 text-lg">No valid photos uploaded yet.</p>';
             }
           })
           .catch(error => {
