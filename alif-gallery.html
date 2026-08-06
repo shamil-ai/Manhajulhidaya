@@ -3,321 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alif Gallery | Manhajul Hidaya Islamic Academy</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
-
-    <style>
-        :root {
-            --primary-green: #059669;
-            --light-green: #10b981;
-            --pale-green: #d1fae5;
-            --bg-color: #f8fafc;
-            --text-dark: #0f172a;
-            --text-muted: #64748b;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-dark);
-            margin: 0;
-            padding-bottom: 60px;
-        }
-
-        /* Header */
-        .gallery-header {
-            background: linear-gradient(135deg, var(--primary-green) 0%, var(--light-green) 100%);
-            color: white;
-            padding: 45px 20px 35px;
-            text-align: center;
-            border-radius: 0 0 25px 25px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-            margin-bottom: 30px;
-        }
-
-        .gallery-header h1 {
-            font-weight: 700;
-            font-size: 2.2rem;
-            margin-bottom: 8px;
-        }
-
-        .gallery-header p {
-            color: var(--pale-green);
-            font-size: 0.95rem;
-            margin: 0;
-        }
-
-        /* Back Button */
-        .btn-back-home {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--primary-green);
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            padding: 10px 20px;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            text-decoration: none !important;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
-            transition: all 0.25s ease;
-            margin-bottom: 25px;
-        }
-
-        .btn-back-home:hover {
-            background: var(--pale-green);
-            color: var(--primary-green);
-            transform: translateX(-3px);
-        }
-
-        /* Folder List (Horizontal Row Cards) */
-        #folder-view {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            max-width: 650px;
-            margin: 0 auto;
-        }
-
-        .folder-card {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 16px;
-            padding: 12px 16px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
-            cursor: pointer;
-            transition: all 0.25s ease;
-        }
-
-        .folder-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(5, 150, 105, 0.12);
-            border-color: var(--light-green);
-        }
-
-        .folder-thumb {
-            width: 75px;
-            height: 65px;
-            border-radius: 12px;
-            background-color: var(--pale-green);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            overflow: hidden;
-        }
-
-        .folder-thumb img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .folder-thumb i {
-            font-size: 28px;
-            color: var(--primary-green);
-        }
-
-        .folder-info {
-            flex: 1;
-            text-align: left;
-        }
-
-        .folder-info h4 {
-            font-size: 1.05rem;
-            font-weight: 600;
-            margin: 0 0 4px 0;
-            color: var(--text-dark);
-        }
-
-        .folder-info p {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin: 0;
-        }
-
-        .folder-arrow {
-            color: var(--primary-green);
-            font-size: 1.1rem;
-            padding-right: 5px;
-        }
-
-        /* Image Grid View */
-        #image-view {
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        #current-folder-title {
-            font-weight: 700;
-            color: var(--text-dark);
-            margin-bottom: 20px;
-            font-size: 1.5rem;
-        }
-
-        #image-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 18px;
-        }
-
-        .image-card {
-            border-radius: 14px;
-            overflow: hidden;
-            background: #ffffff;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            border: 1px solid #f1f5f9;
-        }
-
-        .image-card img {
-            width: 100%;
-            height: 230px;
-            object-fit: cover;
-            display: block;
-            transition: transform 0.3s ease;
-        }
-
-        .image-card img:hover {
-            transform: scale(1.03);
-        }
-
-        @media (max-width: 576px) {
-            #image-grid {
-                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-                gap: 12px;
-            }
-            .image-card img {
-                height: 150px;
-            }
-            .folder-thumb {
-                width: 65px;
-                height: 58px;
-            }
-        }
-    </style>
+    <title>Alif Gallery - Manhajul Hidaya</title>
+    <!-- Tailwind CSS for modern responsive styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-gray-50 min-h-screen">
 
-    <!-- Top Header -->
-    <div class="gallery-header">
-        <h1>Alif Gallery</h1>
-        <p>Explore event photos and memorable moments</p>
+    <!-- Header Section -->
+    <div class="bg-emerald-600 text-white py-12 px-6 text-center shadow-md">
+        <h1 class="text-4xl font-bold mb-2">Alif Gallery</h1>
+        <p class="text-emerald-100 text-lg">Explore event photos and memorable moments</p>
     </div>
 
-    <div class="container">
-        <!-- Back to Fest Home Button -->
-        <div>
-            <a href="Manhajul-fest.html" class="btn-back-home">
-                <i class="fa-solid fa-arrow-left"></i> Back to Fest Home
-            </a>
-        </div>
+    <!-- Back Button Section -->
+    <div class="max-w-7xl mx-auto px-6 py-6">
+        <a href="index.html" class="inline-flex items-center text-emerald-700 bg-white border border-emerald-200 px-5 py-2.5 rounded-full font-medium shadow-sm hover:bg-emerald-50 transition">
+            ← Back to Fest Home
+        </a>
+    </div>
 
-        <!-- Folder List View (Row Style) -->
-        <div id="folder-view"></div>
-
-        <!-- Single Folder Images View -->
-        <div id="image-view" style="display: none;">
-            <button id="back-to-folders" class="btn-back-home border-0 bg-white mb-4" style="cursor: pointer;">
-                <i class="fa-solid fa-folder-open"></i> Back to Folders
-            </button>
-            <h3 id="current-folder-title"></h3>
-            <div id="image-grid"></div>
+    <!-- Gallery Grid Container -->
+    <div class="max-w-7xl mx-auto px-6 pb-16">
+        <div id="gallery-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <!-- Loading state placeholder -->
+            <p class="text-gray-500 col-span-full text-center py-12 text-lg">Loading photos...</p>
         </div>
     </div>
 
-    <!-- Gallery JavaScript -->
+    <!-- Script to Fetch Photos from Grs Repository Dynamically -->
     <script>
-        const GALLERY_JSON_URL = "https://raw.githubusercontent.com/shamil-ai/Grs/main/manhajul/gallery.json";
-        const IMAGE_BASE_URL = "https://raw.githubusercontent.com/shamil-ai/Grs/main/manhajul/";
-
-        async function loadGallerySafely() {
-            const folderView = document.getElementById('folder-view');
-            if (!folderView) return;
-            
-            folderView.innerHTML = '<p style="text-align: center; color: var(--text-muted); padding: 40px 0;">Loading Gallery Folders...</p>';
-
-            try {
-                const response = await fetch(GALLERY_JSON_URL);
-                if (!response.ok) throw new Error("Failed to load gallery data");
-                
-                const galleryData = await response.json();
-                renderAutoGallery(galleryData);
-
-            } catch (error) {
-                console.error("Error loading gallery:", error);
-                folderView.innerHTML = '<p style="text-align: center; color: #ef4444; padding: 40px 0;">Failed to load gallery images. Please try again later.</p>';
+        // Grs റെപ്പോസിറ്ററിയിലെ gallery.json ഫയൽ ഫെച്ച് ചെയ്യുന്നു
+        fetch('https://raw.githubusercontent.com/shamil-ai/Grs/main/manhajul/gallery.json')
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Gallery data not found');
             }
-        }
+            return response.json();
+          })
+          .then(data => {
+            const container = document.getElementById('gallery-container');
+            container.innerHTML = ''; // ലോഡിങ് ടെക്സ്റ്റ് ഒഴിവാക്കുന്നു
 
-        function renderAutoGallery(galleryData) {
-            const folderView = document.getElementById('folder-view');
-            const imageView = document.getElementById('image-view');
-            const imageGrid = document.getElementById('image-grid');
-            const currentFolderTitle = document.getElementById('current-folder-title');
-            const backBtn = document.getElementById('back-to-folders');
+            let hasPhotos = false;
 
-            folderView.innerHTML = '';
+            // JSON ഡാറ്റ ലൂപ്പ് ചെയ്ത് ചിത്രങ്ങൾ എടുക്കുന്നു
+            for (const folder in data) {
+              if (Array.isArray(data[folder])) {
+                data[folder].forEach(imagePath => {
+                  hasPhotos = true;
+                  
+                  // പാത്ത് ക്ലീൻ ചെയ്ത് Grs റെപ്പോസിറ്ററിയുടെ ഡയറക്ട് Raw URL ഉണ്ടാക്കുന്നു
+                  const cleanPath = imagePath.replace(/^manhajul\//, '');
+                  const imageUrl = `https://raw.githubusercontent.com/shamil-ai/Grs/main/manhajul/${cleanPath}`;
 
-            if (Object.keys(galleryData).length === 0) {
-                folderView.innerHTML = '<p style="text-align: center; color: var(--text-muted);">No photos uploaded yet.</p>';
-                return;
-            }
+                  // ഓരോ ഫോട്ടോയ്ക്കും കാർഡ് എലമെന്റ് നിർമ്മിക്കുന്നു
+                  const card = document.createElement('div');
+                  card.className = "bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition duration-300";
 
-            for (let folderName in galleryData) {
-                const photos = galleryData[folderName];
-                const firstPhoto = photos.length > 0 ? (IMAGE_BASE_URL + photos[0]) : null;
-                
-                const folderCard = document.createElement('div');
-                folderCard.className = 'folder-card';
+                  const img = document.createElement('img');
+                  img.src = imageUrl;
+                  img.alt = "Gallery Event Photo";
+                  img.className = "w-full h-60 object-cover";
+                  img.loading = "lazy"; // പെട്ടെന്ന് ലോഡ് ആകാൻ സഹായിക്കുന്നു
 
-                const thumbHtml = firstPhoto 
-                    ? `<div class="folder-thumb"><img src="${firstPhoto}" alt="${folderName}"></div>`
-                    : `<div class="folder-thumb"><i class="fa-solid fa-folder"></i></div>`;
-
-                folderCard.innerHTML = `
-                    ${thumbHtml}
-                    <div class="folder-info">
-                        <h4>${folderName}</h4>
-                        <p>${photos.length} Photos</p>
-                    </div>
-                    <div class="folder-arrow"><i class="fa-solid fa-chevron-right"></i></div>
-                `;
-
-                folderCard.addEventListener('click', () => {
-                    folderView.style.display = 'none';
-                    imageView.style.display = 'block';
-                    currentFolderTitle.innerText = folderName;
-                    imageGrid.innerHTML = '';
-
-                    photos.forEach(filePath => {
-                        const imgCard = document.createElement('div');
-                        imgCard.className = 'image-card';
-                        imgCard.innerHTML = `<img src="${IMAGE_BASE_URL + filePath}" alt="Gallery Image" loading="lazy">`;
-                        imageGrid.appendChild(imgCard);
-                    });
-                    
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  card.appendChild(img);
+                  container.appendChild(card);
                 });
-
-                folderView.appendChild(folderCard);
+              }
             }
 
-            if (backBtn) {
-                backBtn.addEventListener('click', () => {
-                    imageView.style.display = 'none';
-                    folderView.style.display = 'flex';
-                });
+            // ഫോട്ടോകൾ ഒന്നുമില്ലെങ്കിൽ മെസ്സേജ് കാണിക്കുക
+            if (!hasPhotos) {
+              container.innerHTML = '<p class="text-gray-500 col-span-full text-center py-12 text-lg">No photos uploaded yet.</p>';
             }
-        }
-
-        document.addEventListener("DOMContentLoaded", loadGallerySafely);
+          })
+          .catch(error => {
+            console.error('Error loading gallery:', error);
+            const container = document.getElementById('gallery-container');
+            container.innerHTML = '<p class="text-red-500 col-span-full text-center py-12 text-lg">Failed to load photos. Please try again later.</p>';
+          });
     </script>
 </body>
 </html>
