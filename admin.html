@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manhajul Hidaya | Admin Panel</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { background: #f8fafc; font-family: 'Poppins', sans-serif; }
+        .admin-header { background: #059669; color: white; padding: 20px 0; text-align: center; margin-bottom: 30px; }
+        .card { border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        .student-photo { width: 60px; height: 60px; object-fit: cover; border-radius: 50%; }
+    </style>
+</head>
+<body>
+
+<div class="admin-header">
+    <h2>Manhajul Hidaya - Admin Dashboard</h2>
+    <p>Received Admissions List</p>
+</div>
+
+<div class="container">
+    <div id="loading" class="text-center py-5">Loading applications...</div>
+    <div id="applicationsList"></div>
+</div>
+
+<script>
+    fetch('https://manhajulhidaya.onrender.com/admin/admissions')
+        .then(res => res.json())
+        .then(response => {
+            const container = document.getElementById('applicationsList');
+            document.getElementById('loading').style.display = 'none';
+            
+            if (!response.success || response.data.length === 0) {
+                container.innerHTML = '<p class="text-center text-muted">No admissions found.</p>';
+                return;
+            }
+
+            response.data.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'card p-4';
+                card.innerHTML = `
+                    <div class="row align-items-center">
+                        <div class="col-md-2 text-center">
+                            <img src="${item.photo || 'https://via.placeholder.com/60'}" class="student-photo mb-2 mb-md-0" alt="Photo">
+                        </div>
+                        <div class="col-md-7">
+                            <h4 class="text-success font-weight-bold mb-1">${item.name}</h4>
+                            <p class="mb-1 text-muted"><strong>Class:</strong> ${item.class_select} | <strong>DOB:</strong> ${item.dob}</p>
+                            <p class="mb-1"><strong>Phone:</strong> ${item.phone} | <strong>WhatsApp:</strong> ${item.whatsapp || 'N/A'}</p>
+                            <p class="mb-0 text-secondary"><small><strong>Email:</strong> ${item.email} | <strong>Address:</strong> ${item.address}</small></p>
+                        </div>
+                        <div class="col-md-3 text-md-right mt-3 mt-md-0">
+                            <span class="badge badge-success p-2">Parent: ${item.father_name} / ${item.mother_name}</span>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        })
+        .catch(err => {
+            console.error(err);
+            document.getElementById('loading').innerText = 'Failed to load applications.';
+        });
+</script>
+
+</body>
+</html>
