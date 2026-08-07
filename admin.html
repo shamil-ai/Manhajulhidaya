@@ -15,66 +15,76 @@
         .login-container { max-width: 400px; margin: 80px auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
         .nav-pills .nav-link.active { background-color: #059669; }
         .nav-pills .nav-link { color: #059669; font-weight: 600; }
+        .view-toggle { margin-bottom: 20px; text-align: center; }
+        pre.json-view { background: #1e293b; color: #a5b4fc; padding: 20px; border-radius: 10px; max-height: 500px; overflow-y: auto; }
+        .table-responsive { background: white; padding: 15px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
     </style>
 </head>
 <body>
 
-<!-- Login Section -->
 <div id="loginSection" class="container">
     <div class="login-container">
         <h3 class="text-center text-success font-weight-bold mb-4">Admin Login</h3>
         <form id="loginForm">
-            <div class="form-group">
-                <label>Username</label>
-                <input type="text" id="username" class="form-control" required autocomplete="off">
-            </div>
-            <div class="form-group">
-                <label>Password</label>
-                <input type="password" id="password" class="form-control" required>
-            </div>
+            <div class="form-group"><label>Username</label><input type="text" id="username" class="form-control" required></div>
+            <div class="form-group"><label>Password</label><input type="password" id="password" class="form-control" required></div>
             <button type="submit" class="btn btn-success btn-block font-weight-bold">Login</button>
             <p id="loginError" class="text-danger text-center mt-3" style="display: none;"></p>
         </form>
     </div>
 </div>
 
-<!-- Dashboard Section -->
 <div id="dashboardSection" style="display: none;">
     <div class="admin-header d-flex justify-content-between align-items-center px-4">
         <div></div>
-        <div>
-            <h2 class="mb-0">Manhajul Hidaya - Admin Dashboard</h2>
-        </div>
-        <div>
-            <button onclick="logout()" class="btn btn-light btn-sm font-weight-bold text-danger">Logout</button>
+        <div><h2 class="mb-0">Manhajul Hidaya Admin</h2></div>
+        <div><button onclick="logout()" class="btn btn-light btn-sm text-danger font-weight-bold">Logout</button></div>
+    </div>
+
+    <div class="container mb-3 view-toggle">
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-outline-success active" onclick="setViewMode('card', this)">Card View</button>
+            <button type="button" class="btn btn-outline-success" onclick="setViewMode('table', this)">Table View (പട്ടിക)</button>
+            <button type="button" class="btn btn-outline-success" onclick="setViewMode('json', this)">JSON View (ജേസൺ)</button>
         </div>
     </div>
 
     <div class="container mb-4">
         <ul class="nav nav-pills justify-content-center" id="pills-tab" role="tablist">
-            <li class="nav-item mr-2">
-                <a class="nav-link active" id="pills-admissions-tab" data-toggle="pill" href="#pills-admissions" role="tab">Admissions List</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" id="pills-contacts-tab" data-toggle="pill" href="#pills-contacts" role="tab">Contact Messages</a>
-            </li>
+            <li class="nav-item mr-2"><a class="nav-link active" data-toggle="pill" href="#pills-admissions" onclick="renderAdmissions()">Admissions List</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="pill" href="#pills-contacts" onclick="renderContacts()">Contact Messages</a></li>
         </ul>
     </div>
 
     <div class="container">
-        <div class="tab-content" id="pills-tabContent">
-            <!-- Admissions Tab -->
-            <div class="tab-pane fade show active" id="pills-admissions" role="tabpanel">
-                <div id="loadingAdmissions" class="text-center py-5">Loading admissions...</div>
-                <div id="admissionsList"></div>
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="pills-admissions">
+                <div id="loadingAdmissions" class="text-center py-5">Loading...</div>
+                <div id="admissionsContainer"></div>
             </div>
-            <!-- Contacts Tab -->
-            <div class="tab-pane fade" id="pills-contacts" role="tabpanel">
-                <div id="loadingContacts" class="text-center py-5">Loading messages...</div>
-                <div id="contactsList"></div>
+            <div class="tab-pane fade" id="pills-contacts">
+                <div id="loadingContacts" class="text-center py-5">Loading...</div>
+                <div id="contactsContainer"></div>
             </div>
         </div>
     </div>
+</div>
+
+<!-- Edit Admission Modal -->
+<div class="modal fade" id="editAdmisisonModal" tabindex="-1">
+    <div class="modal-dialog"><div class="modal-content">
+        <div class="modal-header"><h5 class="modal-title">Edit Admission</h5><button type="button" class="close" data-dismiss="modal">&times;</button></div>
+        <div class="modal-body">
+            <input type="hidden" id="edit_adm_id">
+            <div class="form-group"><label>Name</label><input type="text" id="edit_adm_name" class="form-control"></div>
+            <div class="form-group"><label>Email</label><input type="email" id="edit_adm_email" class="form-control"></div>
+            <div class="form-group"><label>Phone</label><input type="text" id="edit_adm_phone" class="form-control"></div>
+            <div class="form-group"><label>WhatsApp</label><input type="text" id="edit_adm_whatsapp" class="form-control"></div>
+            <div class="form-group"><label>Class</label><input type="text" id="edit_adm_class" class="form-control"></div>
+            <div class="form-group"><label>Address</label><textarea id="edit_adm_address" class="form-control"></textarea></div>
+        </div>
+        <div class="modal-footer"><button type="button" class="btn btn-success" onclick="saveAdmissionEdit()">Save Changes</button></div>
+    </div></div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
@@ -82,169 +92,155 @@
 
 <script>
     const BACKEND_URL = 'https://manhajulhidaya.onrender.com';
+    let currentView = 'card'; 
+    let admData = [];
+    let conData = [];
 
     const token = localStorage.getItem('admin_token');
-    if (token) {
-        showDashboard(token);
-    }
+    if (token) showDashboard(token);
 
     document.getElementById('loginForm').addEventListener('submit', function(e) {
         e.preventDefault();
-        const user = document.getElementById('username').value;
-        const pass = document.getElementById('password').value;
-        const errorEl = document.getElementById('loginError');
-
         fetch(`${BACKEND_URL}/admin/login`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username: user, password: pass })
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.success) {
-                localStorage.setItem('admin_token', data.token);
-                showDashboard(data.token);
-            } else {
-                errorEl.innerText = data.message || 'Invalid credentials';
-                errorEl.style.display = 'block';
-            }
-        })
-        .catch(err => {
-            errorEl.innerText = 'Connection error!';
-            errorEl.style.display = 'block';
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username: document.getElementById('username').value, password: document.getElementById('password').value })
+        }).then(res => res.json()).then(data => {
+            if (data.success) { localStorage.setItem('admin_token', data.token); showDashboard(data.token); } 
+            else { document.getElementById('loginError').innerText = 'Invalid credentials'; document.getElementById('loginError').style.display = 'block'; }
         });
     });
 
     function showDashboard(token) {
         document.getElementById('loginSection').style.display = 'none';
         document.getElementById('dashboardSection').style.display = 'block';
-        loadAdmissions(token);
-        loadContacts(token);
+        fetchData();
     }
 
-    function loadAdmissions(token) {
-        const container = document.getElementById('admissionsList');
-        container.innerHTML = '';
-        document.getElementById('loadingAdmissions').style.display = 'block';
-
-        fetch(`${BACKEND_URL}/admin/admissions`, {
-            headers: { 'Authorization': `Bearer ${token}` }
-        })
-        .then(res => { if (res.status === 401 || res.status === 403) logout(); return res.json(); })
-        .then(response => {
-            document.getElementById('loadingAdmissions').style.display = 'none';
-            
-            if (!response.success || response.data.length === 0) {
-                container.innerHTML = '<p class="text-center text-muted">No admissions found.</p>';
-                return;
-            }
-
-            response.data.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'card p-4';
-                card.innerHTML = `
-                    <div class="row align-items-center">
-                        <div class="col-md-2 text-center">
-                            <img src="${item.photo || 'https://via.placeholder.com/60'}" class="student-photo mb-2 mb-md-0" alt="Photo">
-                        </div>
-                        <div class="col-md-7">
-                            <h4 class="text-success font-weight-bold mb-1">${item.name}</h4>
-                            <p class="mb-1 text-muted"><strong>Class:</strong> ${item.class_select} | <strong>DOB:</strong> ${item.dob}</p>
-                            <p class="mb-1"><strong>Phone:</strong> ${item.phone} | <strong>WhatsApp:</strong> ${item.whatsapp || 'N/A'}</p>
-                            <p class="mb-0 text-secondary"><small><strong>Email:</strong> ${item.email} | <strong>Address:</strong> ${item.address}</small></p>
-                        </div>
-                        <div class="col-md-3 text-md-right mt-3 mt-md-0">
-                            <span class="badge badge-success p-2 d-block mb-2">Parent: ${item.father_name} / ${item.mother_name}</span>
-                            <button onclick="deleteAdmission(${item.id})" class="btn btn-outline-danger btn-sm"><i class="fa-solid fa-trash"></i> Delete</button>
-                        </div>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        });
-    }
-
-    function deleteAdmission(id) {
-        if (!confirm('Are you sure you want to delete this admission?')) return;
+    function fetchData() {
         const token = localStorage.getItem('admin_token');
+        fetch(`${BACKEND_URL}/admin/admissions`, { headers: { 'Authorization': `Bearer ${token}` }})
+        .then(res => { if(res.status===401||res.status===403) logout(); return res.json();})
+        .then(data => { admData = data.data || []; document.getElementById('loadingAdmissions').style.display = 'none'; renderAdmissions(); });
+
+        fetch(`${BACKEND_URL}/admin/contacts`, { headers: { 'Authorization': `Bearer ${token}` }})
+        .then(res => res.json())
+        .then(data => { conData = data.data || []; document.getElementById('loadingContacts').style.display = 'none'; renderContacts(); });
+    }
+
+    function setViewMode(mode, btn) {
+        currentView = mode;
+        document.querySelectorAll('.view-toggle .btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderAdmissions();
+        renderContacts();
+    }
+
+    function renderAdmissions() {
+        const container = document.getElementById('admissionsContainer');
+        if(admData.length === 0) { container.innerHTML = '<p class="text-center text-muted">No records found.</p>'; return; }
+        
+        if (currentView === 'json') {
+            container.innerHTML = `<pre class="json-view">${JSON.stringify(admData, null, 4)}</pre>`;
+        } else if (currentView === 'table') {
+            let html = `<div class="table-responsive"><table class="table table-bordered table-striped">
+                <thead class="thead-dark"><tr><th>ID</th><th>Name</th><th>Class</th><th>Phone</th><th>Email</th><th>Actions</th></tr></thead><tbody>`;
+            admData.forEach(item => {
+                html += `<tr><td>${item.id}</td><td>${item.name}</td><td>${item.class_select}</td><td>${item.phone}</td><td>${item.email}</td>
+                <td><button class="btn btn-sm btn-info mr-2" onclick='openEditAdm(${JSON.stringify(item).replace(/'/g, "&#39;")})'><i class="fa fa-edit"></i></button>
+                <button class="btn btn-sm btn-danger" onclick="deleteRecord('admissions', ${item.id})"><i class="fa fa-trash"></i></button></td></tr>`;
+            });
+            html += `</tbody></table></div>`;
+            container.innerHTML = html;
+        } else {
+            let html = '';
+            admData.forEach(item => {
+                html += `<div class="card p-4"><div class="row align-items-center">
+                    <div class="col-md-2 text-center"><img src="${item.photo || 'https://via.placeholder.com/60'}" class="student-photo mb-2"></div>
+                    <div class="col-md-7"><h4 class="text-success font-weight-bold mb-1">${item.name}</h4>
+                    <p class="mb-1 text-muted"><strong>Class:</strong> ${item.class_select} | <strong>DOB:</strong> ${item.dob}</p>
+                    <p class="mb-1"><strong>Phone:</strong> ${item.phone} | <strong>WhatsApp:</strong> ${item.whatsapp || 'N/A'}</p>
+                    <p class="mb-0 text-secondary"><small><strong>Email:</strong> ${item.email} | <strong>Address:</strong> ${item.address}</small></p></div>
+                    <div class="col-md-3 text-md-right mt-3 mt-md-0">
+                        <button onclick='openEditAdm(${JSON.stringify(item).replace(/'/g, "&#39;")})' class="btn btn-outline-info btn-sm mb-2 d-block w-100"><i class="fa fa-edit"></i> Edit</button>
+                        <button onclick="deleteRecord('admissions', ${item.id})" class="btn btn-outline-danger btn-sm w-100"><i class="fa fa-trash"></i> Delete</button>
+                    </div></div></div>`;
+            });
+            container.innerHTML = html;
+        }
+    }
+
+    function renderContacts() {
+        const container = document.getElementById('contactsContainer');
+        if(conData.length === 0) { container.innerHTML = '<p class="text-center text-muted">No records found.</p>'; return; }
+        
+        if (currentView === 'json') {
+            container.innerHTML = `<pre class="json-view">${JSON.stringify(conData, null, 4)}</pre>`;
+        } else if (currentView === 'table') {
+            let html = `<div class="table-responsive"><table class="table table-bordered table-striped">
+                <thead class="thead-dark"><tr><th>ID</th><th>Name</th><th>Phone</th><th>Email</th><th>Message</th><th>Action</th></tr></thead><tbody>`;
+            conData.forEach(item => {
+                html += `<tr><td>${item.id}</td><td>${item.name}</td><td>${item.phone}</td><td>${item.email}</td><td>${item.message}</td>
+                <td><button class="btn btn-sm btn-danger" onclick="deleteRecord('contacts', ${item.id})"><i class="fa fa-trash"></i></button></td></tr>`;
+            });
+            html += `</tbody></table></div>`;
+            container.innerHTML = html;
+        } else {
+            let html = '';
+            conData.forEach(item => {
+                html += `<div class="card p-4"><div class="row align-items-center">
+                    <div class="col-md-9"><h4 class="text-success font-weight-bold mb-1">${item.name}</h4>
+                    <p class="mb-1 text-muted"><strong>Email:</strong> ${item.email} | <strong>Phone:</strong> ${item.phone}</p>
+                    <p class="mb-0 text-dark"><strong>Message:</strong> ${item.message}</p></div>
+                    <div class="col-md-3 text-md-right mt-3 mt-md-0">
+                        <span class="badge badge-secondary p-2 d-block mb-2">${new Date(item.created_at).toLocaleDateString()}</span>
+                        <button onclick="deleteRecord('contacts', ${item.id})" class="btn btn-outline-danger btn-sm w-100"><i class="fa fa-trash"></i> Delete</button>
+                    </div></div></div>`;
+            });
+            container.innerHTML = html;
+        }
+    }
+
+    function openEditAdm(item) {
+        document.getElementById('edit_adm_id').value = item.id;
+        document.getElementById('edit_adm_name').value = item.name;
+        document.getElementById('edit_adm_email').value = item.email;
+        document.getElementById('edit_adm_phone').value = item.phone;
+        document.getElementById('edit_adm_whatsapp').value = item.whatsapp;
+        document.getElementById('edit_adm_class').value = item.class_select;
+        document.getElementById('edit_adm_address').value = item.address;
+        $('#editAdmisisonModal').modal('show');
+    }
+
+    function saveAdmissionEdit() {
+        const id = document.getElementById('edit_adm_id').value;
+        const data = {
+            name: document.getElementById('edit_adm_name').value,
+            email: document.getElementById('edit_adm_email').value,
+            phone: document.getElementById('edit_adm_phone').value,
+            whatsapp: document.getElementById('edit_adm_whatsapp').value,
+            class_select: document.getElementById('edit_adm_class').value,
+            address: document.getElementById('edit_adm_address').value
+        };
 
         fetch(`${BACKEND_URL}/admin/admissions/${id}`, {
-            method: 'DELETE',
-            headers: { 'Authorization': `Bearer ${token}` }
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.success) {
-                loadAdmissions(token);
-            } else {
-                alert('Failed to delete');
-            }
-        })
-        .catch(err => alert('Error connecting to server'));
-    }
-
-    function loadContacts(token) {
-        const container = document.getElementById('contactsList');
-        container.innerHTML = '';
-        document.getElementById('loadingContacts').style.display = 'block';
-
-        fetch(`${BACKEND_URL}/admin/contacts`, {
-            headers: { 'Authorization': `Bearer ${token}` }
-        })
-        .then(res => { if (res.status === 401 || res.status === 403) logout(); return res.json(); })
-        .then(response => {
-            document.getElementById('loadingContacts').style.display = 'none';
-            
-            if (!response.success || response.data.length === 0) {
-                container.innerHTML = '<p class="text-center text-muted">No messages found.</p>';
-                return;
-            }
-
-            response.data.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'card p-4';
-                card.innerHTML = `
-                    <div class="row align-items-center">
-                        <div class="col-md-9">
-                            <h4 class="text-success font-weight-bold mb-1">${item.name}</h4>
-                            <p class="mb-1 text-muted"><strong>Email:</strong> ${item.email} | <strong>Phone:</strong> ${item.phone}</p>
-                            <p class="mb-0 text-dark"><strong>Message:</strong> ${item.message}</p>
-                        </div>
-                        <div class="col-md-3 text-md-right mt-3 mt-md-0">
-                            <span class="badge badge-secondary p-2 d-block mb-2">${new Date(item.created_at).toLocaleDateString()}</span>
-                            <button onclick="deleteContact(${item.id})" class="btn btn-outline-danger btn-sm"><i class="fa-solid fa-trash"></i> Delete</button>
-                        </div>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
+            method: 'PUT', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('admin_token')}` },
+            body: JSON.stringify(data)
+        }).then(res => res.json()).then(resData => {
+            if (resData.success) { $('#editAdmisisonModal').modal('hide'); fetchData(); alert('Updated successfully!'); }
+            else alert('Failed to update');
         });
     }
 
-    function deleteContact(id) {
-        if (!confirm('Are you sure you want to delete this message?')) return;
-        const token = localStorage.getItem('admin_token');
-
-        fetch(`${BACKEND_URL}/admin/contacts/${id}`, {
-            method: 'DELETE',
-            headers: { 'Authorization': `Bearer ${token}` }
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.success) {
-                loadContacts(token);
-            } else {
-                alert('Failed to delete');
-            }
-        })
-        .catch(err => alert('Error connecting to server'));
+    function deleteRecord(type, id) {
+        if (!confirm('Are you sure you want to delete this record?')) return;
+        fetch(`${BACKEND_URL}/admin/${type}/${id}`, {
+            method: 'DELETE', headers: { 'Authorization': `Bearer ${localStorage.getItem('admin_token')}` }
+        }).then(res => res.json()).then(data => {
+            if (data.success) fetchData(); else alert('Failed to delete');
+        });
     }
 
-    function logout() {
-        localStorage.removeItem('admin_token');
-        document.getElementById('dashboardSection').style.display = 'none';
-        document.getElementById('loginSection').style.display = 'block';
-    }
+    function logout() { localStorage.removeItem('admin_token'); location.reload(); }
 </script>
 
 </body>
