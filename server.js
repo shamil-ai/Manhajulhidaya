@@ -5,7 +5,7 @@ const { Pool } = require('pg');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// CORS Headers (Vercel ഫ്രണ്ട്-എൻഡിൽ നിന്ന് ഡാറ്റ സ്വീകരിക്കാൻ ഇത് സഹായിക്കും)
+// CORS Headers
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
@@ -74,9 +74,6 @@ app.post('/submit', async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
 // Get all admissions for Admin Panel
 app.get('/admin/admissions', async (req, res) => {
   try {
@@ -88,3 +85,6 @@ app.get('/admin/admissions', async (req, res) => {
   }
 });
 
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
