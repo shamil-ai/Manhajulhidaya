@@ -11,23 +11,103 @@
         .admin-header { background: #059669; color: white; padding: 20px 0; text-align: center; margin-bottom: 30px; }
         .card { border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; }
         .student-photo { width: 60px; height: 60px; object-fit: cover; border-radius: 50%; }
+        .login-container { max-width: 400px; margin: 80px auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
     </style>
 </head>
 <body>
 
-<div class="admin-header">
-    <h2>Manhajul Hidaya - Admin Dashboard</h2>
-    <p>Received Admissions List</p>
+<!-- Login Section -->
+<div id="loginSection" class="container">
+    <div class="login-container">
+        <h3 class="text-center text-success font-weight-bold mb-4">Admin Login</h3>
+        <form id="loginForm">
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" id="username" class="form-control" required autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="password" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-success btn-block font-weight-bold">Login</button>
+            <p id="loginError" class="text-danger text-center mt-3" style="display: none;"></p>
+        </form>
+    </div>
 </div>
 
-<div class="container">
-    <div id="loading" class="text-center py-5">Loading applications...</div>
-    <div id="applicationsList"></div>
+<!-- Dashboard Section (Hidden by default) -->
+<div id="dashboardSection" style="display: none;">
+    <div class="admin-header d-flex justify-content-between align-items-center px-4">
+        <div></div>
+        <div>
+            <h2 class="mb-0">Manhajul Hidaya - Admin Dashboard</h2>
+            <p class="mb-0">Received Admissions List</p>
+        </div>
+        <div>
+            <button onclick="logout()" class="btn btn-light btn-sm font-weight-bold text-danger">Logout</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div id="loading" class="text-center py-5">Loading applications...</div>
+        <div id="applicationsList"></div>
+    </div>
 </div>
 
 <script>
-    fetch('https://manhajulhidaya.onrender.com/admin/admissions')
+    const BACKEND_URL = 'https://manhajulhidaya.onrender.com';
+
+    // Check if already logged in
+    const token = localStorage.getItem('admin_token');
+    if (token) {
+        showDashboard(token);
+    }
+
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const user = document.getElementById('username').value;
+        const pass = document.getElementById('password').value;
+        const errorEl = document.getElementById('loginError');
+
+        fetch(`${BACKEND_URL}/admin/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username: user, password: pass })
+        })
         .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                localStorage.setItem('admin_token', data.token);
+                showDashboard(data.token);
+            } else {
+                errorEl.innerText = data.message || 'Invalid credentials';
+                errorEl.style.display = 'block';
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            errorEl.innerText = 'Connection error!';
+            errorEl.style.display = 'block';
+        });
+    });
+
+    function showDashboard(token) {
+        document.getElementById('loginSection').style.display = 'none';
+        document.getElementById('dashboardSection').style.display = 'block';
+        loadAdmissions(token);
+    }
+
+    function loadAdmissions(token) {
+        fetch(`${BACKEND_URL}/admin/admissions`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        })
+        .then(res => {
+            if (res.status === 403 || res.status === 401) {
+                logout();
+                throw new Error('Unauthorized');
+            }
+            return res.json();
+        })
         .then(response => {
             const container = document.getElementById('applicationsList');
             document.getElementById('loading').style.display = 'none';
@@ -63,6 +143,13 @@
             console.error(err);
             document.getElementById('loading').innerText = 'Failed to load applications.';
         });
+    }
+
+    function logout() {
+        localStorage.removeItem('admin_token');
+        document.getElementById('dashboardSection').style.display = 'none';
+        document.getElementById('loginSection').style.display = 'block';
+    }
 </script>
 
 </body>
