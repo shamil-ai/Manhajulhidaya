@@ -77,3 +77,14 @@ app.post('/submit', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+// Get all admissions for Admin Panel
+app.get('/admin/admissions', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM admissions ORDER BY id DESC');
+    res.status(200).json({ success: true, data: result.rows });
+  } catch (err) {
+    console.error('Database Error:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
