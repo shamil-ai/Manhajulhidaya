@@ -7,23 +7,20 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const JWT_SECRET = process.env.JWT_SECRET || 'manhaj_secret_key_2026';
 
-// CORS Headers
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
   if (req.method === 'OPTIONS') {
     return res.sendStatus(200);
   }
   next();
 });
 
-// Body Parsers with limits for photos/data
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 app.use(cookieParser());
 
-// Neon Database Connection Pool
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: { rejectUnauthorized: false }
@@ -33,7 +30,6 @@ app.get('/', (req, res) => {
   res.send('Manhajul Hidaya Backend is running successfully!');
 });
 
-// Database Connection Test Route
 app.get('/db-test', async (req, res) => {
   try {
     const result = await pool.query('SELECT NOW()');
@@ -82,10 +78,9 @@ app.post('/contact-submit', async (req, res) => {
   }
 });
 
-// Admin Login Route (Using Environment Variables securely)
+// Admin Login Route
 app.post('/admin/login', (req, res) => {
   const { username, password } = req.body;
-  
   const ADMIN_USER = process.env.ADMIN_USER || 'admin';
   const ADMIN_PASS = process.env.ADMIN_PASS || 'manhaj2026';
 
@@ -93,42 +88,59 @@ app.post('/admin/login', (req, res) => {
     const token = jwt.sign({ username }, JWT_SECRET, { expiresIn: '2h' });
     return res.status(200).json({ success: true, token });
   }
-
   res.status(401).json({ success: false, message: 'Invalid username or password' });
 });
 
-// Middleware to verify Admin Token
 const verifyToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
-
-  if (!token) return res.status(403).json({ success: false, message: 'Access denied. No token provided.' });
+  if (!token) return res.status(403).json({ success: false, message: 'Access denied.' });
 
   jwt.verify(token, JWT_SECRET, (err, user) => {
-    if (err) return res.status(403).json({ success: false, message: 'Invalid or expired token.' });
+    if (err) return res.status(403).json({ success: false, message: 'Invalid token.' });
     req.user = user;
     next();
   });
 };
 
-// Get all admissions for Admin Panel (Protected Route)
+// Get Admissions
 app.get('/admin/admissions', verifyToken, async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM admissions ORDER BY id DESC');
     res.status(200).json({ success: true, data: result.rows });
   } catch (err) {
-    console.error('Database Error:', err);
     res.status(500).json({ success: false, error: err.message });
   }
 });
 
-// Get all contact messages for Admin Panel (Protected Route)
+// Delete Admission
+app.delete('/admin/admissions/:id', verifyToken, async (req, res) => {
+  try {
+    const { id } = req.params;
+    await pool.query('DELETE FROM admissions WHERE id = $1', [id]);
+    res.status(200).json({ success: true, message: 'Deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Get Contacts
 app.get('/admin/contacts', verifyToken, async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM contacts ORDER BY id DESC');
     res.status(200).json({ success: true, data: result.rows });
   } catch (err) {
-    console.error('Database Error:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Delete Contact Message
+app.delete('/admin/contacts/:id', verifyToken, async (req, res) => {
+  try {
+    const { id } = req.params;
+    await pool.query('DELETE FROM contacts WHERE id = $1', [id]);
+    res.status(200).json({ success: true, message: 'Deleted successfully' });
+  } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }
 });
