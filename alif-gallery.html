@@ -3,8 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Alif Gallery - Manhajul Hidaya</title>
     
+    <!-- ================= SEO & AI META TAGS ================= -->
+    <title>Alif Gallery - Manhajul Hidaya | Event Photos</title>
+    <meta name="description" content="Explore the Alif Gallery of Manhajul Hidaya. View event photos, memorable moments, and cultural festival highlights from our Da'wa Campus.">
+    <meta name="keywords" content="Alif Gallery, Manhajul Hidaya Gallery, Manhaj Festival Photos, Islamic Campus Kerala, Event Photos Nediyiruppu">
+    <meta name="author" content="Manhajul Hidaya">
+    
+    <!-- AI Crawlers & Image Search Permission -->
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <link rel="canonical" href="https://manhajulhidaya.vercel.app/alif-gallery.html">
+
+    <!-- ================= OPEN GRAPH (For WhatsApp/Facebook sharing) ================= -->
+    <meta property="og:site_name" content="Manhajul Hidaya">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://manhajulhidaya.vercel.app/alif-gallery.html">
+    <meta property="og:title" content="Alif Gallery - Manhajul Hidaya">
+    <meta property="og:description" content="Explore event photos and memorable moments from Manhajul Hidaya Da'wa Campus.">
+    <!-- Replace with a good gallery cover image link -->
+    <meta property="og:image" content="https://manhajulhidaya.vercel.app/main/main/dars.jpg">
+    <meta property="og:image:secure_url" content="https://manhajulhidaya.vercel.app/main/main/dars.jpg">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    <!-- ================= TWITTER CARDS ================= -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Alif Gallery - Manhajul Hidaya">
+    <meta name="twitter:description" content="Explore event photos and memorable moments from Manhajul Hidaya Da'wa Campus.">
+    <meta name="twitter:image" content="https://manhajulhidaya.vercel.app/main/main/dars.jpg">
+
+    <!-- ================= SCHEMA MARKUP (ImageGallery JSON-LD) ================= -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ImageGallery",
+      "name": "Alif Gallery - Manhajul Hidaya",
+      "description": "A visual collection of event photos, cultural fests, and memorable moments from Manhajul Hidaya Da'wa Campus.",
+      "url": "https://manhajulhidaya.vercel.app/alif-gallery.html",
+      "publisher": {
+        "@type": "EducationalOrganization",
+        "name": "Manhajul Hidaya Islamic Academy",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://manhajulhidaya.vercel.app/main/main/logo.png"
+        }
+      }
+    }
+    </script>
+
     <!-- Tailwind CSS & FontAwesome -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
@@ -108,10 +155,10 @@
         <footer class="custom-footer">
             <div class="footer-container">
                 <div class="footer-left">
-                    <img src="http://manhajulhidaya.vercel.app/Logo-w.png" alt="Manhajul Hidaya Emblem" class="footer-emblem-fixed" onerror="this.onerror=null; this.src='main/main/logo.png';">
+                    <img src="https://manhajulhidaya.vercel.app/Logo-w.png" alt="Manhajul Hidaya Emblem" class="footer-emblem-fixed" onerror="this.onerror=null; this.src='main/main/logo.png';">
                     <img src="main/main/caligraphy-dars-w.png" alt="Arabic Calligraphy" class="logo-arabic-fixed" onerror="this.onerror=null; this.src='https://via.placeholder.com/200x50?text=Calligraphy';">
                     <p class="footer-desc">
-                        An institution dedicated to synthesis of traditional values and dynamic contemporary educational advancements, nurturing generation with values and quality education.
+                        An institution dedicated to the synthesis of traditional values and dynamic contemporary educational advancements, nurturing a generation with values and quality education.
                     </p>
                 </div>
 
@@ -216,7 +263,7 @@
             const currentUrl = allPhotos[currentIndex];
             document.getElementById('lightbox-img').src = currentUrl;
             
-            // ഇടതുവശത്തെ കൗണ്ടർ ഓട്ടോമാറ്റിക്കായി അപ്‌ഡേറ്റ് ചെയ്യുന്നു (ഉദാഹരണത്തിന്: 1 / 2)
+            // ഇടതുവശത്തെ കൗണ്ടർ ഓട്ടോമാറ്റിക്കായി അപ്‌ഡേറ്റ് ചെയ്യുന്നു
             document.getElementById('photo-counter').innerText = `${currentIndex + 1} / ${allPhotos.length}`;
         }
 
