@@ -354,7 +354,7 @@
             });
         }
 
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbzb94Sok6ISvimL9XAgrJNkPsporv0DPuda3RaG5324gBZebL_VVe7JPQRNEzmdrAj-/exec';
+        const BACKEND_URL = 'https://manhajulhidaya.onrender.com/contact-submit';
         const form = document.getElementById('contactForm');
         const submitBtn = document.getElementById('submitBtn');
         const btnText = submitBtn.querySelector('span');
@@ -366,11 +366,27 @@
             btnText.textContent = 'Sending...';
             btnIcon.className = 'fa-solid fa-spinner fa-spin';
 
-            fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: new FormData(form) })
-            .then(response => {
-                alert('Thank you! Your message has been sent successfully.');
-                form.reset(); 
-                document.querySelectorAll('.input-group-custom input, .input-group-custom textarea').forEach(input => { input.blur(); });
+            const formData = {
+                Name: document.getElementById('name').value,
+                Email: document.getElementById('email').value,
+                Phone: document.getElementById('phone').value,
+                Message: document.getElementById('address').value
+            };
+
+            fetch(BACKEND_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.success) {
+                    alert('Thank you! Your message has been sent successfully.');
+                    form.reset(); 
+                    document.querySelectorAll('.input-group-custom input, .input-group-custom textarea').forEach(input => { input.blur(); });
+                } else {
+                    alert('Something went wrong!');
+                }
             })
             .catch(error => {
                 console.error('Error!', error);
