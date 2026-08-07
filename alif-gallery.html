@@ -2,7 +2,7 @@
 <html lang="en" class="h-full">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alif Gallery - Manhajul Hidaya</title>
     
     <!-- Tailwind CSS & FontAwesome -->
@@ -39,13 +39,6 @@
         }
         .img-card:hover img, .img-card:active img {
             transform: scale(1.12);
-        }
-
-        /* Lightbox Image - Zoom Disable Styling */
-        #lightbox-img {
-            touch-action: none;
-            user-select: none;
-            -webkit-user-drag: none;
         }
 
         /* Custom Footer CSS */
@@ -153,54 +146,27 @@
     </main>
 
     <!-- 4. LIGHTBOX POPUP -->
-    <div id="lightbox" class="fixed inset-0 bg-black/95 z-50 hidden flex-col justify-between p-4 backdrop-blur-sm select-none">
-        <!-- Top Close Button -->
-        <div class="flex justify-end w-full">
-            <button onclick="closeLightbox()" class="text-white bg-white/20 hover:bg-white/40 rounded-full w-10 h-10 flex items-center justify-center text-2xl font-bold transition">
-                &times;
-            </button>
-        </div>
-
-        <!-- Center Image View -->
-        <div id="lightbox-img-container" class="flex-1 flex items-center justify-center overflow-hidden touch-none">
-            <img id="lightbox-img" src="" alt="Enlarged View" class="max-h-[75vh] max-w-[95vw] object-contain rounded-lg shadow-2xl">
-        </div>
-
-        <!-- Bottom Controls Bar -->
-        <div class="w-full max-w-4xl mx-auto flex items-center justify-between pt-4 px-2">
-            <!-- Left: Dynamic Photo Counter -->
-            <div id="photo-counter" class="text-white font-bold text-sm sm:text-base min-w-[60px]">
-                1 / 1
-            </div>
-
-            <!-- Center: Download Button -->
-            <button id="download-btn" onclick="downloadCurrentPhoto()" class="inline-flex items-center gap-2 text-xs sm:text-sm bg-brand-green hover:bg-emerald-600 text-white font-medium px-4 py-2 sm:px-5 sm:py-2.5 rounded-full shadow-lg transition active:scale-95">
-                <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
-                    <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z"/>
-                </svg> Download Photo
-            </button>
-
-            <!-- Right: Next / Previous Buttons -->
-            <div class="flex items-center gap-2">
-                <button onclick="prevPhoto(event)" class="bg-gray-800 hover:bg-gray-700 text-white w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center border border-gray-600 transition active:scale-95">
-                    ❮
-                </button>
-                <button onclick="nextPhoto(event)" class="bg-gray-800 hover:bg-gray-700 text-white w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center border border-gray-600 transition active:scale-95">
-                    ❯
-                </button>
-            </div>
-        </div>
+    <div id="lightbox" class="fixed inset-0 bg-black/90 z-50 hidden flex-col items-center justify-center p-4 backdrop-blur-sm transition-opacity">
+        <button onclick="closeLightbox()" class="absolute top-4 right-4 text-white bg-white/20 hover:bg-white/40 rounded-full w-10 h-10 flex items-center justify-center text-2xl font-bold transition">
+            &times;
+        </button>
+        <img id="lightbox-img" src="" alt="Enlarged View" class="max-h-[75vh] max-w-[95vw] object-contain rounded-lg shadow-2xl">
+        <button id="download-btn" onclick="downloadCurrentPhoto()" class="mt-4 inline-flex items-center gap-2 text-sm bg-brand-green hover:bg-emerald-600 text-white font-medium px-5 py-2.5 rounded-full shadow-lg transition active:scale-95">
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z"/>
+            </svg> Download Photo
+        </button>
     </div>
 
     <!-- JAVASCRIPT -->
     <script>
-        let allPhotos = [];
-        let currentIndex = 0;
+        let currentPhotoUrl = '';
 
-        function openLightbox(index) {
-            currentIndex = index;
-            updateLightbox();
+        function openLightbox(src) {
+            currentPhotoUrl = src;
             const lightbox = document.getElementById('lightbox');
+            const img = document.getElementById('lightbox-img');
+            img.src = src;
             lightbox.classList.remove('hidden');
             lightbox.classList.add('flex');
         }
@@ -211,30 +177,9 @@
             lightbox.classList.remove('flex');
         }
 
-        function updateLightbox() {
-            if (allPhotos.length === 0) return;
-            const currentUrl = allPhotos[currentIndex];
-            document.getElementById('lightbox-img').src = currentUrl;
-            document.getElementById('photo-counter').innerText = `${currentIndex + 1} / ${allPhotos.length}`;
-        }
-
-        function nextPhoto(event) {
-            if (event) event.stopPropagation();
-            if (allPhotos.length === 0) return;
-            currentIndex = (currentIndex + 1) % allPhotos.length;
-            updateLightbox();
-        }
-
-        function prevPhoto(event) {
-            if (event) event.stopPropagation();
-            if (allPhotos.length === 0) return;
-            currentIndex = (currentIndex - 1 + allPhotos.length) % allPhotos.length;
-            updateLightbox();
-        }
-
         // ഒറ്റ ഫോട്ടോ ഡൗൺലോഡ് ചെയ്യുന്ന ഫങ്ഷൻ
         async function downloadSinglePhoto(imageUrl, event) {
-            if (event) event.stopPropagation();
+            if (event) event.stopPropagation(); // ലൈറ്റ്‌ബോക്സ് തുറക്കുന്നത് തടയുന്നു
             try {
                 const response = await fetch(imageUrl);
                 const blob = await response.blob();
@@ -252,43 +197,13 @@
         }
 
         async function downloadCurrentPhoto() {
-            if (allPhotos.length > 0) {
-                downloadSinglePhoto(allPhotos[currentIndex]);
-            }
+            if (!currentPhotoUrl) return;
+            downloadSinglePhoto(currentPhotoUrl);
         }
 
         document.getElementById('lightbox').addEventListener('click', function(e) {
             if (e.target === this) {
                 closeLightbox();
-            }
-        });
-
-        // Touch Swipe Handling for Mobile
-        let touchStartX = 0;
-        let touchEndX = 0;
-        const lightboxContainer = document.getElementById('lightbox-img-container');
-
-        lightboxContainer.addEventListener('touchstart', e => {
-            touchStartX = e.changedTouches[0].screenX;
-        }, { passive: true });
-
-        lightboxContainer.addEventListener('touchend', e => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-        }, { passive: true });
-
-        function handleSwipe() {
-            if (touchEndX < touchStartX - 40) {
-                nextPhoto(); // ഇടത്തോട്ട് സ്വൈപ്പ്
-            } else if (touchEndX > touchStartX + 40) {
-                prevPhoto(); // വലത്തോട്ട് സ്വൈപ്പ്
-            }
-        }
-
-        // Pinch-to-zoom Prevention
-        document.addEventListener('gesturestart', function (e) {
-            if (!document.getElementById('lightbox').classList.contains('hidden')) {
-                e.preventDefault();
             }
         });
 
@@ -310,21 +225,19 @@
             .then(data => {
                 const container = document.getElementById('gallery-container');
                 container.innerHTML = '';
-                allPhotos = [];
+                let hasPhotos = false;
 
                 for (const folder in data) {
                     if (Array.isArray(data[folder])) {
                         data[folder].forEach(imagePath => {
                             if (/\.(jpg|jpeg|png|webp)$/i.test(imagePath)) {
+                                hasPhotos = true;
                                 const cleanPath = imagePath.replace(/^manhajul\//, '');
                                 const imageUrl = `https://raw.githubusercontent.com/shamil-ai/Grs/main/manhajul/${cleanPath}`;
                                 
-                                const photoIndex = allPhotos.length;
-                                allPhotos.push(imageUrl);
-
                                 const card = document.createElement('div');
                                 card.className = "img-card bg-white rounded overflow-hidden shadow-sm border border-gray-200 cursor-pointer aspect-square relative group";
-                                card.onclick = () => openLightbox(photoIndex);
+                                card.onclick = () => openLightbox(imageUrl);
 
                                 const img = document.createElement('img');
                                 img.src = imageUrl;
@@ -332,6 +245,7 @@
                                 img.className = "w-full h-full object-cover";
                                 img.loading = "lazy";
 
+                                // ഓരോ ഫോട്ടോയ്ക്കും താഴെ വലതുവശത്തായി ഡൗൺലോഡ് ബട്ടൺ
                                 const dlBtn = document.createElement('button');
                                 dlBtn.className = "absolute bottom-1 right-1 bg-black/60 hover:bg-brand-green text-white p-1 rounded-full shadow transition z-10 flex items-center justify-center";
                                 dlBtn.setAttribute('title', 'Download Photo');
@@ -346,7 +260,7 @@
                     }
                 }
 
-                if (allPhotos.length === 0) {
+                if (!hasPhotos) {
                     container.innerHTML = '<p class="text-gray-500 col-span-full text-center py-12 text-sm">No valid photos uploaded yet.</p>';
                 }
             })
@@ -358,3 +272,4 @@
     </script>
 </body>
 </html>
+
