@@ -1,191 +1,360 @@
 <!DOCTYPE html>
-<html lang="ml">
+<html lang="en" class="h-full">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Gallery Viewer</title>
-  <style>
-    /* Modal / Lightbox Design */
-    .modal {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      position: fixed;
-      top: 0; left: 0; width: 100vw; height: 100vh;
-      background-color: rgba(0, 0, 0, 0.95);
-      z-index: 1000;
-    }
-
-    /* Top Close Button */
-    .close-btn {
-      position: absolute;
-      top: 15px; right: 20px;
-      color: white; font-size: 28px;
-      background: none; border: none; cursor: pointer;
-    }
-
-    /* Image Container & Disable Zoom Styling */
-    .image-container {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      touch-action: pan-y; /* സൂം തടയാൻ */
-    }
-
-    .image-container img {
-      max-width: 90%;
-      max-height: 75vh;
-      object-fit: contain;
-      user-select: none;
-      -webkit-user-drag: none;
-      touch-action: none; /* ഇമേജ് സൂം ചെയ്യുന്നത് തടയുന്നു */
-    }
-
-    /* Bottom Control Bar */
-    .modal-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 15px 20px;
-      background: #0d1117;
-      color: white;
-    }
-
-    /* Left Side: Dynamic Counter */
-    .photo-counter {
-      font-size: 16px;
-      font-weight: bold;
-      color: #ffffff;
-      min-width: 50px;
-    }
-
-    /* Center: Download Button */
-    .download-btn {
-      background-color: #059669;
-      color: white;
-      padding: 10px 18px;
-      border-radius: 20px;
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 500;
-    }
-
-    /* Right Side: Navigation Buttons */
-    .nav-buttons {
-      display: flex;
-      gap: 10px;
-    }
-
-    .nav-btn {
-      background: #21262d;
-      color: white;
-      border: 1px solid #30363d;
-      border-radius: 50%;
-      width: 36px; height: 36px;
-      font-size: 18px;
-      cursor: pointer;
-    }
-  </style>
-</head>
-<body>
-
-  <!-- Modal UI -->
-  <div id="galleryModal" class="modal">
-    <button class="close-btn" onclick="closeModal()">✕</button>
-
-    <div class="image-container" id="imageContainer">
-      <img id="modalImg" src="" alt="Gallery Image" draggable="false">
-    </div>
-
-    <div class="modal-footer">
-      <!-- 1. ഇടതുവശത്ത് ഓട്ടോമാറ്റിക് കൗണ്ട് (Dynamic Counter) -->
-      <div class="photo-counter" id="photoCounter">1 / 1</div>
-
-      <!-- Center Download Button -->
-      <a id="downloadBtn" href="#" download class="download-btn">
-        📥 Download Photo
-      </a>
-
-      <!-- 2. വലതുവശത്ത് നെക്സ്റ്റ് / പ്രിവിയസ് ബട്ടൺ -->
-      <div class="nav-buttons">
-        <button class="nav-btn" onclick="prevImage()">❮</button>
-        <button class="nav-btn" onclick="nextImage()">❯</button>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    let images = [];
-    let currentIndex = 0;
-
-    // gallery.json-ൽ നിന്ന് ഫോട്ടോകൾ ഓട്ടോമാറ്റിക്കായി ലോഡ് ചെയ്യുന്നു
-    async function loadGallery() {
-      try {
-        const response = await fetch('manhajul/gallery.json');
-        const data = await response.json();
-        images = data.manhajul || [];
-        if (images.length > 0) {
-          updateModal();
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Alif Gallery - Manhajul Hidaya</title>
+    
+    <!-- Tailwind CSS & FontAwesome -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-green': '#0e9f6e',
+                    }
+                }
+            }
         }
-      } catch (error) {
-        console.error("Gallery JSON ലോഡ് ചെയ്യാൻ കഴിഞ്ഞില്ല:", error);
-      }
-    }
+    </script>
+    <style>
+        /* ഫോട്ടോകൾ സ്ക്രോൾ ചെയ്യുമ്പോൾ വരുന്ന സ്ക്രോൾബാർ സ്റ്റൈൽ */
+        #gallery-scroll-container::-webkit-scrollbar {
+            width: 5px;
+        }
+        #gallery-scroll-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        #gallery-scroll-container::-webkit-scrollbar-thumb {
+            background: #0e9f6e;
+            border-radius: 3px;
+        }
 
-    // UI അപ്ഡേറ്റ് ചെയ്യുന്ന ഫങ്ഷൻ (കൗണ്ടും ഫോട്ടോയും)
-    function updateModal() {
-      if (images.length === 0) return;
+        /* സ്മൂത്ത് സൂം ആനിമേഷൻ (Touch & Hover Effect) */
+        .img-card img {
+            transition: transform 0.4s ease, opacity 0.3s ease;
+        }
+        .img-card:hover img, .img-card:active img {
+            transform: scale(1.12);
+        }
 
-      const imgPath = `manhajul/${images[currentIndex]}`;
-      document.getElementById('modalImg').src = imgPath;
-      document.getElementById('downloadBtn').href = imgPath;
+        /* Lightbox Image - Zoom Disable Styling */
+        #lightbox-img {
+            touch-action: none;
+            user-select: none;
+            -webkit-user-drag: none;
+        }
 
-      // ഇടതുവശത്തെ കൗണ്ട് ഓട്ടോമാറ്റിക്കായി അപ്‌ഡേറ്റ് ചെയ്യുന്നു (ഉദാഹരണത്തിന്: 1 / 15)
-      document.getElementById('photoCounter').innerText = `${currentIndex + 1} / ${images.length}`;
-    }
+        /* Custom Footer CSS */
+        .custom-footer { background-color: #0f172a; color: #e2e8f0; padding: 40px 0 20px; line-height: 1.4; width: 100%; margin-top: 40px; }
+        .footer-container { display: flex; justify-content: space-between; max-width: 1200px; margin: 0 auto; padding: 0 20px; flex-wrap: wrap; gap: 40px; }
+        .footer-left { flex: 1.5; min-width: 250px; }
+        img.footer-emblem-fixed { width: 90px !important; max-width: 90px !important; height: auto !important; display: block !important; margin-bottom: 15px !important; }
+        img.logo-arabic-fixed { width: 180px !important; max-width: 180px !important; height: auto !important; display: block !important; margin-bottom: 15px !important; }
+        .footer-desc { font-size: 14px; line-height: 1.6; color: #cbd5e1; padding-right: 20px; }
+        .footer-center { flex: 1; min-width: 150px; }
+        .footer-links { list-style: none; padding: 0; margin: 0; }
+        .footer-links li { margin-bottom: 12px; }
+        .footer-links a { color: #f8fafc; text-decoration: none; font-size: 14px; font-weight: 400; transition: color 0.3s ease; }
+        .footer-links a:hover { color: #10b981; }
+        .footer-right { flex: 1.5; min-width: 200px; font-size: 14px; color: #f8fafc; }
+        .footer-address { margin-bottom: 20px; line-height: 1.8; color: #f8fafc; }
+        .footer-contact-item { margin-bottom: 8px; display: block; color: #f8fafc; text-decoration: none; transition: color 0.3s ease; }
+        .footer-contact-item:hover { color: #10b981; }
+        .footer-bottom { max-width: 1200px; margin: 30px auto 0; padding: 20px 20px 0; border-top: 1px solid rgba(255, 255, 255, 0.1); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .copyright-text { font-size: 13px; color: #f8fafc; display: flex; align-items: center; gap: 8px; }
+        .divider { color: #64748b; }
+        .footer-social { display: flex; align-items: center; gap: 20px; }
+        .footer-social a { color: #f8fafc; font-size: 16px; text-decoration: none; transition: transform 0.3s ease, color 0.3s ease; }
+        .footer-social a:hover { color: #10b981; transform: translateY(-3px); }
+        .scroll-top-btn { background: none; border: none; color: #f8fafc; font-size: 20px; cursor: pointer; margin-left: 10px; transition: color 0.3s ease; padding: 0; }
+        .scroll-top-btn:hover { color: #10b981; }
 
-    function nextImage() {
-      currentIndex = (currentIndex + 1) % images.length;
-      updateModal();
-    }
+        @media (max-width: 768px) {
+            .footer-container { flex-direction: column; gap: 30px; }
+            .footer-bottom { flex-direction: column; justify-content: center; text-align: center; }
+            .copyright-text { flex-direction: column; gap: 5px; }
+            .divider { display: none; }
+            .footer-desc { padding-right: 0; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 h-screen flex flex-col overflow-hidden text-gray-800">
 
-    function prevImage() {
-      currentIndex = (currentIndex - 1 + images.length) % images.length;
-      updateModal();
-    }
+    <!-- 1. FIXED HEADER & NAV -->
+    <header class="flex-none bg-brand-green text-white py-3 px-4 text-center shadow-md z-10">
+        <h1 class="text-2xl sm:text-3xl font-bold">Alif Gallery</h1>
+        <p class="text-emerald-100 text-xs sm:text-sm mt-0.5">Explore event photos and memorable moments</p>
+        <div class="mt-2">
+            <a href="index.html" class="inline-flex items-center text-xs text-brand-green bg-white px-3.5 py-1 rounded-full font-medium shadow hover:bg-emerald-50 transition">
+                ← Back to Fest Home
+            </a>
+        </div>
+    </header>
 
-    // 3. കൈകൊണ്ട് സ്വൈപ്പ് ചെയ്യാനുള്ള സംവിധാനം (Touch Swipe Logic)
-    let touchStartX = 0;
-    let touchEndX = 0;
-    const imgContainer = document.getElementById('imageContainer');
+    <!-- 2. SCROLLABLE CONTENT AREA -->
+    <main id="gallery-scroll-container" class="flex-1 overflow-y-auto">
+        <div class="max-w-7xl mx-auto p-2 sm:p-4 min-h-[60vh]">
+            <!-- ഫോണിൽ ഒരു വരിയിൽ 5 ഫോട്ടോകൾ വീതം -->
+            <div id="gallery-container" class="grid grid-cols-5 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-1.5 sm:gap-2">
+                <p class="text-gray-500 col-span-full text-center py-12 text-sm">Loading photos...</p>
+            </div>
+        </div>
 
-    imgContainer.addEventListener('touchstart', e => {
-      touchStartX = e.changedTouches[0].screenX;
-    }, false);
+        <!-- 3. FOOTER -->
+        <footer class="custom-footer">
+            <div class="footer-container">
+                <div class="footer-left">
+                    <img src="http://manhajulhidaya.vercel.app/Logo-w.png" alt="Manhajul Hidaya Emblem" class="footer-emblem-fixed" onerror="this.onerror=null; this.src='main/main/logo.png';">
+                    <img src="main/main/caligraphy-dars-w.png" alt="Arabic Calligraphy" class="logo-arabic-fixed" onerror="this.onerror=null; this.src='https://via.placeholder.com/200x50?text=Calligraphy';">
+                    <p class="footer-desc">
+                        An institution dedicated to synthesis of traditional values and dynamic contemporary educational advancements, nurturing generation with values and quality education.
+                    </p>
+                </div>
 
-    imgContainer.addEventListener('touchend', e => {
-      touchEndX = e.changedTouches[0].screenX;
-      handleSwipe();
-    }, false);
+                <div class="footer-center">
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html#about">About</a></li>
+                        <li><a href="manhaj-projects.html">Projects</a></li>
+                        <li><a href="alif-gallery.html">Gallery</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
 
-    function handleSwipe() {
-      if (touchEndX < touchStartX - 40) {
-        nextImage(); // ഇടത്തോട്ട് സ്വൈപ്പ് ചെയ്യുമ്പോൾ അടുത്ത ഫോട്ടോ
-      }
-      if (touchEndX > touchStartX + 40) {
-        prevImage(); // വലത്തോട്ട് സ്വൈപ്പ് ചെയ്യുമ്പോൾ മുൻപത്തെ ഫോട്ടോ
-      }
-    }
+                <div class="footer-right">
+                    <div class="footer-address">
+                        Al Manhajul Hidaya,<br>
+                        Nediyiruppu, Malappuram DT,<br>
+                        Kerala, India – 673638
+                    </div>
+                    <a href="tel:+919895580156" class="footer-contact-item">+91 9895580156</a>
+                    <a href="mailto:manhajulhidayacm@gmail.com" class="footer-contact-item">manhajulhidayacm@gmail.com</a>
+                </div>
+            </div>
 
-    // 4. സൂം ചെയ്യപ്പെടാതിരിക്കാൻ (Pinch-to-zoom prevention)
-    document.addEventListener('gesturestart', function (e) {
-      e.preventDefault();
-    });
+            <div class="footer-bottom">
+                <div class="copyright-text">
+                    <span>© 2026 Al Manhajul Hidaya</span>
+                    <span class="divider">|</span>
+                    <span>All Rights Reserved</span>
+                </div>
+                <div class="footer-social">
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    <button class="scroll-top-btn" id="scrollTopBtn" aria-label="Scroll to top"><i class="fa-solid fa-chevron-up"></i></button>
+                </div>
+            </div>
+        </footer>
+    </main>
 
-    // തുടക്കത്തിൽ ഫോട്ടോകൾ ലോഡ് ചെയ്യുക
-    loadGallery();
-  </script>
+    <!-- 4. LIGHTBOX POPUP -->
+    <div id="lightbox" class="fixed inset-0 bg-black/95 z-50 hidden flex-col justify-between p-4 backdrop-blur-sm select-none">
+        <!-- Top Close Button -->
+        <div class="flex justify-end w-full">
+            <button onclick="closeLightbox()" class="text-white bg-white/20 hover:bg-white/40 rounded-full w-10 h-10 flex items-center justify-center text-2xl font-bold transition">
+                &times;
+            </button>
+        </div>
+
+        <!-- Center Image View -->
+        <div id="lightbox-img-container" class="flex-1 flex items-center justify-center overflow-hidden touch-none">
+            <img id="lightbox-img" src="" alt="Enlarged View" class="max-h-[75vh] max-w-[95vw] object-contain rounded-lg shadow-2xl">
+        </div>
+
+        <!-- Bottom Controls Bar -->
+        <div class="w-full max-w-4xl mx-auto flex items-center justify-between pt-4 px-2">
+            <!-- Left: Dynamic Photo Counter -->
+            <div id="photo-counter" class="text-white font-bold text-sm sm:text-base min-w-[60px]">
+                1 / 1
+            </div>
+
+            <!-- Center: Download Button -->
+            <button id="download-btn" onclick="downloadCurrentPhoto()" class="inline-flex items-center gap-2 text-xs sm:text-sm bg-brand-green hover:bg-emerald-600 text-white font-medium px-4 py-2 sm:px-5 sm:py-2.5 rounded-full shadow-lg transition active:scale-95">
+                <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                    <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z"/>
+                </svg> Download Photo
+            </button>
+
+            <!-- Right: Next / Previous Buttons -->
+            <div class="flex items-center gap-2">
+                <button onclick="prevPhoto(event)" class="bg-gray-800 hover:bg-gray-700 text-white w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center border border-gray-600 transition active:scale-95">
+                    ❮
+                </button>
+                <button onclick="nextPhoto(event)" class="bg-gray-800 hover:bg-gray-700 text-white w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center border border-gray-600 transition active:scale-95">
+                    ❯
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        let allPhotos = [];
+        let currentIndex = 0;
+
+        function openLightbox(index) {
+            currentIndex = index;
+            updateLightbox();
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.remove('hidden');
+            lightbox.classList.add('flex');
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.add('hidden');
+            lightbox.classList.remove('flex');
+        }
+
+        function updateLightbox() {
+            if (allPhotos.length === 0) return;
+            const currentUrl = allPhotos[currentIndex];
+            document.getElementById('lightbox-img').src = currentUrl;
+            document.getElementById('photo-counter').innerText = `${currentIndex + 1} / ${allPhotos.length}`;
+        }
+
+        function nextPhoto(event) {
+            if (event) event.stopPropagation();
+            if (allPhotos.length === 0) return;
+            currentIndex = (currentIndex + 1) % allPhotos.length;
+            updateLightbox();
+        }
+
+        function prevPhoto(event) {
+            if (event) event.stopPropagation();
+            if (allPhotos.length === 0) return;
+            currentIndex = (currentIndex - 1 + allPhotos.length) % allPhotos.length;
+            updateLightbox();
+        }
+
+        // ഒറ്റ ഫോട്ടോ ഡൗൺലോഡ് ചെയ്യുന്ന ഫങ്ഷൻ
+        async function downloadSinglePhoto(imageUrl, event) {
+            if (event) event.stopPropagation();
+            try {
+                const response = await fetch(imageUrl);
+                const blob = await response.blob();
+                const blobUrl = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = blobUrl;
+                a.download = imageUrl.split('/').pop() || 'photo.jpg';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(blobUrl);
+            } catch (error) {
+                window.open(imageUrl, '_blank');
+            }
+        }
+
+        async function downloadCurrentPhoto() {
+            if (allPhotos.length > 0) {
+                downloadSinglePhoto(allPhotos[currentIndex]);
+            }
+        }
+
+        document.getElementById('lightbox').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeLightbox();
+            }
+        });
+
+        // Touch Swipe Handling for Mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+        const lightboxContainer = document.getElementById('lightbox-img-container');
+
+        lightboxContainer.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        lightboxContainer.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, { passive: true });
+
+        function handleSwipe() {
+            if (touchEndX < touchStartX - 40) {
+                nextPhoto(); // ഇടത്തോട്ട് സ്വൈപ്പ്
+            } else if (touchEndX > touchStartX + 40) {
+                prevPhoto(); // വലത്തോട്ട് സ്വൈപ്പ്
+            }
+        }
+
+        // Pinch-to-zoom Prevention
+        document.addEventListener('gesturestart', function (e) {
+            if (!document.getElementById('lightbox').classList.contains('hidden')) {
+                e.preventDefault();
+            }
+        });
+
+        // Scroll to top
+        const scrollTopBtn = document.getElementById('scrollTopBtn');
+        const scrollContainer = document.getElementById('gallery-scroll-container');
+        if (scrollTopBtn && scrollContainer) {
+            scrollTopBtn.addEventListener('click', function() {
+                scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+
+        // Fetch Photos from GitHub
+        fetch('https://raw.githubusercontent.com/shamil-ai/Grs/main/manhajul/gallery.json?t=' + new Date().getTime())
+            .then(response => {
+                if (!response.ok) throw new Error('Gallery data not found');
+                return response.json();
+            })
+            .then(data => {
+                const container = document.getElementById('gallery-container');
+                container.innerHTML = '';
+                allPhotos = [];
+
+                for (const folder in data) {
+                    if (Array.isArray(data[folder])) {
+                        data[folder].forEach(imagePath => {
+                            if (/\.(jpg|jpeg|png|webp)$/i.test(imagePath)) {
+                                const cleanPath = imagePath.replace(/^manhajul\//, '');
+                                const imageUrl = `https://raw.githubusercontent.com/shamil-ai/Grs/main/manhajul/${cleanPath}`;
+                                
+                                const photoIndex = allPhotos.length;
+                                allPhotos.push(imageUrl);
+
+                                const card = document.createElement('div');
+                                card.className = "img-card bg-white rounded overflow-hidden shadow-sm border border-gray-200 cursor-pointer aspect-square relative group";
+                                card.onclick = () => openLightbox(photoIndex);
+
+                                const img = document.createElement('img');
+                                img.src = imageUrl;
+                                img.alt = "Gallery Event Photo";
+                                img.className = "w-full h-full object-cover";
+                                img.loading = "lazy";
+
+                                const dlBtn = document.createElement('button');
+                                dlBtn.className = "absolute bottom-1 right-1 bg-black/60 hover:bg-brand-green text-white p-1 rounded-full shadow transition z-10 flex items-center justify-center";
+                                dlBtn.setAttribute('title', 'Download Photo');
+                                dlBtn.innerHTML = `<svg class="w-3 h-3 fill-current" viewBox="0 0 20 20"><path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z"/></svg>`;
+                                dlBtn.onclick = (e) => downloadSinglePhoto(imageUrl, e);
+
+                                card.appendChild(img);
+                                card.appendChild(dlBtn);
+                                container.appendChild(card);
+                            }
+                        });
+                    }
+                }
+
+                if (allPhotos.length === 0) {
+                    container.innerHTML = '<p class="text-gray-500 col-span-full text-center py-12 text-sm">No valid photos uploaded yet.</p>';
+                }
+            })
+            .catch(error => {
+                console.error('Error loading gallery:', error);
+                const container = document.getElementById('gallery-container');
+                container.innerHTML = '<p class="text-red-500 col-span-full text-center py-12 text-sm">Failed to load photos. Please try again later.</p>';
+            });
+    </script>
 </body>
 </html>
