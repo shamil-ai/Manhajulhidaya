@@ -1,205 +1,208 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alif Gallery - Manhajul Hidaya</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-          theme: {
-            extend: {
-              colors: {
-                'brand-green': '#0e9f6e', 
-              }
-            }
-          }
-        }
-    </script>
+    <title>Alif Gallery | Manhajul Hidaya</title>
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+
     <style>
-        /* ഫോട്ടോകൾ സ്ക്രോൾ ചെയ്യുമ്പോൾ വരുന്ന സ്ക്രോൾബാർ സ്റ്റൈൽ */
-        #gallery-scroll-container::-webkit-scrollbar {
-            width: 5px;
-        }
-        #gallery-scroll-container::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-        #gallery-scroll-container::-webkit-scrollbar-thumb {
-            background: #0e9f6e;
-            border-radius: 3px;
+        :root {
+            --primary-green: #059669;
+            --light-green: #10b981;
+            --bg-color: #f8fafc;
+            --text-dark: #0f172a;
         }
 
-        /* സ്മൂത്ത് സൂം ആനിമേഷൻ (Touch & Hover Effect) */
-        .img-card img {
-            transition: transform 0.4s ease, opacity 0.3s ease;
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            margin: 0;
+            padding: 0;
         }
-        .img-card:hover img, .img-card:active img {
-            transform: scale(1.12); /* ചെറുതായി സൂം ആകുന്ന എഫക്റ്റ് */
+
+        /* Gallery Header */
+        .gallery-header {
+            background-color: var(--primary-green);
+            color: white;
+            text-align: center;
+            padding: 40px 20px 30px;
+        }
+
+        .gallery-header h1 {
+            font-weight: 700;
+            font-size: 2.2rem;
+            margin-bottom: 5px;
+        }
+
+        .gallery-header p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .btn-back {
+            display: inline-block;
+            background: white;
+            color: var(--primary-green);
+            padding: 8px 22px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-back:hover {
+            color: var(--primary-green);
+            text-decoration: none;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        /* Gallery Container & Grid */
+        .gallery-container {
+            max-width: 1200px;
+            margin: 30px auto 60px;
+            padding: 0 20px;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
+        }
+
+        .gallery-item {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            aspect-ratio: 1 / 1;
+            background: #fff;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        /* Custom Footer CSS */
+        .custom-footer { background-color: #0f172a; color: #e2e8f0; padding: 40px 0 20px; line-height: 1.4; width: 100%; overflow: hidden; }
+        .footer-container { display: flex; justify-content: space-between; max-width: 1200px; margin: 0 auto; padding: 0 20px; flex-wrap: wrap; gap: 40px; }
+        .footer-left { flex: 1.5; min-width: 250px; }
+        img.footer-emblem-fixed { width: 90px !important; max-width: 90px !important; height: auto !important; display: block !important; margin-bottom: 15px !important; }
+        img.logo-arabic-fixed { width: 180px !important; max-width: 180px !important; height: auto !important; display: block !important; margin-bottom: 15px !important; }
+        .footer-desc { font-size: 14px; line-height: 1.6; color: #cbd5e1; padding-right: 20px; }
+        .footer-center { flex: 1; min-width: 150px; }
+        .footer-links { list-style: none; padding: 0; margin: 0; }
+        .footer-links li { margin-bottom: 12px; }
+        .footer-links a { color: #f8fafc; text-decoration: none; font-size: 14px; font-weight: 400; transition: color 0.3s ease; }
+        .footer-links a:hover { color: #10b981; }
+        .footer-right { flex: 1.5; min-width: 200px; font-size: 14px; color: #f8fafc; }
+        .footer-address { margin-bottom: 20px; line-height: 1.8; color: #f8fafc; }
+        .footer-contact-item { margin-bottom: 8px; display: block; color: #f8fafc; text-decoration: none; transition: color 0.3s ease; }
+        .footer-contact-item:hover { color: #10b981; }
+        .footer-bottom { max-width: 1200px; margin: 30px auto 0; padding: 20px 20px 0; border-top: 1px solid rgba(255, 255, 255, 0.1); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .copyright-text { font-size: 13px; color: #f8fafc; display: flex; align-items: center; gap: 8px; }
+        .divider { color: #64748b; }
+        .footer-social { display: flex; align-items: center; gap: 20px; }
+        .footer-social a { color: #f8fafc; font-size: 16px; text-decoration: none; transition: transform 0.3s ease, color 0.3s ease; }
+        .footer-social a:hover { color: #10b981; transform: translateY(-3px); }
+        .scroll-top-btn { background: none; border: none; color: #f8fafc; font-size: 20px; cursor: pointer; margin-left: 10px; transition: color 0.3s ease; padding: 0; }
+        .scroll-top-btn:hover { color: #10b981; }
+
+        @media (max-width: 768px) {
+            .footer-container { flex-direction: column; gap: 30px; }
+            .footer-bottom { flex-direction: column; justify-content: center; text-align: center; }
+            .copyright-text { flex-direction: column; gap: 5px; }
+            .divider { display: none; }
+            .footer-desc { padding-right: 0; }
+            .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; }
         }
     </style>
 </head>
-<body class="bg-gray-50 h-screen flex flex-col overflow-hidden text-gray-800">
+<body>
 
-    <!-- 1. FIXED HEADER & NAV (എപ്പോഴും മുകളിൽ നിൽക്കും) -->
-    <header class="flex-none bg-brand-green text-white py-3 px-4 text-center shadow-md z-10">
-        <h1 class="text-2xl sm:text-3xl font-bold">Alif Gallery</h1>
-        <p class="text-emerald-100 text-xs sm:text-sm mt-0.5">Explore event photos and memorable moments</p>
-        <div class="mt-2">
-            <a href="index.html" class="inline-flex items-center text-xs text-brand-green bg-white px-3.5 py-1 rounded-full font-medium shadow hover:bg-emerald-50 transition">
-                ← Back to Fest Home
-            </a>
-        </div>
+    <!-- Header Section -->
+    <header class="gallery-header">
+        <h1>Alif Gallery</h1>
+        <p>Explore event photos and memorable moments</p>
+        <a href="index.html" class="btn-back"><i class="fa-solid fa-arrow-left mr-1"></i> Back to Fest Home</a>
     </header>
 
-    <!-- 2. SCROLLABLE GALLERY AREA (ഫോട്ടോകൾ മാത്രം സ്ക്രോൾ ചെയ്യും) -->
-    <main id="gallery-scroll-container" class="flex-1 overflow-y-auto p-2 sm:p-4">
-        <div class="max-w-7xl mx-auto">
-            <!-- ഫോണിൽ ഒരു വരിയിൽ 5 ഫോട്ടോകൾ വീതം (grid-cols-5) -->
-            <div id="gallery-container" class="grid grid-cols-5 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-1.5 sm:gap-2">
-                <p class="text-gray-500 col-span-full text-center py-12 text-sm">Loading photos...</p>
-            </div>
+    <!-- Gallery Photos Grid Section -->
+    <main class="gallery-container">
+        <div class="gallery-grid" id="galleryGrid">
+            <!-- Photos will be placed here -->
         </div>
     </main>
 
-    <!-- 3. FIXED FOOTER (എപ്പോഴും താഴെ നിൽക്കും) -->
-    <footer class="flex-none bg-black text-gray-300 py-3 px-4 z-10 border-t border-gray-800 text-center text-xs">
-        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-1.5">
-            <div>
-                <span class="font-bold text-white">Alif Fest</span> - Manhajul Hidaya
+    <!-- Footer Section -->
+    <footer class="custom-footer">
+        <div class="footer-container">
+            <div class="footer-left">
+                <img src="http://manhajulhidaya.vercel.app/Logo-w.png" alt="Manhajul Hidaya Emblem" class="footer-emblem-fixed" onerror="this.onerror=null; this.src='main/main/logo.png';">
+                <img src="main/main/caligraphy-dars-w.png" alt="Arabic Calligraphy" class="logo-arabic-fixed" onerror="this.onerror=null; this.src='https://via.placeholder.com/200x50?text=Calligraphy';">
+                <p class="footer-desc">
+                    An institution dedicated to synthesis of traditional values and dynamic contemporary educational advancements, nurturing generation with values and quality education.
+                </p>
             </div>
-            <div class="flex gap-4 text-gray-400">
-                <a href="index.html" class="hover:text-white">Home</a>
-                <a href="about.html" class="hover:text-white">About</a>
-                <a href="contact.html" class="hover:text-white">Contact</a>
+
+            <div class="footer-center">
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.html#about">About</a></li>
+                    <li><a href="manhaj-projects.html">Projects</a></li>
+                    <li><a href="alif-gallery.html">Gallery</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
             </div>
-            <p class="text-gray-500">&copy; 2026 Alif Fest</p>
+
+            <div class="footer-right">
+                <div class="footer-address">
+                    Al Manhajul Hidaya,<br>
+                    Nediyiruppu, Malappuram DT,<br>
+                    Kerala, India – 673638
+                </div>
+                <a href="tel:+919895580156" class="footer-contact-item">+91 9895580156</a>
+                <a href="mailto:manhajulhidayacm@gmail.com" class="footer-contact-item">manhajulhidayacm@gmail.com</a>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="copyright-text">
+                <span>© 2026 Al Manhajul Hidaya</span>
+                <span class="divider">|</span>
+                <span>All Rights Reserved</span>
+            </div>
+            <div class="footer-social">
+                <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                <button class="scroll-top-btn" id="scrollTopBtn" aria-label="Scroll to top"><i class="fa-solid fa-chevron-up"></i></button>
+            </div>
         </div>
     </footer>
 
-    <!-- 4. LIGHTBOX POPUP & DOWNLOAD BUTTON -->
-    <div id="lightbox" class="fixed inset-0 bg-black/90 z-50 hidden flex-col items-center justify-center p-4 backdrop-blur-sm transition-opacity">
-        <!-- ക്ലോസ് ബട്ടൺ -->
-        <button onclick="closeLightbox()" class="absolute top-4 right-4 text-white bg-white/20 hover:bg-white/40 rounded-full w-10 h-10 flex items-center justify-center text-2xl font-bold transition">
-            &times;
-        </button>
-
-        <!-- വലുതായി കാണിക്കുന്ന ഫോട്ടോ -->
-        <img id="lightbox-img" src="" alt="Enlarged View" class="max-h-[75vh] max-w-[95vw] object-contain rounded-lg shadow-2xl">
-
-        <!-- ഡൗൺലോഡ് ബട്ടൺ -->
-        <button id="download-btn" onclick="downloadCurrentPhoto()" class="mt-4 inline-flex items-center gap-2 text-sm bg-brand-green hover:bg-emerald-600 text-white font-medium px-5 py-2.5 rounded-full shadow-lg transition active:scale-95">
-            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
-                <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z"/>
-            </svg>
-            Download Photo
-        </button>
-    </div>
-
-    <!-- JAVASCRIPT -->
     <script>
-        let currentPhotoUrl = '';
-
-        // ഫോട്ടോ വലുതായി തുറക്കാൻ
-        function openLightbox(src) {
-            currentPhotoUrl = src;
-            const lightbox = document.getElementById('lightbox');
-            const img = document.getElementById('lightbox-img');
-            img.src = src;
-            lightbox.classList.remove('hidden');
-            lightbox.classList.add('flex');
+        const scrollTopBtn = document.getElementById('scrollTopBtn');
+        if (scrollTopBtn) {
+            scrollTopBtn.addEventListener('click', function() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
         }
-
-        // ഫോട്ടോ പോപ്പ് അപ്പ് ക്ലോസ് ചെയ്യാൻ
-        function closeLightbox() {
-            const lightbox = document.getElementById('lightbox');
-            lightbox.classList.add('hidden');
-            lightbox.classList.remove('flex');
-        }
-
-        // ഫോട്ടോ ഡൗൺലോഡ് ചെയ്യാനുള്ള ഫങ്ഷൻ
-        async function downloadCurrentPhoto() {
-            if (!currentPhotoUrl) return;
-            const downloadBtn = document.getElementById('download-btn');
-            const originalText = downloadBtn.innerHTML;
-            
-            try {
-                downloadBtn.innerText = "Downloading...";
-                const response = await fetch(currentPhotoUrl);
-                const blob = await response.blob();
-                const blobUrl = URL.createObjectURL(blob);
-                
-                const a = document.createElement('a');
-                a.href = blobUrl;
-                a.download = currentPhotoUrl.split('/').pop() || 'photo.jpg';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(blobUrl);
-            } catch (error) {
-                // ഫെച്ച് വഴി ഡൗൺലോഡ് സാധിച്ചില്ലെങ്കിൽ ഡയറക്ട് ലിങ്ക് പുതിയ ടാബിൽ തുറക്കും
-                window.open(currentPhotoUrl, '_blank');
-            } finally {
-                downloadBtn.innerHTML = originalText;
-            }
-        }
-
-        // ഫോട്ടോയ്ക്ക് പുറത്തു ക്ലിക്ക് ചെയ്താൽ ക്ലോസ് ആകാൻ
-        document.getElementById('lightbox').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeLightbox();
-            }
-        });
-
-        // Grs റെപ്പോസിറ്ററിയിൽ നിന്ന് ഫോട്ടോകൾ ഡൈനാമിക് ആയി ഫെച്ച് ചെയ്യുന്നു
-        fetch('https://raw.githubusercontent.com/shamil-ai/Grs/main/manhajul/gallery.json?t=' + new Date().getTime())
-          .then(response => {
-            if (!response.ok) throw new Error('Gallery data not found');
-            return response.json();
-          })
-          .then(data => {
-            const container = document.getElementById('gallery-container');
-            container.innerHTML = ''; 
-
-            let hasPhotos = false;
-
-            for (const folder in data) {
-              if (Array.isArray(data[folder])) {
-                data[folder].forEach(imagePath => {
-                  if (/\.(jpg|jpeg|png|webp)$/i.test(imagePath)) {
-                    hasPhotos = true;
-                    
-                    const cleanPath = imagePath.replace(/^manhajul\//, '');
-                    const imageUrl = `https://raw.githubusercontent.com/shamil-ai/Grs/main/manhajul/${cleanPath}`;
-
-                    // ഇമേജ് കാർഡ് സജ്ജീകരിക്കുന്നു (സൂം ആനിമേഷൻ ഉൾപ്പെടെ)
-                    const card = document.createElement('div');
-                    card.className = "img-card bg-white rounded overflow-hidden shadow-sm border border-gray-200 cursor-pointer aspect-square relative";
-                    card.onclick = () => openLightbox(imageUrl);
-
-                    const img = document.createElement('img');
-                    img.src = imageUrl;
-                    img.alt = "Gallery Event Photo";
-                    img.className = "w-full h-full object-cover";
-                    img.loading = "lazy";
-
-                    card.appendChild(img);
-                    container.appendChild(card);
-                  }
-                });
-              }
-            }
-
-            if (!hasPhotos) {
-              container.innerHTML = '<p class="text-gray-500 col-span-full text-center py-12 text-sm">No valid photos uploaded yet.</p>';
-            }
-          })
-          .catch(error => {
-            console.error('Error loading gallery:', error);
-            const container = document.getElementById('gallery-container');
-            container.innerHTML = '<p class="text-red-500 col-span-full text-center py-12 text-sm">Failed to load photos. Please try again later.</p>';
-          });
     </script>
 </body>
 </html>
-
