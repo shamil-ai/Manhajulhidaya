@@ -5,6 +5,17 @@ const { Pool } = require('pg');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// CORS Headers (Vercel ഫ്രണ്ട്-എൻഡിൽ നിന്ന് ഡാറ്റ സ്വീകരിക്കാൻ ഇത് സഹായിക്കും)
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  next();
+});
+
 // ഫോട്ടോകളും വലിയ ഡാറ്റകളും സ്വീകരിക്കാൻ ലിമിറ്റ് കൂട്ടി നൽകുന്നു
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
