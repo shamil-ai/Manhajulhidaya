@@ -7,18 +7,20 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const JWT_SECRET = process.env.JWT_SECRET || 'manhaj_secret_key_2026';
 
+// CORS & Methods Updated
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   if (req.method === 'OPTIONS') {
     return res.sendStatus(200);
   }
   next();
 });
 
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ limit: '10mb', extended: true }));
+// JSON Limit increased for Images
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(cookieParser());
 
 const pool = new Pool({
@@ -26,8 +28,42 @@ const pool = new Pool({
   ssl: { rejectUnauthorized: false }
 });
 
+// ==========================================
+// ഓട്ടോമാറ്റിക് ആയി പുതിയ ടേബിളുകൾ ക്രിയേറ്റ് ചെയ്യാനുള്ള ഫംഗ്ഷൻ (News, Results, Gallery)
+// ==========================================
+const initDB = async () => {
+  try {
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS news (
+        id SERIAL PRIMARY KEY,
+        date_text VARCHAR(50),
+        title VARCHAR(255),
+        description TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+      CREATE TABLE IF NOT EXISTS fest_results (
+        id SERIAL PRIMARY KEY,
+        category VARCHAR(100),
+        item_name VARCHAR(255),
+        image_url TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+      CREATE TABLE IF NOT EXISTS gallery (
+        id SERIAL PRIMARY KEY,
+        category VARCHAR(100),
+        image_url TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+    console.log("Database tables verified/created successfully.");
+  } catch (err) {
+    console.error("Database initialization error:", err);
+  }
+};
+initDB();
+
 app.get('/', (req, res) => {
-  res.send('Manhajul Hidaya Backend is running successfully!');
+  res.send('Manhajul Hidaya Backend is running successfully! All Features Enabled.');
 });
 
 app.get('/db-test', async (req, res) => {
@@ -40,20 +76,16 @@ app.get('/db-test', async (req, res) => {
   }
 });
 
-// Admission Form Submission Route
+// ==========================================
+// 1. ADMISSIONS & CONTACTS (നിങ്ങളുടെ പഴയത്)
+// ==========================================
+
 app.post('/submit', async (req, res) => {
   try {
-    const {
-      email, name, dob, appEmail, phone, whatsapp,
-      address, fatherName, motherName, classSelect,
-      qualification, photo
-    } = req.body;
-
+    const { email, name, dob, appEmail, phone, whatsapp, address, fatherName, motherName, classSelect, qualification, photo } = req.body;
     const query = `
-      INSERT INTO admissions 
-      (email, name, dob, app_email, phone, whatsapp, address, father_name, mother_name, class_select, qualification, photo)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
-      RETURNING *;
+      INSERT INTO admissions (email, name, dob, app_email, phone, whatsapp, address, father_name, mother_name, class_select, qualification, photo)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING *;
     `;
     const values = [email, name, dob, appEmail, phone, whatsapp, address, fatherName, motherName, classSelect, qualification, photo];
     const result = await pool.query(query, values);
@@ -64,7 +96,6 @@ app.post('/submit', async (req, res) => {
   }
 });
 
-// Contact Form Submission Route
 app.post('/contact-submit', async (req, res) => {
   try {
     const { Name, Email, Phone, Message } = req.body;
@@ -78,14 +109,17 @@ app.post('/contact-submit', async (req, res) => {
   }
 });
 
-// Admin Login Route
+// ==========================================
+// ADMIN AUTHENTICATION
+// ==========================================
+
 app.post('/admin/login', (req, res) => {
   const { username, password } = req.body;
   const ADMIN_USER = process.env.ADMIN_USER || 'admin';
   const ADMIN_PASS = process.env.ADMIN_PASS || 'manhaj2026';
 
   if (username === ADMIN_USER && password === ADMIN_PASS) {
-    const token = jwt.sign({ username }, JWT_SECRET, { expiresIn: '2h' });
+    const token = jwt.sign({ username }, JWT_SECRET, { expiresIn: '24h' }); // സമയം കൂട്ടിയിട്ടുണ്ട്
     return res.status(200).json({ success: true, token });
   }
   res.status(401).json({ success: false, message: 'Invalid username or password' });
@@ -103,46 +137,110 @@ const verifyToken = (req, res, next) => {
   });
 };
 
-// Get Admissions
 app.get('/admin/admissions', verifyToken, async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM admissions ORDER BY id DESC');
     res.status(200).json({ success: true, data: result.rows });
-  } catch (err) {
-    res.status(500).json({ success: false, error: err.message });
-  }
+  } catch (err) { res.status(500).json({ success: false, error: err.message }); }
 });
 
-// Delete Admission
 app.delete('/admin/admissions/:id', verifyToken, async (req, res) => {
   try {
-    const { id } = req.params;
-    await pool.query('DELETE FROM admissions WHERE id = $1', [id]);
+    await pool.query('DELETE FROM admissions WHERE id = $1', [req.params.id]);
     res.status(200).json({ success: true, message: 'Deleted successfully' });
-  } catch (err) {
-    res.status(500).json({ success: false, error: err.message });
-  }
+  } catch (err) { res.status(500).json({ success: false, error: err.message }); }
 });
 
-// Get Contacts
 app.get('/admin/contacts', verifyToken, async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM contacts ORDER BY id DESC');
     res.status(200).json({ success: true, data: result.rows });
-  } catch (err) {
-    res.status(500).json({ success: false, error: err.message });
-  }
+  } catch (err) { res.status(500).json({ success: false, error: err.message }); }
 });
 
-// Delete Contact Message
 app.delete('/admin/contacts/:id', verifyToken, async (req, res) => {
   try {
-    const { id } = req.params;
-    await pool.query('DELETE FROM contacts WHERE id = $1', [id]);
+    await pool.query('DELETE FROM contacts WHERE id = $1', [req.params.id]);
     res.status(200).json({ success: true, message: 'Deleted successfully' });
-  } catch (err) {
-    res.status(500).json({ success: false, error: err.message });
-  }
+  } catch (err) { res.status(500).json({ success: false, error: err.message }); }
+});
+
+// ==========================================
+// 2. NEWS MANAGEMENT API (പുതിയത്)
+// ==========================================
+
+app.get('/api/news', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM news ORDER BY id DESC');
+    res.status(200).json({ success: true, data: result.rows });
+  } catch (err) { res.status(500).json({ success: false, error: err.message }); }
+});
+
+app.post('/admin/news', verifyToken, async (req, res) => {
+  try {
+    const { date_text, title, description } = req.body;
+    const result = await pool.query('INSERT INTO news (date_text, title, description) VALUES ($1, $2, $3) RETURNING *', [date_text, title, description]);
+    res.status(200).json({ success: true, data: result.rows[0] });
+  } catch (err) { res.status(500).json({ success: false, error: err.message }); }
+});
+
+app.delete('/admin/news/:id', verifyToken, async (req, res) => {
+  try {
+    await pool.query('DELETE FROM news WHERE id = $1', [req.params.id]);
+    res.status(200).json({ success: true });
+  } catch (err) { res.status(500).json({ success: false, error: err.message }); }
+});
+
+// ==========================================
+// 3. MANHAJ FEST RESULTS API (പുതിയത്)
+// ==========================================
+
+app.get('/api/results', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM fest_results ORDER BY id DESC');
+    res.status(200).json({ success: true, data: result.rows });
+  } catch (err) { res.status(500).json({ success: false, error: err.message }); }
+});
+
+app.post('/admin/results', verifyToken, async (req, res) => {
+  try {
+    const { category, item_name, image_url } = req.body;
+    const result = await pool.query('INSERT INTO fest_results (category, item_name, image_url) VALUES ($1, $2, $3) RETURNING *', [category, item_name, image_url]);
+    res.status(200).json({ success: true, data: result.rows[0] });
+  } catch (err) { res.status(500).json({ success: false, error: err.message }); }
+});
+
+app.delete('/admin/results/:id', verifyToken, async (req, res) => {
+  try {
+    await pool.query('DELETE FROM fest_results WHERE id = $1', [req.params.id]);
+    res.status(200).json({ success: true });
+  } catch (err) { res.status(500).json({ success: false, error: err.message }); }
+});
+
+// ==========================================
+// 4. GALLERY MANAGEMENT API (പുതിയത്)
+// ==========================================
+
+app.get('/api/gallery', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM gallery ORDER BY id DESC');
+    res.status(200).json({ success: true, data: result.rows });
+  } catch (err) { res.status(500).json({ success: false, error: err.message }); }
+});
+
+app.post('/admin/gallery', verifyToken, async (req, res) => {
+  try {
+    const { category, image_url } = req.body;
+    const result = await pool.query('INSERT INTO gallery (category, image_url) VALUES ($1, $2) RETURNING *', [category, image_url]);
+    res.status(200).json({ success: true, data: result.rows[0] });
+  } catch (err) { res.status(500).json({ success: false, error: err.message }); }
+});
+
+app.delete('/admin/gallery/:id', verifyToken, async (req, res) => {
+  try {
+    await pool.query('DELETE FROM gallery WHERE id = $1', [req.params.id]);
+    res.status(200).json({ success: true });
+  } catch (err) { res.status(500).json({ success: false, error: err.message }); }
 });
 
 app.listen(PORT, () => {
