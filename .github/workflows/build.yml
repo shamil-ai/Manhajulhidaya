@@ -1,0 +1,72 @@
+name: Build Offline Android App
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Install Cordova
+        run: npm install -g cordova
+
+      - name: Prepare Cordova Project
+        run: |
+          # പുതിയൊരു കോർഡോവ പ്രൊജക്റ്റ് ഉണ്ടാക്കുന്നു
+          cordova create app com.manhajulhidaya.app ManhajulHidaya
+          
+          # ഡീഫോൾട്ട് ഫയലുകൾ കളയുന്നു
+          rm -rf app/www/*
+          
+          # നമ്മുടെ ഫയലുകൾ www-ലേക്ക് മാറ്റുന്നു
+          cp -r css js main Results *.html app/www/
+          
+          cd app
+          cordova platform add android
+
+      - name: Generate Keystore
+        run: |
+          cd app
+          keytool -genkeypair -v \
+            -keystore release.keystore \
+            -alias manhajul \
+            -keyalg RSA \
+            -keysize 2048 \
+            -validity 10000 \
+            -dname "CN=Manhajul, OU=App, O=Manhajul, L=Kerala, S=Kerala, C=IN" \
+            -storepass manhajul123 \
+            -keypass manhajul123
+
+      - name: Build Release APK
+        run: |
+          cd app
+          cordova build android --release -- \
+            --packageType=apk \
+            --keystore=release.keystore \
+            --storePassword=manhajul123 \
+            --alias=manhajul \
+            --password=manhajul123
+
+      - name: Find and Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: ManhajulHidaya-Offline-App
+          path: app/platforms/android/app/build/outputs/apk/release/app-release.apk
+          if-no-files-found: error
