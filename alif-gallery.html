@@ -20,7 +20,6 @@
     <meta property="og:url" content="https://manhajulhidaya.vercel.app/alif-gallery.html">
     <meta property="og:title" content="Alif Gallery - Manhajul Hidaya">
     <meta property="og:description" content="Explore event photos and memorable moments from Manhajul Hidaya Da'wa Campus.">
-    <!-- Replace with a good gallery cover image link -->
     <meta property="og:image" content="https://manhajulhidaya.vercel.app/main/main/dars.jpg">
     <meta property="og:image:secure_url" content="https://manhajulhidaya.vercel.app/main/main/dars.jpg">
     <meta property="og:image:type" content="image/jpeg">
@@ -33,7 +32,7 @@
     <meta name="twitter:description" content="Explore event photos and memorable moments from Manhajul Hidaya Da'wa Campus.">
     <meta name="twitter:image" content="https://manhajulhidaya.vercel.app/main/main/dars.jpg">
 
-    <!-- ================= SCHEMA MARKUP (ImageGallery JSON-LD) ================= -->
+    <!-- ================= SCHEMA MARKUP ================= -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -68,32 +67,14 @@
         }
     </script>
     <style>
-        /* ഫോട്ടോകൾ സ്ക്രോൾ ചെയ്യുമ്പോൾ വരുന്ന സ്ക്രോൾബാർ സ്റ്റൈൽ */
-        #gallery-scroll-container::-webkit-scrollbar {
-            width: 5px;
-        }
-        #gallery-scroll-container::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-        #gallery-scroll-container::-webkit-scrollbar-thumb {
-            background: #0e9f6e;
-            border-radius: 3px;
-        }
+        #gallery-scroll-container::-webkit-scrollbar { width: 5px; }
+        #gallery-scroll-container::-webkit-scrollbar-track { background: #f1f1f1; }
+        #gallery-scroll-container::-webkit-scrollbar-thumb { background: #0e9f6e; border-radius: 3px; }
 
-        /* സ്മൂത്ത് ആനിമേഷൻ */
-        .img-card img {
-            transition: transform 0.4s ease, opacity 0.3s ease;
-        }
-        .img-card:hover img, .img-card:active img {
-            transform: scale(1.08);
-        }
+        .img-card img { transition: transform 0.4s ease, opacity 0.3s ease; }
+        .img-card:hover img, .img-card:active img { transform: scale(1.08); }
 
-        /* Lightbox Image - സൂം ചെയ്യപ്പെടാതിരിക്കാൻ (Disable Zoom) */
-        #lightbox-img {
-            touch-action: none;
-            user-select: none;
-            -webkit-user-drag: none;
-        }
+        #lightbox-img { touch-action: none; user-select: none; -webkit-user-drag: none; }
 
         /* Custom Footer CSS */
         .custom-footer { background-color: #0f172a; color: #e2e8f0; padding: 40px 0 20px; line-height: 1.4; width: 100%; margin-top: 40px; }
@@ -131,7 +112,7 @@
 </head>
 <body class="bg-gray-50 h-screen flex flex-col overflow-hidden text-gray-800">
 
-    <!-- 1. FIXED HEADER & NAV -->
+    <!-- HEADER -->
     <header class="flex-none bg-brand-green text-white py-3 px-4 text-center shadow-md z-10">
         <h1 class="text-2xl sm:text-3xl font-bold">Alif Gallery</h1>
         <p class="text-emerald-100 text-xs sm:text-sm mt-0.5">Explore event photos and memorable moments</p>
@@ -142,16 +123,15 @@
         </div>
     </header>
 
-    <!-- 2. SCROLLABLE CONTENT AREA -->
+    <!-- CONTENT -->
     <main id="gallery-scroll-container" class="flex-1 overflow-y-auto">
         <div class="max-w-7xl mx-auto p-2 sm:p-4 min-h-[60vh]">
-            <!-- ഫോണിൽ ഒരു വരിയിൽ 5 ഫോട്ടോകൾ വീതം -->
             <div id="gallery-container" class="grid grid-cols-5 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-1.5 sm:gap-2">
                 <p class="text-gray-500 col-span-full text-center py-12 text-sm">Loading photos...</p>
             </div>
         </div>
 
-        <!-- 3. FOOTER -->
+        <!-- FOOTER -->
         <footer class="custom-footer">
             <div class="footer-container">
                 <div class="footer-left">
@@ -161,7 +141,6 @@
                         An institution dedicated to the synthesis of traditional values and dynamic contemporary educational advancements, nurturing a generation with values and quality education.
                     </p>
                 </div>
-
                 <div class="footer-center">
                     <ul class="footer-links">
                         <li><a href="index.html">Home</a></li>
@@ -171,7 +150,6 @@
                         <li><a href="contact.html">Contact Us</a></li>
                     </ul>
                 </div>
-
                 <div class="footer-right">
                     <div class="footer-address">
                         Al Manhajul Hidaya,<br>
@@ -182,7 +160,6 @@
                     <a href="mailto:manhajulhidayacm@gmail.com" class="footer-contact-item">manhajulhidayacm@gmail.com</a>
                 </div>
             </div>
-
             <div class="footer-bottom">
                 <div class="copyright-text">
                     <span>© 2026 Al Manhajul Hidaya</span>
@@ -199,36 +176,26 @@
         </footer>
     </main>
 
-    <!-- 4. LIGHTBOX POPUP -->
+    <!-- LIGHTBOX -->
     <div id="lightbox" class="fixed inset-0 bg-black/95 z-50 hidden flex-col justify-between p-4 backdrop-blur-sm select-none">
         <div class="flex justify-end w-full">
             <button onclick="closeLightbox()" class="text-white bg-white/20 hover:bg-white/40 rounded-full w-10 h-10 flex items-center justify-center text-2xl font-bold transition">
                 &times;
             </button>
         </div>
-
         <div id="lightbox-img-container" class="flex-1 flex items-center justify-center overflow-hidden touch-none">
             <img id="lightbox-img" src="" alt="Enlarged View" class="max-h-[72vh] max-w-[95vw] object-contain rounded-lg shadow-2xl">
         </div>
-
         <div class="w-full max-w-4xl mx-auto flex items-center justify-between pt-3 px-2">
             <div id="photo-counter" class="text-white font-bold text-sm sm:text-base min-w-[50px]">
                 1 / 1
             </div>
-
             <button id="download-btn" onclick="downloadCurrentPhoto()" class="inline-flex items-center gap-2 text-xs sm:text-sm bg-brand-green hover:bg-emerald-600 text-white font-medium px-4 py-2 sm:px-5 sm:py-2.5 rounded-full shadow-lg transition active:scale-95">
-                <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
-                    <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z"/>
-                </svg> Download Photo
+                <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z"/></svg> Download Photo
             </button>
-
             <div class="flex items-center gap-2">
-                <button onclick="prevPhoto(event)" class="bg-gray-800 hover:bg-gray-700 text-white w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center border border-gray-600 transition active:scale-95" title="Previous Photo">
-                    ❮
-                </button>
-                <button onclick="nextPhoto(event)" class="bg-gray-800 hover:bg-gray-700 text-white w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center border border-gray-600 transition active:scale-95" title="Next Photo">
-                    ❯
-                </button>
+                <button onclick="prevPhoto(event)" class="bg-gray-800 hover:bg-gray-700 text-white w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center border border-gray-600 transition active:scale-95">❮</button>
+                <button onclick="nextPhoto(event)" class="bg-gray-800 hover:bg-gray-700 text-white w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center border border-gray-600 transition active:scale-95">❯</button>
             </div>
         </div>
     </div>
@@ -254,8 +221,7 @@
 
         function updateLightbox() {
             if (allPhotos.length === 0) return;
-            const currentUrl = allPhotos[currentIndex];
-            document.getElementById('lightbox-img').src = currentUrl;
+            document.getElementById('lightbox-img').src = allPhotos[currentIndex];
             document.getElementById('photo-counter').innerText = `${currentIndex + 1} / ${allPhotos.length}`;
         }
 
@@ -298,47 +264,29 @@
         }
 
         document.getElementById('lightbox').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeLightbox();
-            }
+            if (e.target === this) closeLightbox();
         });
 
-        let touchStartX = 0;
-        let touchEndX = 0;
+        let touchStartX = 0, touchEndX = 0;
         const lightboxContainer = document.getElementById('lightbox-img-container');
-
-        lightboxContainer.addEventListener('touchstart', e => {
-            touchStartX = e.changedTouches[0].screenX;
-        }, { passive: true });
-
+        lightboxContainer.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
         lightboxContainer.addEventListener('touchend', e => {
             touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
+            if (touchEndX < touchStartX - 40) nextPhoto();
+            else if (touchEndX > touchStartX + 40) prevPhoto();
         }, { passive: true });
 
-        function handleSwipe() {
-            if (touchEndX < touchStartX - 40) {
-                nextPhoto();
-            } else if (touchEndX > touchStartX + 40) {
-                prevPhoto();
-            }
-        }
-
         document.addEventListener('gesturestart', function (e) {
-            if (!document.getElementById('lightbox').classList.contains('hidden')) {
-                e.preventDefault();
-            }
+            if (!document.getElementById('lightbox').classList.contains('hidden')) e.preventDefault();
         });
 
         const scrollTopBtn = document.getElementById('scrollTopBtn');
         const scrollContainer = document.getElementById('gallery-scroll-container');
         if (scrollTopBtn && scrollContainer) {
-            scrollTopBtn.addEventListener('click', function() {
-                scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
-            });
+            scrollTopBtn.addEventListener('click', () => scrollContainer.scrollTo({ top: 0, behavior: 'smooth' }));
         }
 
-        // Fetch Photos from GitHub
+        // Fetching Gallery Data from JSON
         fetch('https://raw.githubusercontent.com/shamil-ai/Grs/main/manhajul/gallery.json?t=' + new Date().getTime())
             .then(response => {
                 if (!response.ok) throw new Error('Gallery data not found');
@@ -354,15 +302,16 @@
                         data[folder].forEach(imagePath => {
                             if (/\.(jpg|jpeg|png|webp)$/i.test(imagePath)) {
                                 
-                                // ഫയൽ പാത്ത് ശരിയാക്കാനുള്ള പുതിയ ലോജിക്
-                                let cleanPath = imagePath.replace(/^manhajul\//, '');
+                                // പുതിയ പാത്ത് ലോജിക് & എൻകോഡിംഗ് (Spaces പ്രശ്നം പരിഹരിക്കാൻ)
+                                let finalPath = imagePath;
                                 
-                                // JSON-ൽ ഫോൾഡർ നാമം ഇല്ലാതെ ഫയൽ നാമം മാത്രമാണുള്ളതെങ്കിൽ ഫോൾഡർ നാമം കൂടെ ചേർക്കുന്നു
-                                if (!cleanPath.includes('/')) {
-                                    cleanPath = `${folder}/${cleanPath}`;
+                                // ഫോട്ടോകൾ സബ്-ഫോൾഡറിലാണെങ്കിൽ അത് കൂടെ ചേർക്കാൻ (ഉദാ: main അല്ലെങ്കിൽ manhajul അല്ലാത്തത്)
+                                if (folder !== 'main' && folder !== 'manhajul' && !imagePath.startsWith(folder + '/')) {
+                                    finalPath = `${folder}/${imagePath}`;
                                 }
                                 
-                                const imageUrl = `https://raw.githubusercontent.com/shamil-ai/Grs/main/manhajul/${cleanPath}`;
+                                // URL നിർമ്മിക്കുമ്പോൾ സ്പേസ് പ്രശ്നം മാറ്റാൻ encodeURI ഉപയോഗിക്കുന്നു
+                                const imageUrl = `https://raw.githubusercontent.com/shamil-ai/Grs/main/manhajul/${encodeURI(finalPath)}`;
                                 
                                 const photoIndex = allPhotos.length;
                                 allPhotos.push(imageUrl);
@@ -376,8 +325,6 @@
                                 img.alt = "Gallery Event Photo";
                                 img.className = "w-full h-full object-cover bg-gray-100";
                                 img.loading = "lazy";
-                                
-                                // ചിത്രം ലോഡ് ആവാതിരുന്നാൽ എറർ മെസ്സേജ് കാണിക്കാൻ (Fallback)
                                 img.onerror = function() {
                                     this.src = "https://via.placeholder.com/150?text=Image+Error";
                                 };
