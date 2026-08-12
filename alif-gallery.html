@@ -201,33 +201,27 @@
 
     <!-- 4. LIGHTBOX POPUP -->
     <div id="lightbox" class="fixed inset-0 bg-black/95 z-50 hidden flex-col justify-between p-4 backdrop-blur-sm select-none">
-        <!-- മുകളിലുള്ള ക്ലോസ് ബട്ടൺ -->
         <div class="flex justify-end w-full">
             <button onclick="closeLightbox()" class="text-white bg-white/20 hover:bg-white/40 rounded-full w-10 h-10 flex items-center justify-center text-2xl font-bold transition">
                 &times;
             </button>
         </div>
 
-        <!-- ഫോട്ടോ കാണിക്കുന്ന സ്ഥലം -->
         <div id="lightbox-img-container" class="flex-1 flex items-center justify-center overflow-hidden touch-none">
             <img id="lightbox-img" src="" alt="Enlarged View" class="max-h-[72vh] max-w-[95vw] object-contain rounded-lg shadow-2xl">
         </div>
 
-        <!-- അടിയിലെ കൺട്രോൾ ബാർ (Counter, Download, Arrows) -->
         <div class="w-full max-w-4xl mx-auto flex items-center justify-between pt-3 px-2">
-            <!-- 1. ഇടതുവശത്ത് ഓട്ടോമാറ്റിക് കൗണ്ടർ -->
             <div id="photo-counter" class="text-white font-bold text-sm sm:text-base min-w-[50px]">
                 1 / 1
             </div>
 
-            <!-- 2. നടുവിൽ ഡൗൺലോഡ് ബട്ടൺ -->
             <button id="download-btn" onclick="downloadCurrentPhoto()" class="inline-flex items-center gap-2 text-xs sm:text-sm bg-brand-green hover:bg-emerald-600 text-white font-medium px-4 py-2 sm:px-5 sm:py-2.5 rounded-full shadow-lg transition active:scale-95">
                 <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
                     <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z"/>
                 </svg> Download Photo
             </button>
 
-            <!-- 3. വലതുവശത്ത് നെക്സ്റ്റ് / പ്രിവിയസ് ബട്ടൺ -->
             <div class="flex items-center gap-2">
                 <button onclick="prevPhoto(event)" class="bg-gray-800 hover:bg-gray-700 text-white w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center border border-gray-600 transition active:scale-95" title="Previous Photo">
                     ❮
@@ -262,8 +256,6 @@
             if (allPhotos.length === 0) return;
             const currentUrl = allPhotos[currentIndex];
             document.getElementById('lightbox-img').src = currentUrl;
-            
-            // ഇടതുവശത്തെ കൗണ്ടർ ഓട്ടോമാറ്റിക്കായി അപ്‌ഡേറ്റ് ചെയ്യുന്നു
             document.getElementById('photo-counter').innerText = `${currentIndex + 1} / ${allPhotos.length}`;
         }
 
@@ -281,7 +273,6 @@
             updateLightbox();
         }
 
-        // ഒറ്റ ഫോട്ടോ ഡൗൺലോഡ് ചെയ്യുന്ന ഫങ്ഷൻ
         async function downloadSinglePhoto(imageUrl, event) {
             if (event) event.stopPropagation();
             try {
@@ -312,7 +303,6 @@
             }
         });
 
-        // വിരൽ കൊണ്ട് സ്വൈപ്പ് ചെയ്യാനുള്ള സംവിധാനം (Touch Swipe Support)
         let touchStartX = 0;
         let touchEndX = 0;
         const lightboxContainer = document.getElementById('lightbox-img-container');
@@ -328,20 +318,18 @@
 
         function handleSwipe() {
             if (touchEndX < touchStartX - 40) {
-                nextPhoto(); // ഇടത്തോട്ട് സ്വൈപ്പ് ചെയ്യുമ്പോൾ അടുത്ത ചിത്രം
+                nextPhoto();
             } else if (touchEndX > touchStartX + 40) {
-                prevPhoto(); // വലത്തോട്ട് സ്വൈപ്പ് ചെയ്യുമ്പോൾ മുൻപത്തെ ചിത്രം
+                prevPhoto();
             }
         }
 
-        // സൂം തടയാൻ (Pinch-to-zoom Prevention)
         document.addEventListener('gesturestart', function (e) {
             if (!document.getElementById('lightbox').classList.contains('hidden')) {
                 e.preventDefault();
             }
         });
 
-        // Scroll to top
         const scrollTopBtn = document.getElementById('scrollTopBtn');
         const scrollContainer = document.getElementById('gallery-scroll-container');
         if (scrollTopBtn && scrollContainer) {
@@ -365,7 +353,15 @@
                     if (Array.isArray(data[folder])) {
                         data[folder].forEach(imagePath => {
                             if (/\.(jpg|jpeg|png|webp)$/i.test(imagePath)) {
-                                const cleanPath = imagePath.replace(/^manhajul\//, '');
+                                
+                                // ഫയൽ പാത്ത് ശരിയാക്കാനുള്ള പുതിയ ലോജിക്
+                                let cleanPath = imagePath.replace(/^manhajul\//, '');
+                                
+                                // JSON-ൽ ഫോൾഡർ നാമം ഇല്ലാതെ ഫയൽ നാമം മാത്രമാണുള്ളതെങ്കിൽ ഫോൾഡർ നാമം കൂടെ ചേർക്കുന്നു
+                                if (!cleanPath.includes('/')) {
+                                    cleanPath = `${folder}/${cleanPath}`;
+                                }
+                                
                                 const imageUrl = `https://raw.githubusercontent.com/shamil-ai/Grs/main/manhajul/${cleanPath}`;
                                 
                                 const photoIndex = allPhotos.length;
@@ -378,8 +374,13 @@
                                 const img = document.createElement('img');
                                 img.src = imageUrl;
                                 img.alt = "Gallery Event Photo";
-                                img.className = "w-full h-full object-cover";
+                                img.className = "w-full h-full object-cover bg-gray-100";
                                 img.loading = "lazy";
+                                
+                                // ചിത്രം ലോഡ് ആവാതിരുന്നാൽ എറർ മെസ്സേജ് കാണിക്കാൻ (Fallback)
+                                img.onerror = function() {
+                                    this.src = "https://via.placeholder.com/150?text=Image+Error";
+                                };
 
                                 const dlBtn = document.createElement('button');
                                 dlBtn.className = "absolute bottom-1 right-1 bg-black/60 hover:bg-brand-green text-white p-1 rounded-full shadow transition z-10 flex items-center justify-center";
