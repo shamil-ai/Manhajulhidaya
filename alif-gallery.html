@@ -344,14 +344,14 @@
                     btn.innerText = displayName;
                     btn.dataset.folder = folder;
                     
-                    // --- പാസ്‌വേഡ് സിസ്റ്റം ചേർത്തത് ---
+                    // --- പാസ്‌വേഡ് സിസ്റ്റം ---
                     btn.onclick = () => {
                         if (lowerFolder === 'alif-5.0' || lowerFolder === 'alif 5.0') {
-                            renderGallery(folder); // Alif 5.0 നേരിട്ട് തുറക്കും
+                            renderGallery(folder); // Alif 5.0 നേരിട്ട് തുറക്കും, പാസ്‌വേഡ് വേണ്ട
                         } else {
                             const userPass = prompt("Please enter the password to view " + displayName + ":");
                             if (userPass === "msa") {
-                                renderGallery(folder); // പാസ്‌വേഡ് ശരിയാണെങ്കിൽ തുറക്കും
+                                renderGallery(folder); // പാസ്‌വേഡ് 'msa' എന്ന് അടിച്ചാൽ മാത്രം തുറക്കും
                             } else if (userPass !== null) {
                                 alert("Incorrect Password! Access Denied.");
                             }
