@@ -307,7 +307,7 @@
             });
         }
 
-        // Fetching Gallery Data directly from Root now
+        // Fetching Gallery Data directly from Root
         fetch('https://raw.githubusercontent.com/shamil-ai/Grs/main/gallery.json?t=' + new Date().getTime())
             .then(response => {
                 if (!response.ok) throw new Error('Gallery data not found');
@@ -328,9 +328,14 @@
                 folders.forEach(folder => {
                     const btn = document.createElement('button');
                     
+                    // Format Folder Names (Supporting Lowercase/Uppercase/Mix and Alif/Manhaj naming)
                     let displayName = folder;
-                    if (folder.startsWith('alif-')) {
-                        displayName = folder.replace('alif-', 'Alif ').replace('-', '.');
+                    const lowerFolder = folder.toLowerCase();
+
+                    if (lowerFolder.startsWith('alif-')) {
+                        displayName = folder.replace(/alif-/i, 'Alif ').replace('-', '.');
+                    } else if (lowerFolder.includes('alifmanhaj')) {
+                        displayName = 'Alif Manhaj';
                     } else {
                         displayName = folder.charAt(0).toUpperCase() + folder.slice(1);
                     }
