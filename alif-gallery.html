@@ -113,12 +113,18 @@
 <body class="bg-gray-50 h-screen flex flex-col overflow-hidden text-gray-800">
 
     <!-- HEADER -->
-    <header class="flex-none bg-brand-green text-white py-3 px-4 text-center shadow-md z-10">
+    <header class="flex-none bg-brand-green text-white py-4 px-4 text-center shadow-md z-10">
         <h1 class="text-2xl sm:text-3xl font-bold">Alif Gallery</h1>
-        <p class="text-emerald-100 text-xs sm:text-sm mt-0.5">Explore event photos and memorable moments</p>
+        <p class="text-emerald-100 text-xs sm:text-sm mt-0.5 mb-3">Explore event photos and memorable moments</p>
+        
+        <!-- Folder Tabs -->
+        <div id="folder-tabs" class="flex flex-wrap justify-center gap-2 mb-3">
+            <!-- Tabs will load dynamically -->
+        </div>
+
         <div class="mt-2">
-            <a href="index.html" class="inline-flex items-center text-xs text-brand-green bg-white px-3.5 py-1 rounded-full font-medium shadow hover:bg-emerald-50 transition">
-                ← Back to Fest Home
+            <a href="Manhajul-fest.html" class="inline-flex items-center text-xs text-brand-green bg-white px-3.5 py-1.5 rounded-full font-medium shadow hover:bg-emerald-50 transition">
+                ← Back to Manhaj Festival
             </a>
         </div>
     </header>
@@ -126,7 +132,7 @@
     <!-- CONTENT -->
     <main id="gallery-scroll-container" class="flex-1 overflow-y-auto">
         <div class="max-w-7xl mx-auto p-2 sm:p-4 min-h-[60vh]">
-            <div id="gallery-container" class="grid grid-cols-5 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-1.5 sm:gap-2">
+            <div id="gallery-container" class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-1.5 sm:gap-2">
                 <p class="text-gray-500 col-span-full text-center py-12 text-sm">Loading photos...</p>
             </div>
         </div>
@@ -204,6 +210,7 @@
     <script>
         let allPhotos = [];
         let currentIndex = 0;
+        let galleryData = {};
 
         function openLightbox(index) {
             currentIndex = index;
@@ -286,6 +293,70 @@
             scrollTopBtn.addEventListener('click', () => scrollContainer.scrollTo({ top: 0, behavior: 'smooth' }));
         }
 
+        // Render images for selected folder
+        function renderGallery(folderName) {
+            const container = document.getElementById('gallery-container');
+            container.innerHTML = '';
+            allPhotos = [];
+
+            // Update tab styles
+            document.querySelectorAll('.folder-tab').forEach(tab => {
+                if (tab.dataset.folder === folderName) {
+                    tab.classList.remove('bg-white/20', 'text-white', 'border-white/30');
+                    tab.classList.add('bg-white', 'text-brand-green', 'border-white');
+                } else {
+                    tab.classList.remove('bg-white', 'text-brand-green', 'border-white');
+                    tab.classList.add('bg-white/20', 'text-white', 'border-white/30');
+                }
+            });
+
+            const images = galleryData[folderName] || [];
+
+            if (images.length === 0) {
+                container.innerHTML = '<p class="text-gray-500 col-span-full text-center py-12 text-sm">No photos found in this folder.</p>';
+                return;
+            }
+
+            images.forEach(imagePath => {
+                if (/\.(jpg|jpeg|png|webp)$/i.test(imagePath)) {
+                    
+                    let finalPath = imagePath;
+                    
+                    if (folderName !== 'main' && folderName !== 'manhajul' && !imagePath.startsWith(folderName + '/')) {
+                        finalPath = `${folderName}/${imagePath}`;
+                    }
+                    
+                    const imageUrl = `https://raw.githubusercontent.com/shamil-ai/Grs/main/manhajul/${encodeURI(finalPath)}`;
+                    
+                    const photoIndex = allPhotos.length;
+                    allPhotos.push(imageUrl);
+
+                    const card = document.createElement('div');
+                    card.className = "img-card bg-white rounded overflow-hidden shadow-sm border border-gray-200 cursor-pointer aspect-square relative group";
+                    card.onclick = () => openLightbox(photoIndex);
+
+                    const img = document.createElement('img');
+                    img.src = imageUrl;
+                    img.alt = "Gallery Event Photo";
+                    img.className = "w-full h-full object-cover bg-gray-100";
+                    img.loading = "lazy";
+                    img.onerror = function() {
+                        this.src = "https://via.placeholder.com/150?text=Image+Error";
+                    };
+
+                    const dlBtn = document.createElement('button');
+                    dlBtn.className = "absolute bottom-1 right-1 bg-black/60 hover:bg-brand-green text-white p-1 rounded-full shadow transition z-10 flex items-center justify-center";
+                    dlBtn.setAttribute('title', 'Download Photo');
+                    dlBtn.innerHTML = `<svg class="w-3 h-3 fill-current" viewBox="0 0 20 20"><path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z"/></svg>`;
+                    dlBtn.onclick = (e) => downloadSinglePhoto(imageUrl, e);
+
+                    card.appendChild(img);
+                    card.appendChild(dlBtn);
+                    container.appendChild(card);
+                }
+            });
+        }
+
         // Fetching Gallery Data from JSON
         fetch('https://raw.githubusercontent.com/shamil-ai/Grs/main/manhajul/gallery.json?t=' + new Date().getTime())
             .then(response => {
@@ -293,59 +364,39 @@
                 return response.json();
             })
             .then(data => {
-                const container = document.getElementById('gallery-container');
-                container.innerHTML = '';
-                allPhotos = [];
+                galleryData = data;
+                const tabsContainer = document.getElementById('folder-tabs');
+                tabsContainer.innerHTML = '';
+                
+                // Get folders and sort them in reverse order so latest like 4.0 appears first
+                const folders = Object.keys(data).sort().reverse();
+                
+                if (folders.length === 0) {
+                    document.getElementById('gallery-container').innerHTML = '<p class="text-gray-500 col-span-full text-center py-12 text-sm">No valid photos uploaded yet.</p>';
+                    return;
+                }
 
-                for (const folder in data) {
-                    if (Array.isArray(data[folder])) {
-                        data[folder].forEach(imagePath => {
-                            if (/\.(jpg|jpeg|png|webp)$/i.test(imagePath)) {
-                                
-                                // പുതിയ പാത്ത് ലോജിക് & എൻകോഡിംഗ് (Spaces പ്രശ്നം പരിഹരിക്കാൻ)
-                                let finalPath = imagePath;
-                                
-                                // ഫോട്ടോകൾ സബ്-ഫോൾഡറിലാണെങ്കിൽ അത് കൂടെ ചേർക്കാൻ (ഉദാ: main അല്ലെങ്കിൽ manhajul അല്ലാത്തത്)
-                                if (folder !== 'main' && folder !== 'manhajul' && !imagePath.startsWith(folder + '/')) {
-                                    finalPath = `${folder}/${imagePath}`;
-                                }
-                                
-                                // URL നിർമ്മിക്കുമ്പോൾ സ്പേസ് പ്രശ്നം മാറ്റാൻ encodeURI ഉപയോഗിക്കുന്നു
-                                const imageUrl = `https://raw.githubusercontent.com/shamil-ai/Grs/main/manhajul/${encodeURI(finalPath)}`;
-                                
-                                const photoIndex = allPhotos.length;
-                                allPhotos.push(imageUrl);
-
-                                const card = document.createElement('div');
-                                card.className = "img-card bg-white rounded overflow-hidden shadow-sm border border-gray-200 cursor-pointer aspect-square relative group";
-                                card.onclick = () => openLightbox(photoIndex);
-
-                                const img = document.createElement('img');
-                                img.src = imageUrl;
-                                img.alt = "Gallery Event Photo";
-                                img.className = "w-full h-full object-cover bg-gray-100";
-                                img.loading = "lazy";
-                                img.onerror = function() {
-                                    this.src = "https://via.placeholder.com/150?text=Image+Error";
-                                };
-
-                                const dlBtn = document.createElement('button');
-                                dlBtn.className = "absolute bottom-1 right-1 bg-black/60 hover:bg-brand-green text-white p-1 rounded-full shadow transition z-10 flex items-center justify-center";
-                                dlBtn.setAttribute('title', 'Download Photo');
-                                dlBtn.innerHTML = `<svg class="w-3 h-3 fill-current" viewBox="0 0 20 20"><path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z"/></svg>`;
-                                dlBtn.onclick = (e) => downloadSinglePhoto(imageUrl, e);
-
-                                card.appendChild(img);
-                                card.appendChild(dlBtn);
-                                container.appendChild(card);
-                            }
-                        });
+                folders.forEach(folder => {
+                    const btn = document.createElement('button');
+                    
+                    // Format names for display, e.g., 'alif-2-0' to 'Alif 2.0'
+                    let displayName = folder;
+                    if (folder.startsWith('alif-')) {
+                        displayName = folder.replace('alif-', 'Alif ').replace('-', '.');
+                    } else {
+                        // capitalize first letter
+                        displayName = folder.charAt(0).toUpperCase() + folder.slice(1);
                     }
-                }
+                    
+                    btn.className = "folder-tab text-xs font-medium px-4 py-1.5 rounded-full shadow transition border hover:bg-white/40 cursor-pointer";
+                    btn.innerText = displayName;
+                    btn.dataset.folder = folder;
+                    btn.onclick = () => renderGallery(folder);
+                    tabsContainer.appendChild(btn);
+                });
 
-                if (allPhotos.length === 0) {
-                    container.innerHTML = '<p class="text-gray-500 col-span-full text-center py-12 text-sm">No valid photos uploaded yet.</p>';
-                }
+                // Render the first folder by default
+                renderGallery(folders[0]);
             })
             .catch(error => {
                 console.error('Error loading gallery:', error);
