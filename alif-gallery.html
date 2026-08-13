@@ -328,7 +328,7 @@
                 folders.forEach(folder => {
                     const btn = document.createElement('button');
                     
-                    // Format Folder Names (Supporting Lowercase/Uppercase/Mix and Alif/Manhaj naming)
+                    // Format Folder Names
                     let displayName = folder;
                     const lowerFolder = folder.toLowerCase();
 
@@ -343,11 +343,31 @@
                     btn.className = "folder-tab text-xs font-medium px-4 py-1.5 rounded-full shadow transition border hover:bg-white/40 cursor-pointer";
                     btn.innerText = displayName;
                     btn.dataset.folder = folder;
-                    btn.onclick = () => renderGallery(folder);
+                    
+                    // --- പാസ്‌വേഡ് സിസ്റ്റം ചേർത്തത് ---
+                    btn.onclick = () => {
+                        if (lowerFolder === 'alif-5.0' || lowerFolder === 'alif 5.0') {
+                            renderGallery(folder); // Alif 5.0 നേരിട്ട് തുറക്കും
+                        } else {
+                            const userPass = prompt("Please enter the password to view " + displayName + ":");
+                            if (userPass === "msa") {
+                                renderGallery(folder); // പാസ്‌വേഡ് ശരിയാണെങ്കിൽ തുറക്കും
+                            } else if (userPass !== null) {
+                                alert("Incorrect Password! Access Denied.");
+                            }
+                        }
+                    };
+                    
                     tabsContainer.appendChild(btn);
                 });
 
-                renderGallery(folders[0]);
+                // വെബ്സൈറ്റ് ആദ്യം ലോഡ് ആകുമ്പോൾ പാസ്‌വേഡ് ചോദിക്കാതെ Alif 5.0 തുറക്കാൻ:
+                const alif5Folder = folders.find(f => f.toLowerCase() === 'alif-5.0' || f.toLowerCase() === 'alif 5.0');
+                if (alif5Folder) {
+                    renderGallery(alif5Folder);
+                } else {
+                    document.getElementById('gallery-container').innerHTML = '<p class="text-gray-500 col-span-full text-center py-12 text-sm">Please select a folder to view photos.</p>';
+                }
             })
             .catch(error => {
                 console.error('Error loading gallery:', error);
