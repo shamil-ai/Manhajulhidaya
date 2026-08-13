@@ -344,14 +344,15 @@
                     btn.innerText = displayName;
                     btn.dataset.folder = folder;
                     
-                    // --- പാസ്‌വേഡ് സിസ്റ്റം ---
+                    // --- പാസ്‌വേഡ് സിസ്റ്റം (പുതുക്കിയത്) ---
                     btn.onclick = () => {
-                        if (lowerFolder === 'alif-5.0' || lowerFolder === 'alif 5.0') {
-                            renderGallery(folder); // Alif 5.0 നേരിട്ട് തുറക്കും, പാസ്‌വേഡ് വേണ്ട
+                        // പേരിൽ എവിടെയെങ്കിലും "5.0" ഉണ്ടെങ്കിൽ പാസ്‌വേഡ് ചോദിക്കില്ല
+                        if (folder.includes('5.0') || displayName.includes('5.0')) {
+                            renderGallery(folder); 
                         } else {
                             const userPass = prompt("Please enter the password to view " + displayName + ":");
                             if (userPass === "msa") {
-                                renderGallery(folder); // പാസ്‌വേഡ് 'msa' എന്ന് അടിച്ചാൽ മാത്രം തുറക്കും
+                                renderGallery(folder); 
                             } else if (userPass !== null) {
                                 alert("Incorrect Password! Access Denied.");
                             }
@@ -361,8 +362,8 @@
                     tabsContainer.appendChild(btn);
                 });
 
-                // വെബ്സൈറ്റ് ആദ്യം ലോഡ് ആകുമ്പോൾ പാസ്‌വേഡ് ചോദിക്കാതെ Alif 5.0 തുറക്കാൻ:
-                const alif5Folder = folders.find(f => f.toLowerCase() === 'alif-5.0' || f.toLowerCase() === 'alif 5.0');
+                // വെബ്സൈറ്റ് ആദ്യം ലോഡ് ആകുമ്പോൾ പാസ്‌വേഡ് ചോദിക്കാതെ Alif 5.0 (അല്ലെങ്കിൽ 5.0 ഉള്ള ഫോൾഡർ) തുറക്കാൻ:
+                const alif5Folder = folders.find(f => f.includes('5.0'));
                 if (alif5Folder) {
                     renderGallery(alif5Folder);
                 } else {
