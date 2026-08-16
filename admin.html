@@ -3,29 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manhajul Hidaya | Admin Panel (Upgraded)</title>
+    <title>Manhajul Hidaya | Admin Panel</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { background: #f8fafc; font-family: 'Poppins', sans-serif; }
-        .admin-header { background: #059669; color: white; padding: 20px 0; text-align: center; margin-bottom: 20px; }
+        body { background: #f8fafc; font-family: sans-serif; }
+        .admin-header { background: #059669; color: white; padding: 20px 0; margin-bottom: 20px; }
         .card { border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; }
-        .student-photo, .gallery-img { width: 100%; height: 150px; object-fit: cover; border-radius: 8px; }
-        .student-photo.round { width: 60px; height: 60px; border-radius: 50%; }
-        .login-container { max-width: 400px; margin: 80px auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
-        .nav-pills .nav-link.active { background-color: #059669; }
-        .nav-pills .nav-link { color: #059669; font-weight: 600; margin: 5px; }
-        .view-toggle { margin-bottom: 20px; text-align: center; }
+        .student-photo { width: 60px; height: 60px; object-fit: cover; border-radius: 50%; }
+        .login-container { max-width: 400px; margin: 80px auto; background: white; padding: 30px; border-radius: 15px; }
         pre.json-view { background: #1e293b; color: #a5b4fc; padding: 20px; border-radius: 10px; max-height: 500px; overflow-y: auto; }
-        .table-responsive { background: white; padding: 15px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        .action-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
     </style>
 </head>
 <body>
 
 <div id="loginSection" class="container">
-    <div class="login-container">
+    <div class="login-container shadow">
         <h3 class="text-center text-success font-weight-bold mb-4">Admin Login</h3>
         <form id="loginForm">
             <div class="form-group"><label>Username</label><input type="text" id="username" class="form-control" required></div>
@@ -39,12 +32,12 @@
 <div id="dashboardSection" style="display: none;">
     <div class="admin-header d-flex justify-content-between align-items-center px-4">
         <div></div>
-        <div><h2 class="mb-0">Manhajul Hidaya Admin</h2></div>
-        <div><button onclick="logout()" class="btn btn-light btn-sm text-danger font-weight-bold">Logout</button></div>
+        <h2 class="mb-0">Manhajul Hidaya Admin</h2>
+        <button onclick="logout()" class="btn btn-light btn-sm text-danger font-weight-bold">Logout</button>
     </div>
 
-    <div class="container mb-3 view-toggle">
-        <div class="btn-group" role="group">
+    <div class="container mb-3 text-center">
+        <div class="btn-group">
             <button type="button" class="btn btn-outline-success active" onclick="setViewMode('card', this)">Card View</button>
             <button type="button" class="btn btn-outline-success" onclick="setViewMode('table', this)">Table View</button>
             <button type="button" class="btn btn-outline-success" onclick="setViewMode('json', this)">JSON View</button>
@@ -52,104 +45,41 @@
     </div>
 
     <div class="container mb-4">
-        <ul class="nav nav-pills justify-content-center flex-wrap" id="pills-tab" role="tablist">
-            <li class="nav-item"><a class="nav-link active" data-toggle="pill" href="#pills-admissions" onclick="renderAdmissions()">Admissions</a></li>
+        <ul class="nav nav-pills justify-content-center">
+            <li class="nav-item mr-2"><a class="nav-link active" data-toggle="pill" href="#pills-admissions" onclick="renderAdmissions()">Admissions</a></li>
             <li class="nav-item"><a class="nav-link" data-toggle="pill" href="#pills-contacts" onclick="renderContacts()">Contacts</a></li>
-            <li class="nav-item"><a class="nav-link" data-toggle="pill" href="#pills-news" onclick="renderNews()">News & Updates</a></li>
-            <li class="nav-item"><a class="nav-link" data-toggle="pill" href="#pills-results" onclick="renderResults()">Fest Results</a></li>
-            <li class="nav-item"><a class="nav-link" data-toggle="pill" href="#pills-gallery" onclick="renderGallery()">Gallery</a></li>
         </ul>
     </div>
 
     <div class="container">
         <div class="tab-content">
-            <!-- Admissions Tab -->
             <div class="tab-pane fade show active" id="pills-admissions">
-                <div class="action-header"><h4>Admissions List</h4></div>
                 <div id="loadingAdmissions" class="text-center py-5">Loading...</div>
                 <div id="admissionsContainer"></div>
             </div>
-            <!-- Contacts Tab -->
             <div class="tab-pane fade" id="pills-contacts">
-                <div class="action-header"><h4>Contact Messages</h4></div>
                 <div id="loadingContacts" class="text-center py-5">Loading...</div>
                 <div id="contactsContainer"></div>
-            </div>
-            <!-- News Tab -->
-            <div class="tab-pane fade" id="pills-news">
-                <div class="action-header">
-                    <h4>News & Updates</h4>
-                    <button class="btn btn-success" data-toggle="modal" data-target="#addNewsModal"><i class="fa fa-plus"></i> Add News</button>
-                </div>
-                <div id="loadingNews" class="text-center py-5">Loading...</div>
-                <div id="newsContainer"></div>
-            </div>
-            <!-- Fest Results Tab -->
-            <div class="tab-pane fade" id="pills-results">
-                <div class="action-header">
-                    <h4>Fest Results (Alif)</h4>
-                    <button class="btn btn-success" data-toggle="modal" data-target="#addResultModal"><i class="fa fa-plus"></i> Add Result</button>
-                </div>
-                <div id="loadingResults" class="text-center py-5">Loading...</div>
-                <div id="resultsContainer"></div>
-            </div>
-            <!-- Gallery Tab -->
-            <div class="tab-pane fade" id="pills-gallery">
-                <div class="action-header">
-                    <h4>Gallery Photos</h4>
-                    <button class="btn btn-success" data-toggle="modal" data-target="#addGalleryModal"><i class="fa fa-plus"></i> Add Photo</button>
-                </div>
-                <div id="loadingGallery" class="text-center py-5">Loading...</div>
-                <div id="galleryContainer"></div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Add News Modal -->
-<div class="modal fade" id="addNewsModal" tabindex="-1">
+<!-- Edit Admission Modal -->
+<div class="modal fade" id="editAdmisisonModal" tabindex="-1">
     <div class="modal-dialog"><div class="modal-content">
-        <div class="modal-header"><h5 class="modal-title">Add News</h5><button type="button" class="close" data-dismiss="modal">&times;</button></div>
+        <div class="modal-header"><h5 class="modal-title">Edit Admission</h5><button type="button" class="close" data-dismiss="modal">&times;</button></div>
         <div class="modal-body">
-            <div class="form-group"><label>Date (eg: 04 May)</label><input type="text" id="news_date" class="form-control" required></div>
-            <div class="form-group"><label>Title</label><input type="text" id="news_title" class="form-control" required></div>
-            <div class="form-group"><label>Description</label><textarea id="news_desc" class="form-control" required></textarea></div>
+            <input type="hidden" id="edit_adm_id">
+            <div class="form-group"><label>Name</label><input type="text" id="edit_adm_name" class="form-control"></div>
+            <div class="form-group"><label>Photo URL / Base64</label><input type="text" id="edit_adm_photo" class="form-control"></div>
+            <div class="form-group"><label>Email</label><input type="email" id="edit_adm_email" class="form-control"></div>
+            <div class="form-group"><label>Phone</label><input type="text" id="edit_adm_phone" class="form-control"></div>
+            <div class="form-group"><label>WhatsApp</label><input type="text" id="edit_adm_whatsapp" class="form-control"></div>
+            <div class="form-group"><label>Class</label><input type="text" id="edit_adm_class" class="form-control"></div>
+            <div class="form-group"><label>Address</label><textarea id="edit_adm_address" class="form-control"></textarea></div>
         </div>
-        <div class="modal-footer"><button type="button" class="btn btn-success" onclick="saveNews()">Save News</button></div>
-    </div></div>
-</div>
-
-<!-- Add Fest Result Modal -->
-<div class="modal fade" id="addResultModal" tabindex="-1">
-    <div class="modal-dialog"><div class="modal-content">
-        <div class="modal-header"><h5 class="modal-title">Add Fest Result</h5><button type="button" class="close" data-dismiss="modal">&times;</button></div>
-        <div class="modal-body">
-            <div class="form-group">
-                <label>Category (eg: Senior, Junior, General)</label>
-                <input type="text" id="res_cat" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <label>Program Name (eg: Qiraath)</label>
-                <input type="text" id="res_item" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <label>Result Image</label>
-                <input type="file" id="res_img" class="form-control" accept="image/*" required>
-            </div>
-        </div>
-        <div class="modal-footer"><button type="button" class="btn btn-success" onclick="saveResult()" id="btnSaveResult">Save Result</button></div>
-    </div></div>
-</div>
-
-<!-- Add Gallery Modal -->
-<div class="modal fade" id="addGalleryModal" tabindex="-1">
-    <div class="modal-dialog"><div class="modal-content">
-        <div class="modal-header"><h5 class="modal-title">Add to Gallery</h5><button type="button" class="close" data-dismiss="modal">&times;</button></div>
-        <div class="modal-body">
-            <div class="form-group"><label>Folder / Category Name</label><input type="text" id="gal_cat" class="form-control" value="general" required></div>
-            <div class="form-group"><label>Select Photo</label><input type="file" id="gal_img" class="form-control" accept="image/*" required></div>
-        </div>
-        <div class="modal-footer"><button type="button" class="btn btn-success" onclick="saveGallery()" id="btnSaveGallery">Upload Photo</button></div>
+        <div class="modal-footer"><button type="button" class="btn btn-success" onclick="saveAdmissionEdit()">Save Changes</button></div>
     </div></div>
 </div>
 
@@ -159,10 +89,10 @@
 <script>
     const BACKEND_URL = 'https://manhajulhidaya.onrender.com';
     let currentView = 'card'; 
-    let admData = [], conData = [], newsData = [], resultsData = [], galleryData = [];
+    let admData = [], conData = [];
 
     const token = localStorage.getItem('admin_token');
-    if (token) showDashboard(token);
+    if (token) showDashboard();
 
     document.getElementById('loginForm').addEventListener('submit', function(e) {
         e.preventDefault();
@@ -170,12 +100,12 @@
             method: 'POST', headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username: document.getElementById('username').value, password: document.getElementById('password').value })
         }).then(res => res.json()).then(data => {
-            if (data.success) { localStorage.setItem('admin_token', data.token); showDashboard(data.token); } 
+            if (data.success) { localStorage.setItem('admin_token', data.token); showDashboard(); } 
             else { document.getElementById('loginError').innerText = 'Invalid credentials'; document.getElementById('loginError').style.display = 'block'; }
         });
     });
 
-    function showDashboard(token) {
+    function showDashboard() {
         document.getElementById('loginSection').style.display = 'none';
         document.getElementById('dashboardSection').style.display = 'block';
         fetchData();
@@ -183,200 +113,114 @@
 
     function fetchData() {
         const token = localStorage.getItem('admin_token');
-        const headers = { 'Authorization': `Bearer ${token}` };
-
-        // Fetch Admissions
-        fetch(`${BACKEND_URL}/admin/admissions`, { headers }).then(res => { if(res.status===401||res.status===403) logout(); return res.json();})
+        fetch(`${BACKEND_URL}/admin/admissions`, { headers: { 'Authorization': `Bearer ${token}` }})
+        .then(res => { if(res.status===401||res.status===403) logout(); return res.json();})
         .then(data => { admData = data.data || []; document.getElementById('loadingAdmissions').style.display = 'none'; renderAdmissions(); });
 
-        // Fetch Contacts
-        fetch(`${BACKEND_URL}/admin/contacts`, { headers }).then(res => res.json())
+        fetch(`${BACKEND_URL}/admin/contacts`, { headers: { 'Authorization': `Bearer ${token}` }})
+        .then(res => res.json())
         .then(data => { conData = data.data || []; document.getElementById('loadingContacts').style.display = 'none'; renderContacts(); });
-
-        // Fetch News
-        fetch(`${BACKEND_URL}/api/news`).then(res => res.json())
-        .then(data => { newsData = data.data || []; document.getElementById('loadingNews').style.display = 'none'; renderNews(); });
-
-        // Fetch Results
-        fetch(`${BACKEND_URL}/api/results`).then(res => res.json())
-        .then(data => { resultsData = data.data || []; document.getElementById('loadingResults').style.display = 'none'; renderResults(); });
-
-        // Fetch Gallery
-        fetch(`${BACKEND_URL}/api/gallery`).then(res => res.json())
-        .then(data => { galleryData = data.data || []; document.getElementById('loadingGallery').style.display = 'none'; renderGallery(); });
     }
 
     function setViewMode(mode, btn) {
         currentView = mode;
-        document.querySelectorAll('.view-toggle .btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.btn-group .btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        renderAdmissions(); renderContacts(); renderNews(); renderResults(); renderGallery();
+        renderAdmissions(); renderContacts();
     }
 
-    // --- Base64 Converter ---
-    function getBase64(file) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = error => reject(error);
-        });
-    }
-
-    // --- Render Functions ---
     function renderAdmissions() {
         const container = document.getElementById('admissionsContainer');
-        if(admData.length === 0) { container.innerHTML = '<p class="text-center text-muted">No records found.</p>'; return; }
-        if (currentView === 'json') { container.innerHTML = `<pre class="json-view">${JSON.stringify(admData, null, 4)}</pre>`; } 
-        else if (currentView === 'table') {
-            let html = `<div class="table-responsive"><table class="table table-bordered table-striped"><thead class="thead-dark"><tr><th>Name</th><th>Class</th><th>Phone</th><th>Actions</th></tr></thead><tbody>`;
-            admData.forEach(item => { html += `<tr><td>${item.name}</td><td>${item.class_select}</td><td>${item.phone}</td><td><button class="btn btn-sm btn-danger" onclick="deleteRecord('admissions', ${item.id})"><i class="fa fa-trash"></i></button></td></tr>`; });
-            html += `</tbody></table></div>`; container.innerHTML = html;
+        if(!admData.length) { container.innerHTML = '<p class="text-center text-muted">No records found.</p>'; return; }
+        
+        if (currentView === 'json') {
+            container.innerHTML = `<pre class="json-view">${JSON.stringify(admData, null, 4)}</pre>`;
+        } else if (currentView === 'table') {
+            let html = `<div class="table-responsive"><table class="table table-bordered bg-white">
+                <thead class="thead-dark"><tr><th>Photo</th><th>Name</th><th>Class</th><th>Phone</th><th>Actions</th></tr></thead><tbody>`;
+            admData.forEach(item => {
+                html += `<tr>
+                <td><img src="${item.photo || 'https://via.placeholder.com/40'}" class="student-photo" style="width:40px;height:40px;"></td>
+                <td>${item.name}</td><td>${item.class_select}</td><td>${item.phone}</td>
+                <td><button class="btn btn-sm btn-info" onclick='openEditAdm(${JSON.stringify(item).replace(/'/g, "&#39;")})'><i class="fa fa-edit"></i></button>
+                <button class="btn btn-sm btn-danger" onclick="deleteRecord('admissions', ${item.id})"><i class="fa fa-trash"></i></button></td></tr>`;
+            });
+            container.innerHTML = html + `</tbody></table></div>`;
         } else {
             let html = '';
             admData.forEach(item => {
-                html += `<div class="card p-4"><div class="row align-items-center">
-                    <div class="col-md-2 text-center"><img src="${item.photo || 'https://via.placeholder.com/60'}" class="student-photo round mb-2"></div>
-                    <div class="col-md-7"><h4 class="text-success font-weight-bold mb-1">${item.name}</h4>
-                    <p class="mb-1 text-muted"><strong>Class:</strong> ${item.class_select} | <strong>Phone:</strong> ${item.phone}</p></div>
-                    <div class="col-md-3 text-md-right"><button onclick="deleteRecord('admissions', ${item.id})" class="btn btn-outline-danger btn-sm w-100"><i class="fa fa-trash"></i> Delete</button></div></div></div>`;
-            }); container.innerHTML = html;
+                html += `<div class="card p-3"><div class="row align-items-center">
+                    <div class="col-md-2 text-center"><img src="${item.photo || 'https://via.placeholder.com/60'}" class="student-photo mb-2"></div>
+                    <div class="col-md-7"><h5 class="text-success font-weight-bold mb-1">${item.name}</h5>
+                    <p class="mb-1 text-muted">Class: ${item.class_select} | Phone: ${item.phone}</p>
+                    <p class="mb-0 text-secondary"><small>Email: ${item.email} | Address: ${item.address}</small></p></div>
+                    <div class="col-md-3 text-right">
+                        <button onclick='openEditAdm(${JSON.stringify(item).replace(/'/g, "&#39;")})' class="btn btn-outline-info btn-sm mb-1 d-block w-100"><i class="fa fa-edit"></i> Edit</button>
+                        <button onclick="deleteRecord('admissions', ${item.id})" class="btn btn-outline-danger btn-sm w-100"><i class="fa fa-trash"></i> Delete</button>
+                    </div></div></div>`;
+            });
+            container.innerHTML = html;
         }
     }
 
     function renderContacts() {
         const container = document.getElementById('contactsContainer');
-        if(conData.length === 0) { container.innerHTML = '<p class="text-center text-muted">No records found.</p>'; return; }
-        if (currentView === 'json') { container.innerHTML = `<pre class="json-view">${JSON.stringify(conData, null, 4)}</pre>`; } 
-        else if (currentView === 'table') {
-            let html = `<div class="table-responsive"><table class="table table-bordered table-striped"><thead class="thead-dark"><tr><th>Name</th><th>Phone</th><th>Message</th><th>Action</th></tr></thead><tbody>`;
-            conData.forEach(item => { html += `<tr><td>${item.name}</td><td>${item.phone}</td><td>${item.message}</td><td><button class="btn btn-sm btn-danger" onclick="deleteRecord('contacts', ${item.id})"><i class="fa fa-trash"></i></button></td></tr>`; });
-            html += `</tbody></table></div>`; container.innerHTML = html;
-        } else {
-            let html = '';
-            conData.forEach(item => {
-                html += `<div class="card p-4"><div class="row align-items-center">
-                    <div class="col-md-9"><h4 class="text-success font-weight-bold mb-1">${item.name}</h4><p class="mb-1 text-muted"><strong>Phone:</strong> ${item.phone}</p><p class="mb-0 text-dark"><strong>Msg:</strong> ${item.message}</p></div>
-                    <div class="col-md-3 text-md-right"><button onclick="deleteRecord('contacts', ${item.id})" class="btn btn-outline-danger btn-sm w-100"><i class="fa fa-trash"></i> Delete</button></div></div></div>`;
-            }); container.innerHTML = html;
-        }
-    }
-
-    function renderNews() {
-        const container = document.getElementById('newsContainer');
-        if(newsData.length === 0) { container.innerHTML = '<p class="text-center text-muted">No news found.</p>'; return; }
-        if (currentView === 'json') { container.innerHTML = `<pre class="json-view">${JSON.stringify(newsData, null, 4)}</pre>`; } 
-        else {
-            let html = '<div class="row">';
-            newsData.forEach(item => {
-                html += `<div class="col-md-6"><div class="card p-3 mb-3 border-left-success">
-                    <div class="d-flex justify-content-between">
-                        <span class="badge badge-success mb-2">${item.date_text}</span>
-                        <button class="btn btn-sm btn-danger" onclick="deleteRecord('news', ${item.id})"><i class="fa fa-trash"></i></button>
-                    </div>
-                    <h5 class="font-weight-bold">${item.title}</h5>
-                    <p class="text-muted small">${item.description}</p>
-                </div></div>`;
-            }); html += '</div>'; container.innerHTML = html;
-        }
-    }
-
-    function renderResults() {
-        const container = document.getElementById('resultsContainer');
-        if(resultsData.length === 0) { container.innerHTML = '<p class="text-center text-muted">No results found.</p>'; return; }
-        if (currentView === 'json') { container.innerHTML = `<pre class="json-view">${JSON.stringify(resultsData, null, 4)}</pre>`; } 
-        else {
-            let html = '<div class="row">';
-            resultsData.forEach(item => {
-                html += `<div class="col-md-4"><div class="card p-2 mb-3 text-center">
-                    <img src="${item.image_url}" class="gallery-img mb-2" alt="Result">
-                    <h6 class="font-weight-bold text-success">${item.category}</h6>
-                    <p class="small font-weight-bold">${item.item_name}</p>
-                    <button class="btn btn-sm btn-danger w-100" onclick="deleteRecord('results', ${item.id})"><i class="fa fa-trash"></i> Delete</button>
-                </div></div>`;
-            }); html += '</div>'; container.innerHTML = html;
-        }
-    }
-
-    function renderGallery() {
-        const container = document.getElementById('galleryContainer');
-        if(galleryData.length === 0) { container.innerHTML = '<p class="text-center text-muted">No gallery photos found.</p>'; return; }
-        if (currentView === 'json') { container.innerHTML = `<pre class="json-view">${JSON.stringify(galleryData, null, 4)}</pre>`; } 
-        else {
-            let html = '<div class="row">';
-            galleryData.forEach(item => {
-                html += `<div class="col-md-3 col-6"><div class="card p-2 mb-3 text-center">
-                    <img src="${item.image_url}" class="gallery-img mb-2" alt="Gallery">
-                    <span class="badge badge-info mb-2">${item.category}</span>
-                    <button class="btn btn-sm btn-danger w-100" onclick="deleteRecord('gallery', ${item.id})"><i class="fa fa-trash"></i></button>
-                </div></div>`;
-            }); html += '</div>'; container.innerHTML = html;
-        }
-    }
-
-    // --- Save Functions (POST Requests) ---
-    function saveNews() {
-        const data = {
-            date_text: document.getElementById('news_date').value,
-            title: document.getElementById('news_title').value,
-            description: document.getElementById('news_desc').value
-        };
-        fetch(`${BACKEND_URL}/admin/news`, {
-            method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('admin_token')}` },
-            body: JSON.stringify(data)
-        }).then(res => res.json()).then(resData => {
-            if (resData.success) { $('#addNewsModal').modal('hide'); fetchData(); alert('News Added!'); }
-            else alert('Failed to add news');
+        if(!conData.length) { container.innerHTML = '<p class="text-center text-muted">No records found.</p>'; return; }
+        let html = '';
+        conData.forEach(item => {
+            html += `<div class="card p-3"><div class="row align-items-center">
+                <div class="col-md-9"><h5 class="text-success font-weight-bold">${item.name}</h5>
+                <p class="mb-1">Phone: ${item.phone} | Email: ${item.email}</p>
+                <p class="mb-0 text-secondary">${item.message}</p></div>
+                <div class="col-md-3 text-right">
+                    <button onclick="deleteRecord('contacts', ${item.id})" class="btn btn-outline-danger btn-sm w-100"><i class="fa fa-trash"></i> Delete</button>
+                </div></div></div>`;
         });
+        container.innerHTML = html;
     }
 
-    async function saveResult() {
-        const btn = document.getElementById('btnSaveResult'); btn.innerText = "Saving..."; btn.disabled = true;
-        const file = document.getElementById('res_img').files[0];
-        if(!file) { alert("Please select an image"); btn.innerText = "Save Result"; btn.disabled = false; return; }
-        
-        const base64Img = await getBase64(file);
-        const data = {
-            category: document.getElementById('res_cat').value,
-            item_name: document.getElementById('res_item').value,
-            image_url: base64Img
-        };
-        fetch(`${BACKEND_URL}/admin/results`, {
-            method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('admin_token')}` },
-            body: JSON.stringify(data)
-        }).then(res => res.json()).then(resData => {
-            btn.innerText = "Save Result"; btn.disabled = false;
-            if (resData.success) { $('#addResultModal').modal('hide'); fetchData(); alert('Result Added!'); }
-            else alert('Failed to add result');
-        });
+    function openEditAdm(item) {
+        document.getElementById('edit_adm_id').value = item.id;
+        document.getElementById('edit_adm_name').value = item.name;
+        document.getElementById('edit_adm_photo').value = item.photo || '';
+        document.getElementById('edit_adm_email').value = item.email;
+        document.getElementById('edit_adm_phone').value = item.phone;
+        document.getElementById('edit_adm_whatsapp').value = item.whatsapp;
+        document.getElementById('edit_adm_class').value = item.class_select;
+        document.getElementById('edit_adm_address').value = item.address;
+        $('#editAdmisisonModal').modal('show');
     }
 
-    async function saveGallery() {
-        const btn = document.getElementById('btnSaveGallery'); btn.innerText = "Uploading..."; btn.disabled = true;
-        const file = document.getElementById('gal_img').files[0];
-        if(!file) { alert("Please select an image"); btn.innerText = "Upload Photo"; btn.disabled = false; return; }
-        
-        const base64Img = await getBase64(file);
+    function saveAdmissionEdit() {
+        const id = document.getElementById('edit_adm_id').value;
         const data = {
-            category: document.getElementById('gal_cat').value,
-            image_url: base64Img
+            name: document.getElementById('edit_adm_name').value,
+            photo: document.getElementById('edit_adm_photo').value,
+            email: document.getElementById('edit_adm_email').value,
+            phone: document.getElementById('edit_adm_phone').value,
+            whatsapp: document.getElementById('edit_adm_whatsapp').value,
+            class_select: document.getElementById('edit_adm_class').value,
+            address: document.getElementById('edit_adm_address').value
         };
-        fetch(`${BACKEND_URL}/admin/gallery`, {
-            method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('admin_token')}` },
+
+        fetch(`${BACKEND_URL}/admin/admissions/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('admin_token')}` },
             body: JSON.stringify(data)
         }).then(res => res.json()).then(resData => {
-            btn.innerText = "Upload Photo"; btn.disabled = false;
-            if (resData.success) { $('#addGalleryModal').modal('hide'); fetchData(); alert('Photo Added!'); }
-            else alert('Failed to add photo');
+            if (resData.success) { $('#editAdmisisonModal').modal('hide'); fetchData(); alert('Updated successfully!'); }
+            else alert('Failed to update');
         });
     }
 
     function deleteRecord(type, id) {
         if (!confirm('Are you sure you want to delete this record?')) return;
         fetch(`${BACKEND_URL}/admin/${type}/${id}`, {
-            method: 'DELETE', headers: { 'Authorization': `Bearer ${localStorage.getItem('admin_token')}` }
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${localStorage.getItem('admin_token')}` }
         }).then(res => res.json()).then(data => {
-            if (data.success) fetchData(); else alert('Failed to delete');
+            if (data.success) fetchData();
+            else alert('Failed to delete');
         });
     }
 
