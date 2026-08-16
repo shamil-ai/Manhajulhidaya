@@ -1,231 +1,171 @@
 <!DOCTYPE html>
-<html lang="ml">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manhajul Hidaya | Admin Panel</title>
+    <title>Admin Dashboard | Manhajul Hidaya</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { background: #f8fafc; font-family: sans-serif; }
-        .admin-header { background: #059669; color: white; padding: 20px 0; margin-bottom: 20px; }
-        .card { border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; }
-        .student-photo { width: 60px; height: 60px; object-fit: cover; border-radius: 50%; }
-        .login-container { max-width: 400px; margin: 80px auto; background: white; padding: 30px; border-radius: 15px; }
-        pre.json-view { background: #1e293b; color: #a5b4fc; padding: 20px; border-radius: 10px; max-height: 500px; overflow-y: auto; }
+        body { background-color: #f4f6f9; font-family: Arial, sans-serif; }
+        .admin-header { background-color: #059669; color: white; padding: 20px 0; margin-bottom: 30px; }
+        .nav-pills .nav-link.active { background-color: #059669; }
+        .table-responsive { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
     </style>
 </head>
 <body>
 
-<div id="loginSection" class="container">
-    <div class="login-container shadow">
-        <h3 class="text-center text-success font-weight-bold mb-4">Admin Login</h3>
-        <form id="loginForm">
-            <div class="form-group"><label>Username</label><input type="text" id="username" class="form-control" required></div>
-            <div class="form-group"><label>Password</label><input type="password" id="password" class="form-control" required></div>
-            <button type="submit" class="btn btn-success btn-block font-weight-bold">Login</button>
-            <p id="loginError" class="text-danger text-center mt-3" style="display: none;"></p>
-        </form>
-    </div>
+<div class="admin-header text-center">
+    <h2>Manhajul Hidaya Admin Dashboard</h2>
 </div>
 
-<div id="dashboardSection" style="display: none;">
-    <div class="admin-header d-flex justify-content-between align-items-center px-4">
-        <div></div>
-        <h2 class="mb-0">Manhajul Hidaya Admin</h2>
-        <button onclick="logout()" class="btn btn-light btn-sm text-danger font-weight-bold">Logout</button>
-    </div>
+<div class="container">
+    <!-- Tabs for Navigation -->
+    <ul class="nav nav-pills mb-4 justify-content-center" id="adminTabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="admission-tab" data-toggle="pill" href="#admissions" role="tab">Admission Details</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="photo-tab" data-toggle="pill" href="#photos" role="tab">Upload Fest Photos</a>
+        </li>
+    </ul>
 
-    <div class="container mb-3 text-center">
-        <div class="btn-group">
-            <button type="button" class="btn btn-outline-success active" onclick="setViewMode('card', this)">Card View</button>
-            <button type="button" class="btn btn-outline-success" onclick="setViewMode('table', this)">Table View</button>
-            <button type="button" class="btn btn-outline-success" onclick="setViewMode('json', this)">JSON View</button>
-        </div>
-    </div>
-
-    <div class="container mb-4">
-        <ul class="nav nav-pills justify-content-center">
-            <li class="nav-item mr-2"><a class="nav-link active" data-toggle="pill" href="#pills-admissions" onclick="renderAdmissions()">Admissions</a></li>
-            <li class="nav-item"><a class="nav-link" data-toggle="pill" href="#pills-contacts" onclick="renderContacts()">Contacts</a></li>
-        </ul>
-    </div>
-
-    <div class="container">
-        <div class="tab-content">
-            <div class="tab-pane fade show active" id="pills-admissions">
-                <div id="loadingAdmissions" class="text-center py-5">Loading...</div>
-                <div id="admissionsContainer"></div>
+    <!-- Tab Content -->
+    <div class="tab-content">
+        
+        <!-- 1. ADMISSIONS TAB -->
+        <div class="tab-pane fade show active" id="admissions" role="tabpanel">
+            <div class="table-responsive">
+                <h4 class="text-success mb-3">Recent Admission Applications</h4>
+                <button onclick="loadAdmissions()" class="btn btn-sm btn-outline-success mb-3">Refresh Data</button>
+                
+                <table class="table table-bordered table-striped">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Student Name</th>
+                            <th>Guardian</th>
+                            <th>Phone</th>
+                            <th>Course</th>
+                            <th>Address</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admissionTableBody">
+                        <tr><td colspan="7" class="text-center">Loading admissions...</td></tr>
+                    </tbody>
+                </table>
             </div>
-            <div class="tab-pane fade" id="pills-contacts">
-                <div id="loadingContacts" class="text-center py-5">Loading...</div>
-                <div id="contactsContainer"></div>
+        </div>
+
+        <!-- 2. PHOTO UPLOAD TAB -->
+        <div class="tab-pane fade" id="photos" role="tabpanel">
+            <div class="card p-4 shadow-sm mx-auto" style="max-width: 600px;">
+                <h4 class="text-success mb-4">Upload Festival Photo</h4>
+                <div class="form-group">
+                    <label>Select Photo (Max 2MB)</label>
+                    <input type="file" id="imageInput" accept="image/*" class="form-control-file">
+                </div>
+                <div class="form-group mb-4">
+                    <label>Caption / Event Name</label>
+                    <input type="text" id="photoCaption" placeholder="E.g., Alif Fest 2026 Opening" class="form-control">
+                </div>
+                <button onclick="uploadPhoto()" id="uploadBtn" class="btn btn-success px-4 w-100">Upload Photo</button>
+                <p id="uploadStatus" class="mt-3 text-center font-weight-bold"></p>
             </div>
         </div>
-    </div>
-</div>
 
-<!-- Edit Admission Modal -->
-<div class="modal fade" id="editAdmisisonModal" tabindex="-1">
-    <div class="modal-dialog"><div class="modal-content">
-        <div class="modal-header"><h5 class="modal-title">Edit Admission</h5><button type="button" class="close" data-dismiss="modal">&times;</button></div>
-        <div class="modal-body">
-            <input type="hidden" id="edit_adm_id">
-            <div class="form-group"><label>Name</label><input type="text" id="edit_adm_name" class="form-control"></div>
-            <div class="form-group"><label>Photo URL / Base64</label><input type="text" id="edit_adm_photo" class="form-control"></div>
-            <div class="form-group"><label>Email</label><input type="email" id="edit_adm_email" class="form-control"></div>
-            <div class="form-group"><label>Phone</label><input type="text" id="edit_adm_phone" class="form-control"></div>
-            <div class="form-group"><label>WhatsApp</label><input type="text" id="edit_adm_whatsapp" class="form-control"></div>
-            <div class="form-group"><label>Class</label><input type="text" id="edit_adm_class" class="form-control"></div>
-            <div class="form-group"><label>Address</label><textarea id="edit_adm_address" class="form-control"></textarea></div>
-        </div>
-        <div class="modal-footer"><button type="button" class="btn btn-success" onclick="saveAdmissionEdit()">Save Changes</button></div>
-    </div></div>
+    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-    const BACKEND_URL = 'https://manhajulhidaya.onrender.com';
-    let currentView = 'card'; 
-    let admData = [], conData = [];
+// VERCEL BACKEND URL - നിങ്ങളുടെ ശരിയായ ലിങ്ക് ആണോ എന്ന് ഉറപ്പുവരുത്തുക
+const BACKEND_URL = 'https://manhajulhidaya-v364.vercel.app';
 
-    const token = localStorage.getItem('admin_token');
-    if (token) showDashboard();
+// --------------------------------------------------------
+// 1. Load Admissions Function
+// --------------------------------------------------------
+async function loadAdmissions() {
+    const tbody = document.getElementById('admissionTableBody');
+    tbody.innerHTML = '<tr><td colspan="7" class="text-center">Loading...</td></tr>';
 
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        fetch(`${BACKEND_URL}/admin/login`, {
-            method: 'POST', headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username: document.getElementById('username').value, password: document.getElementById('password').value })
-        }).then(res => res.json()).then(data => {
-            if (data.success) { localStorage.setItem('admin_token', data.token); showDashboard(); } 
-            else { document.getElementById('loginError').innerText = 'Invalid credentials'; document.getElementById('loginError').style.display = 'block'; }
-        });
-    });
+    try {
+        const res = await fetch(`${BACKEND_URL}/admin/admissions`);
+        const data = await res.json();
 
-    function showDashboard() {
-        document.getElementById('loginSection').style.display = 'none';
-        document.getElementById('dashboardSection').style.display = 'block';
-        fetchData();
-    }
-
-    function fetchData() {
-        const token = localStorage.getItem('admin_token');
-        fetch(`${BACKEND_URL}/admin/admissions`, { headers: { 'Authorization': `Bearer ${token}` }})
-        .then(res => { if(res.status===401||res.status===403) logout(); return res.json();})
-        .then(data => { admData = data.data || []; document.getElementById('loadingAdmissions').style.display = 'none'; renderAdmissions(); });
-
-        fetch(`${BACKEND_URL}/admin/contacts`, { headers: { 'Authorization': `Bearer ${token}` }})
-        .then(res => res.json())
-        .then(data => { conData = data.data || []; document.getElementById('loadingContacts').style.display = 'none'; renderContacts(); });
-    }
-
-    function setViewMode(mode, btn) {
-        currentView = mode;
-        document.querySelectorAll('.btn-group .btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        renderAdmissions(); renderContacts();
-    }
-
-    function renderAdmissions() {
-        const container = document.getElementById('admissionsContainer');
-        if(!admData.length) { container.innerHTML = '<p class="text-center text-muted">No records found.</p>'; return; }
-        
-        if (currentView === 'json') {
-            container.innerHTML = `<pre class="json-view">${JSON.stringify(admData, null, 4)}</pre>`;
-        } else if (currentView === 'table') {
-            let html = `<div class="table-responsive"><table class="table table-bordered bg-white">
-                <thead class="thead-dark"><tr><th>Photo</th><th>Name</th><th>Class</th><th>Phone</th><th>Actions</th></tr></thead><tbody>`;
-            admData.forEach(item => {
-                html += `<tr>
-                <td><img src="${item.photo || 'https://via.placeholder.com/40'}" class="student-photo" style="width:40px;height:40px;"></td>
-                <td>${item.name}</td><td>${item.class_select}</td><td>${item.phone}</td>
-                <td><button class="btn btn-sm btn-info" onclick='openEditAdm(${JSON.stringify(item).replace(/'/g, "&#39;")})'><i class="fa fa-edit"></i></button>
-                <button class="btn btn-sm btn-danger" onclick="deleteRecord('admissions', ${item.id})"><i class="fa fa-trash"></i></button></td></tr>`;
+        if (data.success && data.data.length > 0) {
+            tbody.innerHTML = '';
+            data.data.forEach(app => {
+                const date = new Date(app.created_at).toLocaleDateString('en-IN');
+                tbody.innerHTML += `
+                    <tr>
+                        <td>#${app.id}</td>
+                        <td class="font-weight-bold">${app.student_name}</td>
+                        <td>${app.guardian_name}</td>
+                        <td><a href="tel:${app.phone}">${app.phone}</a></td>
+                        <td><span class="badge badge-success">${app.course}</span></td>
+                        <td>${app.address}</td>
+                        <td>${date}</td>
+                    </tr>
+                `;
             });
-            container.innerHTML = html + `</tbody></table></div>`;
         } else {
-            let html = '';
-            admData.forEach(item => {
-                html += `<div class="card p-3"><div class="row align-items-center">
-                    <div class="col-md-2 text-center"><img src="${item.photo || 'https://via.placeholder.com/60'}" class="student-photo mb-2"></div>
-                    <div class="col-md-7"><h5 class="text-success font-weight-bold mb-1">${item.name}</h5>
-                    <p class="mb-1 text-muted">Class: ${item.class_select} | Phone: ${item.phone}</p>
-                    <p class="mb-0 text-secondary"><small>Email: ${item.email} | Address: ${item.address}</small></p></div>
-                    <div class="col-md-3 text-right">
-                        <button onclick='openEditAdm(${JSON.stringify(item).replace(/'/g, "&#39;")})' class="btn btn-outline-info btn-sm mb-1 d-block w-100"><i class="fa fa-edit"></i> Edit</button>
-                        <button onclick="deleteRecord('admissions', ${item.id})" class="btn btn-outline-danger btn-sm w-100"><i class="fa fa-trash"></i> Delete</button>
-                    </div></div></div>`;
-            });
-            container.innerHTML = html;
+            tbody.innerHTML = '<tr><td colspan="7" class="text-center text-muted">No admission applications found.</td></tr>';
         }
+    } catch (err) {
+        tbody.innerHTML = '<tr><td colspan="7" class="text-center text-danger">Failed to load data. Check connection.</td></tr>';
     }
+}
 
-    function renderContacts() {
-        const container = document.getElementById('contactsContainer');
-        if(!conData.length) { container.innerHTML = '<p class="text-center text-muted">No records found.</p>'; return; }
-        let html = '';
-        conData.forEach(item => {
-            html += `<div class="card p-3"><div class="row align-items-center">
-                <div class="col-md-9"><h5 class="text-success font-weight-bold">${item.name}</h5>
-                <p class="mb-1">Phone: ${item.phone} | Email: ${item.email}</p>
-                <p class="mb-0 text-secondary">${item.message}</p></div>
-                <div class="col-md-3 text-right">
-                    <button onclick="deleteRecord('contacts', ${item.id})" class="btn btn-outline-danger btn-sm w-100"><i class="fa fa-trash"></i> Delete</button>
-                </div></div></div>`;
-        });
-        container.innerHTML = html;
-    }
+// --------------------------------------------------------
+// 2. Upload Photo Function
+// --------------------------------------------------------
+async function uploadPhoto() {
+    const fileInput = document.getElementById('imageInput');
+    const caption = document.getElementById('photoCaption').value;
+    const statusText = document.getElementById('uploadStatus');
+    const uploadBtn = document.getElementById('uploadBtn');
 
-    function openEditAdm(item) {
-        document.getElementById('edit_adm_id').value = item.id;
-        document.getElementById('edit_adm_name').value = item.name;
-        document.getElementById('edit_adm_photo').value = item.photo || '';
-        document.getElementById('edit_adm_email').value = item.email;
-        document.getElementById('edit_adm_phone').value = item.phone;
-        document.getElementById('edit_adm_whatsapp').value = item.whatsapp;
-        document.getElementById('edit_adm_class').value = item.class_select;
-        document.getElementById('edit_adm_address').value = item.address;
-        $('#editAdmisisonModal').modal('show');
-    }
+    if (fileInput.files.length === 0) return alert('ദയവായി ഒരു ഇമേജ് ഫയൽ തിരഞ്ഞെടുക്കുക.');
+    if (fileInput.files[0].size > 2 * 1024 * 1024) return alert('ഫയൽ സൈസ് 2MB-യിൽ താഴെയായിരിക്കണം.');
 
-    function saveAdmissionEdit() {
-        const id = document.getElementById('edit_adm_id').value;
-        const data = {
-            name: document.getElementById('edit_adm_name').value,
-            photo: document.getElementById('edit_adm_photo').value,
-            email: document.getElementById('edit_adm_email').value,
-            phone: document.getElementById('edit_adm_phone').value,
-            whatsapp: document.getElementById('edit_adm_whatsapp').value,
-            class_select: document.getElementById('edit_adm_class').value,
-            address: document.getElementById('edit_adm_address').value
-        };
+    statusText.innerText = "Uploading... Please wait.";
+    statusText.style.color = "blue";
+    uploadBtn.disabled = true;
 
-        fetch(`${BACKEND_URL}/admin/admissions/${id}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('admin_token')}` },
-            body: JSON.stringify(data)
-        }).then(res => res.json()).then(resData => {
-            if (resData.success) { $('#editAdmisisonModal').modal('hide'); fetchData(); alert('Updated successfully!'); }
-            else alert('Failed to update');
-        });
-    }
+    const reader = new FileReader();
+    reader.readAsDataURL(fileInput.files[0]);
+    
+    reader.onload = async function() {
+        try {
+            const res = await fetch(`${BACKEND_URL}/admin/upload-photo`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ photo_url: reader.result, caption: caption })
+            });
 
-    function deleteRecord(type, id) {
-        if (!confirm('Are you sure you want to delete this record?')) return;
-        fetch(`${BACKEND_URL}/admin/${type}/${id}`, {
-            method: 'DELETE',
-            headers: { 'Authorization': `Bearer ${localStorage.getItem('admin_token')}` }
-        }).then(res => res.json()).then(data => {
-            if (data.success) fetchData();
-            else alert('Failed to delete');
-        });
-    }
+            const data = await res.json();
+            if (data.success) {
+                statusText.innerText = "Photo Uploaded Successfully! ✅";
+                statusText.style.color = "green";
+                fileInput.value = '';
+                document.getElementById('photoCaption').value = '';
+            } else {
+                statusText.innerText = "Error: " + data.error;
+                statusText.style.color = "red";
+            }
+        } catch (err) {
+            statusText.innerText = "Connection Failed!";
+            statusText.style.color = "red";
+        }
+        uploadBtn.disabled = false;
+    };
+}
 
-    function logout() { localStorage.removeItem('admin_token'); location.reload(); }
+// പേജ് ലോഡ് ചെയ്യുമ്പോൾ അഡ്മിഷൻ ഡാറ്റ വിളിക്കാൻ
+window.onload = loadAdmissions;
 </script>
-
 </body>
 </html>
