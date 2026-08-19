@@ -23,7 +23,7 @@
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 40px auto;
             padding: 0 20px;
         }
@@ -41,12 +41,19 @@
             margin: 0;
             font-size: 2.5em;
             letter-spacing: 1px;
+            color: white;
         }
 
         header p {
             color: var(--accent-color);
             font-size: 1.2em;
             margin-top: 10px;
+        }
+
+        .location {
+            font-size: 0.9em;
+            margin-top: 5px;
+            color: #e0e0e0;
         }
 
         .section {
@@ -62,10 +69,21 @@
             border-bottom: 3px solid var(--accent-color);
             padding-bottom: 10px;
             margin-top: 0;
+            font-size: 1.8em;
         }
 
         h3 {
             color: var(--secondary-color);
+            margin-top: 25px;
+        }
+
+        h4 {
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        p {
+            text-align: justify;
         }
 
         ul {
@@ -91,15 +109,21 @@
         .highlight-box {
             background-color: #e8f5e9;
             border-left: 5px solid var(--secondary-color);
-            padding: 15px;
+            padding: 20px;
             margin: 20px 0;
             border-radius: 0 5px 5px 0;
         }
 
-        .contact-grid {
+        .grid-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
         }
 
         a {
@@ -111,6 +135,14 @@
         a:hover {
             color: var(--primary-color);
             text-decoration: underline;
+        }
+
+        .quote {
+            font-style: italic;
+            color: #555;
+            border-left: 4px solid var(--accent-color);
+            padding-left: 15px;
+            margin: 15px 0;
         }
 
         footer {
@@ -130,144 +162,210 @@
         <!-- Header Section -->
         <header>
             <h1>MANHAJUL HIDAYA ISLAMIC ACADEMY</h1>
-            <p>Comprehensive Business and Institutional Profile[span_0](start_span)[span_0](end_span)</p>
+            <p>COMPREHENSIVE BUSINESS AND INSTITUTIONAL PROFILE</p>
+            <div class="location">Location: Centre Nediyiruppu, Kondotty, Malappuram DT, Kerala, India – 673638[span_0](start_span)[span_0](end_span)</div>
         </header>
 
-        <!-- Executive Summary -->
+        <!-- Section 1: Executive Summary -->
         <div class="section">
-            <h2>1. Executive Summary & Institutional Overview</h2>
-            <p>Manhajul Hidaya (also known as Al Manhajul Hidaya Da'wa Campus) is a premier Islamic educational institution located in Kerala, India[span_1](start_span)[span_1](end_span). It is officially affiliated with the prestigious Bukhari Islamic Dawah College[span_2](start_span)[span_2](end_span). The institution is profoundly dedicated to the synthesis of traditional Islamic values and dynamic contemporary educational advancements[span_3](start_span)[span_3](end_span). The core mission is to nurture a generation equipped with both strong moral values and high-quality standard technical education[span_4](start_span)[span_4](end_span).</p>
-            <p>Connecting traditional Islamic knowledge with contemporary standard technical education methods, Manhajul Hidaya aims to produce inspiring Islamic scholars who can contribute positively to society[span_5](start_span)[span_5](end_span). To achieve this monumental goal, the academy offers intensive language studies in English, Arabic, Urdu, and other languages[span_6](start_span)[span_6](end_span). By mastering these languages, students are empowered to gain a much deeper and nuanced understanding of classical Islamic texts, communicate effectively with people from diverse cultural backgrounds, and spread the message of Islam globally[span_7](start_span)[span_7](end_span).</p>
+            <h2>1. EXECUTIVE SUMMARY & INSTITUTIONAL OVERVIEW</h2>
+            <p>Manhajul Hidaya (also known as Al Manhajul Hidaya Da'wa Campus) is a premier Islamic educational institution located in Kerala, India.[span_1](start_span)[span_1](end_span) It is officially affiliated with the prestigious Bukhari Islamic Dawah College.[span_2](start_span)[span_2](end_span) The institution is profoundly dedicated to the synthesis of traditional Islamic values and dynamic contemporary educational advancements.[span_3](start_span)[span_3](end_span) The core mission is to nurture a generation equipped with both strong moral values and high-quality standard technical education.[span_4](start_span)[span_4](end_span)</p>
+            <p>Connecting traditional Islamic knowledge with contemporary standard technical education methods, Manhajul Hidaya aims to produce inspiring Islamic scholars who can contribute positively to society.[span_5](start_span)[span_5](end_span) To achieve this monumental goal, the academy offers intensive language studies in English, Arabic, Urdu, and other languages.[span_6](start_span)[span_6](end_span) By mastering these languages, students are empowered to gain a much deeper and nuanced understanding of classical Islamic texts, communicate effectively with people from diverse cultural backgrounds, and spread the message of Islam globally.[span_7](start_span)[span_7](end_span)</p>
             
             <div class="highlight-box">
                 <h3>Key Statistics & Milestones:</h3>
                 <ul>
-                    <li>Legacy of Excellence: Over 10+ years of operational history.[span_8](start_span)[span_8](end_span)</li>
-                    <li>Alumni Network: 30+ successful alumni actively contributing to society.[span_9](start_span)[span_9](end_span)</li>
-                    <li>Current Enrollment: 48+ active students currently pursuing their education.[span_10](start_span)[span_10](end_span)</li>
-                    <li>Infrastructure: Operating across 2+ institutions/stages of learning.[span_11](start_span)[span_11](end_span)</li>
+                    <li><strong>Legacy of Excellence:</strong> Over 10+ years of operational history.[span_8](start_span)[span_8](end_span)</li>
+                    <li><strong>Alumni Network:</strong> 30+ successful alumni actively contributing to society.[span_9](start_span)[span_9](end_span)</li>
+                    <li><strong>Current Enrollment:</strong> 48+ active students currently pursuing their education.[span_10](start_span)[span_10](end_span)</li>
+                    <li><strong>Infrastructure:</strong> Operating across 2+ institutions/stages of learning.[span_11](start_span)[span_11](end_span)</li>
                 </ul>
             </div>
         </div>
 
-        <!-- Leadership & Vision -->
+        <!-- Section 2: Leadership -->
         <div class="section">
-            <h2>2. Leadership & Vision</h2>
-            <h3>Director: Ali Abdunoor Bukhari Pookkottur</h3>
-            <p>Usthad Ali Abdunnur Bukhari Pookkottur is a highly renowned Islamic scholar, dynamic orator, and visionary educator hailing from Kerala, India[span_12](start_span)[span_12](end_span). He is widely celebrated for his profound expertise in Islamic theology, Islamic jurisprudence (Fiqh), and the Arabic language[span_13](start_span)[span_13](end_span).</p>
-            <p>Throughout his distinguished career, he has authored numerous insightful works on various Islamic topics[span_14](start_span)[span_14](end_span). He has delivered impactful and transformative lectures at numerous seminars and conferences, consistently captivating audiences with his deep knowledge and articulate delivery[span_15](start_span)[span_15](end_span). Actively involved in the sphere of Islamic education, he has taught at several prominent institutions across Kerala, dedicating his life to nurturing students and promoting foundational Islamic values[span_16](start_span)[span_16](end_span). Respected immensely for his unwavering dedication to scholarship and education, Usthad Ali Abdunoor Bukhari Pookkottur continues to inspire a new generation and foster a deeper understanding of Islamic teachings globally[span_17](start_span)[span_17](end_span).</p>
+            <h2>2. LEADERSHIP & VISION</h2>
+            <h3>DIRECTOR: ALI ABDUNOOR BUKHARI POOKKOTTUR</h3>
+            <p>Usthad Ali Abdunnur Bukhari Pookkottur is a highly renowned Islamic scholar, dynamic orator, and visionary educator hailing from Kerala, India.[span_12](start_span)[span_12](end_span) He is widely celebrated for his profound expertise in Islamic theology, Islamic jurisprudence (Fiqh), and the Arabic language.[span_13](start_span)[span_13](end_span)</p>
+            <p>Throughout his distinguished career, he has authored numerous insightful works on various Islamic topics.[span_14](start_span)[span_14](end_span) He has delivered impactful and transformative lectures at numerous seminars and conferences, consistently captivating audiences with his deep knowledge and articulate delivery.[span_15](start_span)[span_15](end_span) Actively involved in the sphere of Islamic education, he has taught at several prominent institutions across Kerala, dedicating his life to nurturing students and promoting foundational Islamic values.[span_16](start_span)[span_16](end_span) Respected immensely for his unwavering dedication to scholarship and education, Usthad Ali Abdunoor Bukhari Pookkottur continues to inspire a new generation and foster a deeper understanding of Islamic teachings globally.[span_17](start_span)[span_17](end_span)</p>
         </div>
 
-        <!-- Academic Programs -->
+        <!-- Section 3: Academic Programs -->
         <div class="section">
-            <h2>3. Academic Programs & Admissions (2026-27 Academic Year)</h2>
-            <p>Admissions are currently open for the 2026-27 academic year[span_18](start_span)[span_18](end_span). Applications are invited for various courses at Manhajul Hidaya[span_19](start_span)[span_19](end_span).</p>
-            <h3>Target Classes:</h3>
-            <ul>
-                <li>8th Standard[span_20](start_span)[span_20](end_span)</li>
-                <li>9th Standard[span_21](start_span)[span_21](end_span)</li>
-                <li>11th Standard[span_22](start_span)[span_22](end_span)</li>
-            </ul>
-            <h3>Admission Requirements & Digital Portal:</h3>
-            <p>The institution operates a fully digitized admission portal to streamline the onboarding process[span_23](start_span)[span_23](end_span). Prospective students are required to submit comprehensive details, including:</p>
-            <ul>
-                <li>Applicant's Full Name[span_24](start_span)[span_24](end_span)</li>
-                <li>Date of Birth (DOB)[span_25](start_span)[span_25](end_span)</li>
-                <li>Applicant's Email Address and Guardian's Email[span_26](start_span)[span_26](end_span)</li>
-                <li>Primary Phone Number and WhatsApp Number[span_27](start_span)[span_27](end_span)</li>
-                <li>Detailed Residential Address[span_28](start_span)[span_28](end_span)</li>
-                <li>Passport Size Photograph (Uploaded via the portal)[span_29](start_span)[span_29](end_span)</li>
-                <li>Father's Name & Mother's Name[span_30](start_span)[span_30](end_span)</li>
-                <li>Current Educational Qualification[span_31](start_span)[span_31](end_span)</li>
-            </ul>
-        </div>
-
-        <!-- Manhaj Projects -->
-        <div class="section">
-            <h2>4. Manhaj Projects (Student Development Initiatives)</h2>
-            <p><em>"Nurturing values through quality activities"</em>[span_32](start_span)[span_32](end_span)</p>
-            <p>Manhaj Projects is a carefully curated collection of various educational, spiritual, and literary initiatives implemented by Manhajul Hidaya[span_33](start_span)[span_33](end_span). These projects are specifically aimed at the holistic development of the students[span_34](start_span)[span_34](end_span).</p>
-            <ul>
-                <li><strong>1. SABQ:</strong> A unique initiative focused on interacting closely with students to significantly enhance their educational engagement, interpersonal skills, and overall personal development.[span_35](start_span)[span_35](end_span)</li>
-                <li><strong>2. QUR'AN RECITATION:</strong> A daily program dedicated to reciting the Holy Qur'an. This initiative is designed to instill deep spiritual discipline, focus, and ensure the proper pronunciation (Tajweed) of the verses.[span_36](start_span)[span_36](end_span)</li>
-                <li><strong>3. SPECIAL CLASS:</strong> Tailored academic sessions conducting special classes for students to provide focused academic support, ensuring no student is left behind in their standard curriculum.[span_37](start_span)[span_37](end_span)</li>
-                <li><strong>4. HIZBUL QUR'AN:</strong> Dedicated and intensive Qur'an teaching sessions that focus primarily on the memorization (Hifz) and deep understanding of the Qur'anic chapters.[span_38](start_span)[span_38](end_span)</li>
-                <li><strong>5. KNOWLEDGE COURT:</strong> An interactive platform aimed at improving students' literary skills, critical thinking, and public speaking through healthy, structured academic debates.[span_39](start_span)[span_39](end_span)</li>
-                <li><strong>6. LIBRARY:</strong> A comprehensive campus library project focused on improving students' reading habits and research skills by providing open access to a wide, diverse range of books and literature.[span_40](start_span)[span_40](end_span)</li>
-                <li><strong>7. KUTHUB KHANA:</strong> An advanced study circle dedicated to exploring and studying the classical works, biographies, and lives of renowned Islamic authors, historians, and scholars.[span_41](start_span)[span_41](end_span)</li>
-                <li><strong>8. ARABIC CALLIGRAPHY:</strong> An artistic initiative teaching the beautiful and intricate art of traditional Arabic calligraphy to interested students, preserving Islamic artistic heritage.[span_42](start_span)[span_42](end_span)</li>
-                <li><strong>9. LITERARY VENUES:</strong> Practical training grounds for students to practice confidently interacting, debating, and presenting their thoughts and research among large audiences.[span_43](start_span)[span_43](end_span)</li>
-            </ul>
-        </div>
-
-        <!-- Manhaj Festival -->
-        <div class="section">
-            <h2>5. Manhaj Festival: ALIF 2K26 (Arts & Cultural Fiesta)</h2>
-            <p><em>"Alif Festival offers you an unforgettable adventure and colorful memories, literally."</em>[span_44](start_span)[span_44](end_span)</p>
-            <p>Alif (Manhaj Festival) is the premier arts and cultural festival organized by Manhajul Hidaya, entirely dedicated to nurturing and showcasing the immense creative talents of its students[span_45](start_span)[span_45](end_span).</p>
-            <h3>Festival Scale:</h3>
-            <ul>
-                <li>Duration: 2 Days of continuous cultural celebration.[span_46](start_span)[span_46](end_span)</li>
-                <li>Venues: 2 Main Stages for simultaneous performances.[span_47](start_span)[span_47](end_span)</li>
-                <li>Events: Over 70 diverse programs and competitions.[span_48](start_span)[span_48](end_span)</li>
-            </ul>
-            <h3>Core Event Categories:</h3>
-            <p><strong>A. Art Fight (Creative Arts):</strong> English Essay Writing, Translation (Arabic/English/Malayalam), Poster Designing & E-Poster, Spelling 'B', Poem Making & Writing, Pencil Drawing, Caption Writing, Water Colouring & Drawing, Hifz, Calligraphy, Sarf Test & Nahv Test.[span_49](start_span)[span_49](end_span)</p>
-            <p><strong>B. Stage Events (Performances):</strong> Madh Song, Qira'ath, Arabic Elocution, Khutba, Thadrees, Va'al, Qawali, Mala Recitation, English Elocution, Mappila Pattu.[span_50](start_span)[span_50](end_span)</p>
-        </div>
-
-        <!-- Digital Infrastructure -->
-        <div class="section">
-            <h2>6. Digital Infrastructure & Online Presence</h2>
-            <p>Manhajul Hidaya maintains a robust digital footprint to facilitate modern education and global outreach[span_51](start_span)[span_51](end_span).</p>
-            <ul>
-                <li><strong>Main Website:</strong> A comprehensive portal detailing the vision, mission, and news updates.[span_52](start_span)[span_52](end_span)</li>
-                <li><strong>Alif Gallery:</strong> A dedicated, interactive digital gallery with lightbox features for viewing event photos, cultural fests, and memorable moments from the campus.[span_53](start_span)[span_53](end_span)</li>
-                <li><strong>Digital Results Portal:</strong> A custom-built web application for real-time tracking of Alif Festival results, featuring searchable databases and downloadable result certificates.[span_54](start_span)[span_54](end_span)</li>
-                <li><strong>Advanced Visitor Tracking:</strong> The websites utilize premium visitor tracking scripts to monitor device types, network conditions, and user engagement to optimize the digital experience.[span_55](start_span)[span_55](end_span)</li>
-            </ul>
-        </div>
-
-        <!-- Testimonials -->
-        <div class="section">
-            <h2>7. Testimonials & Community Feedback</h2>
-            <div class="highlight-box">
-                <p><em>"Affiliated with Bukhari Dawah College, Manhajul Hidaya creates scholars who benefit society. By teaching languages like Arabic, English, and Urdu, it helps students share the message of Islam globally."</em>[span_56](start_span)[span_56](end_span)</p>
-                <p><em>"The goal of Manhajul Hidaya is to raise inspiring Islamic scholars. Through multilingual education, it prepares students to spread the message of Islam across the globe."</em>[span_57](start_span)[span_57](end_span)</p>
+            <h2>3. ACADEMIC PROGRAMS & ADMISSIONS (2026-27 ACADEMIC YEAR)</h2>
+            <p>Admissions are currently open for the 2026-27 academic year.[span_18](start_span)[span_18](end_span) Applications are invited for various courses at Manhajul Hidaya.[span_19](start_span)[span_19](end_span)</p>
+            
+            <div class="grid-container">
+                <div>
+                    <h3>Target Classes:</h3>
+                    <ul>
+                        <li>8th Standard[span_20](start_span)[span_20](end_span)</li>
+                        <li>9th Standard[span_21](start_span)[span_21](end_span)</li>
+                        <li>11th Standard[span_22](start_span)[span_22](end_span)</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Admission Requirements & Digital Portal:</h3>
+                    <p>The institution operates a fully digitized admission portal to streamline the onboarding process.[span_23](start_span)[span_23](end_span) Prospective students are required to submit comprehensive details, including:[span_24](start_span)[span_24](end_span)</p>
+                    <ul>
+                        <li>Applicant's Full Name[span_25](start_span)[span_25](end_span)</li>
+                        <li>Date of Birth (DOB)[span_26](start_span)[span_26](end_span)</li>
+                        <li>Applicant's Email Address and Guardian's Email[span_27](start_span)[span_27](end_span)</li>
+                        <li>Primary Phone Number and WhatsApp Number[span_28](start_span)[span_28](end_span)</li>
+                        <li>Detailed Residential Address[span_29](start_span)[span_29](end_span)</li>
+                        <li>Passport Size Photograph (Uploaded via the portal)[span_30](start_span)[span_30](end_span)</li>
+                        <li>Father's Name & Mother's Name[span_31](start_span)[span_31](end_span)</li>
+                        <li>Current Educational Qualification[span_32](start_span)[span_32](end_span)</li>
+                    </ul>
+                </div>
             </div>
         </div>
 
-        <!-- Contact & Location -->
+        <!-- Section 4: Manhaj Projects -->
         <div class="section">
-            <h2>8. Contact, Location & Communication</h2>
-            <div class="contact-grid">
+            <h2>4. MANHAJ PROJECTS (STUDENT DEVELOPMENT INITIATIVES)</h2>
+            <div class="quote">"Nurturing values through quality activities[span_33](start_span)"[span_33](end_span)</div>
+            <p>Manhaj Projects is a carefully curated collection of various educational, spiritual, and literary initiatives implemented by Manhajul Hidaya.[span_34](start_span)[span_34](end_span) These projects are specifically aimed at the holistic development of the students.[span_35](start_span)[span_35](end_span)</p>
+            <ul>
+                <li><strong>1. SABQ:</strong> A unique initiative focused on interacting closely with students to significantly enhance their educational engagement, interpersonal skills, and overall personal development.[span_36](start_span)[span_36](end_span)</li>
+                <li><strong>2. QUR'AN RECITATION:</strong> A daily program dedicated to reciting the Holy Qur'an.[span_37](start_span)[span_37](end_span) This initiative is designed to instill deep spiritual discipline, focus, and ensure the proper pronunciation (Tajweed) of the verses.[span_38](start_span)[span_38](end_span)</li>
+                <li><strong>3. SPECIAL CLASS:</strong> Tailored academic sessions conducting special classes for students to provide focused academic support, ensuring no student is left behind in their standard curriculum.[span_39](start_span)[span_39](end_span)</li>
+                <li><strong>4. HIZBUL QUR'AN:</strong> Dedicated and intensive Qur'an teaching sessions that focus primarily on the memorization (Hifz) and deep understanding of the Qur'anic chapters.[span_40](start_span)[span_40](end_span)</li>
+                <li><strong>5. KNOWLEDGE COURT:</strong> An interactive platform aimed at improving students' literary skills, critical thinking, and public speaking through healthy, structured academic debates.[span_41](start_span)[span_41](end_span)</li>
+                <li><strong>6. LIBRARY:</strong> A comprehensive campus library project focused on improving students' reading habits and research skills by providing open access to a wide, diverse range of books and literature.[span_42](start_span)[span_42](end_span)</li>
+                <li><strong>7. KUTHUB KHANA:</strong> An advanced study circle dedicated to exploring and studying the classical works, biographies, and lives of renowned Islamic authors, historians, and scholars.[span_43](start_span)[span_43](end_span)</li>
+                <li><strong>8. ARABIC CALLIGRAPHY:</strong> An artistic initiative teaching the beautiful and intricate art of traditional Arabic calligraphy to interested students, preserving Islamic artistic heritage.[span_44](start_span)[span_44](end_span)</li>
+                <li><strong>9. LITERARY VENUES:</strong> Practical training grounds for students to practice confidently interacting, debating, and presenting their thoughts and research among large audiences.[span_45](start_span)[span_45](end_span)</li>
+            </ul>
+        </div>
+
+        <!-- Section 5: Manhaj Festival -->
+        <div class="section">
+            <h2>5. MANHAJ FESTIVAL: ALIF 2K26 (ARTS & CULTURAL FIESTA)</h2>
+            <div class="quote">"Alif Festival offers you an unforgettable adventure and colorful memories, literally.[span_46](start_span)"[span_46](end_span)</div>
+            <p>Alif (Manhaj Festival) is the premier arts and cultural festival organized by Manhajul Hidaya, entirely dedicated to nurturing and showcasing the immense creative talents of its students.[span_47](start_span)[span_47](end_span) The "ALIF" Arts Festival is a captivating celebration of Islamic culture and creativity, showcasing the rich artistic heritage of the Muslim world.[span_48](start_span)[span_48](end_span) This vibrant festival features an array of exhibitions, performances, and workshops that highlight the beauty and diversity of Islamic art, including intricate calligraphy, stunning architecture, elegant textiles, and evocative poetry.[span_49](start_span)[span_49](end_span)</p>
+            
+            <div class="highlight-box">
+                <h3>Festival Scale:</h3>
+                <ul>
+                    <li><strong>Duration:</strong> 2 Days of continuous cultural celebration.[span_50](start_span)[span_50](end_span)</li>
+                    <li><strong>Venues:</strong> 2 Main Stages for simultaneous performances.[span_51](start_span)[span_51](end_span)</li>
+                    <li><strong>Events:</strong> Over 70 diverse programs and competitions.[span_52](start_span)[span_52](end_span)</li>
+                </ul>
+            </div>
+
+            <h3>CORE EVENT CATEGORIES:</h3>
+            <div class="grid-container">
+                <div>
+                    <h4>A. ART FIGHT (Creative Arts)</h4>
+                    <ul>
+                        <li>English Essay Writing[span_53](start_span)[span_53](end_span)</li>
+                        <li>Essay Writing (General)[span_54](start_span)[span_54](end_span)</li>
+                        <li>Translation (Arabic/English/Malayalam)[span_55](start_span)[span_55](end_span)</li>
+                        <li>Poster Designing & E-Poster[span_56](start_span)[span_56](end_span)</li>
+                        <li>Spelling 'B[span_57](start_span)'[span_57](end_span)</li>
+                        <li>Poem Making & Writing[span_58](start_span)[span_58](end_span)</li>
+                        <li>Pencil Drawing[span_59](start_span)[span_59](end_span)</li>
+                        <li>Caption Writing[span_60](start_span)[span_60](end_span)</li>
+                        <li>Water Colouring & Drawing[span_61](start_span)[span_61](end_span)</li>
+                        <li>Hifz (Memorization Competition)[span_62](start_span)[span_62](end_span)</li>
+                        <li>Calligraphy[span_63](start_span)[span_63](end_span)</li>
+                        <li>Sarf Test & Nahv Test[span_64](start_span)[span_64](end_span)</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>B. STAGE EVENTS (Performances)</h4>
+                    <ul>
+                        <li>Madh Song (Praise of the Prophet)[span_65](start_span)[span_65](end_span)</li>
+                        <li>Qira'ath (Qur'anic Recitation)[span_66](start_span)[span_66](end_span)</li>
+                        <li>Arabic Elocution[span_67](start_span)[span_67](end_span)</li>
+                        <li>Khutba (Sermon Delivery)[span_68](start_span)[span_68](end_span)</li>
+                        <li>Thadrees (Teaching Simulation)[span_69](start_span)[span_69](end_span)</li>
+                        <li>Va'al[span_70](start_span)[span_70](end_span)</li>
+                        <li>Qawali[span_71](start_span)[span_71](end_span)</li>
+                        <li>Mala Recitation[span_72](start_span)[span_72](end_span)</li>
+                        <li>English Elocution[span_73](start_span)[span_73](end_span)</li>
+                        <li>Mappila Pattu (Traditional Kerala Islamic Songs)[span_74](start_span)[span_74](end_span)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>DETAILED COMPETITION BRACKETS & RESULTS PORTAL:</h3>
+            <p>The institution utilizes an advanced digital results portal with live search capabilities, categorizing events by age and academic level.[span_75](start_span)[span_75](end_span)</p>
+            <ul>
+                <li><strong>1. Senior Category Events:</strong> Qiraath, Speech (Malayalam, English, Arabic), Va'al, Madh Song, Mappilappattu, Thadrees, Hifz, Essay (Malayalam, English, Arabic), Story Writing, Poem Writing, Quiz, Social Treat, Mushavara Alfiyya, Nahv Test, E-Poster, Translation (Malayalam to Arabic), Kifayathul Avam.[span_76](start_span)[span_76](end_span)</li>
+                <li><strong>2. Junior Category Events:</strong> Qiraath, Speech (Malayalam, English, Arabic), Va'al, Madh Song, Hifz, Swarf Test, Essay (Malayalam, English, Arabic), Story Writing, Poem Writing, Spelling Bee, Calligraphy, Water Colour Drawing, Translation (English to Malayalam), IQ Test, Caption Writing, Quiz, Hadith Musabaqa.[span_77](start_span)[span_77](end_span)</li>
+                <li><strong>3. Sub Junior Category Events:</strong> Qiraath, Speech (Malayalam, English), Madh Song, Na'at, Swarf Test, Essay (Malayalam, English), Story Writing, Poem Writing, Spelling Bee, Quiz, Translation (Malayalam to English), IQ Test, Pencil Drawing, Caption Writing.[span_78](start_span)[span_78](end_span)</li>
+                <li><strong>4. General Category Events:</strong> Bilingual Speech, Book Discussion, Group Song A & B, Nasheeda, Qavali, Kuthuba, Maashira, Sports Magazine A & B, Collage A & B.[span_79](start_span)[span_79](end_span)</li>
+            </ul>
+        </div>
+
+        <!-- Section 6: Digital Infrastructure -->
+        <div class="section">
+            <h2>6. DIGITAL INFRASTRUCTURE & ONLINE PRESENCE</h2>
+            <p>Manhajul Hidaya maintains a robust digital footprint to facilitate modern education and global outreach.[span_80](start_span)[span_80](end_span)</p>
+            <ul>
+                <li><strong>Main Website:</strong> A comprehensive portal detailing the vision, mission, and news updates.[span_81](start_span)[span_81](end_span)</li>
+                <li><strong>Alif Gallery:</strong> A dedicated, interactive digital gallery with lightbox features for viewing event photos, cultural fests, and memorable moments from the campus.[span_82](start_span)[span_82](end_span)</li>
+                <li><strong>Digital Results Portal:</strong> A custom-built web application for real-time tracking of Alif Festival results, featuring searchable databases and downloadable result certificates.[span_83](start_span)[span_83](end_span)</li>
+                <li><strong>Advanced Visitor Tracking:</strong> The websites utilize premium visitor tracking scripts to monitor device types, network conditions, and user engagement to optimize the digital experience.[span_84](start_span)[span_84](end_span)</li>
+            </ul>
+        </div>
+
+        <!-- Section 7: Testimonials -->
+        <div class="section">
+            <h2>7. TESTIMONIALS & COMMUNITY FEEDBACK</h2>
+            <p>The impact of Manhajul Hidaya is echoed in the words of its community and supporters:[span_85](start_span)[span_85](end_span)</p>
+            <div class="highlight-box">
+                <div class="quote">"Affiliated with Bukhari Dawah College, Manhajul Hidaya creates scholars who benefit society. By teaching languages like Arabic, English, and Urdu, it helps students share the message of Islam globally.[span_86](start_span)"[span_86](end_span)</div>
+                <div class="quote">"The goal of Manhajul Hidaya is to raise inspiring Islamic scholars. Through multilingual education, it prepares students to spread the message of Islam across the globe.[span_87](start_span)"[span_87](end_span)</div>
+            </div>
+        </div>
+
+        <!-- Section 8: Contact -->
+        <div class="section">
+            <h2>8. CONTACT, LOCATION & COMMUNICATION</h2>
+            <p>Prospective students, parents, and well-wishers can easily get in touch with the expert team at Manhajul Hidaya for better opinions, admissions, or festival inquiries.[span_88](start_span)[span_88](end_span)</p>
+            
+            <div class="grid-container">
                 <div>
                     <h3>Physical Address:</h3>
                     <p>Al Manhajul Hidaya,<br>
                     Centre Nediyiruppu, Kondotty,<br>
                     Malappuram District,<br>
-                    Kerala, India – 673638[span_58](start_span)[span_58](end_span)</p>
+                    Kerala, India – 673638[span_89](start_span)[span_89](end_span)</p>
+                    
+                    <h3>Direct Contact:</h3>
+                    <ul>
+                        <li><strong>Phone Line:</strong> +91 98955 80156[span_90](start_span)[span_90](end_span)</li>
+                        <li><strong>WhatsApp:</strong> +91 9895580156 (Available via dedicated website widget)[span_91](start_span)[span_91](end_span)</li>
+                        <li><strong>Email Address:</strong> manhajulhidayacm@gmail.com[span_92](start_span)[span_92](end_span)</li>
+                    </ul>
                 </div>
                 <div>
-                    <h3>Direct Contact:</h3>
-                    <p>Phone Line: +91 98955 80156[span_59](start_span)[span_59](end_span)<br>
-                    WhatsApp: +91 9895580156[span_60](start_span)[span_60](end_span)<br>
-                    Email: manhajulhidayacm@gmail.com[span_61](start_span)[span_61](end_span)</p>
+                    <h3>Official Web Portals:</h3>
+                    <ul>
+                        <li><strong>Main Website:</strong> <a href="https://manhajulhidaya.vercel.app/" target="_blank">https://manhajulhidaya.vercel.app/</a>[span_93](start_span)[span_93](end_span)</li>
+                        <li><strong>Admissions:</strong> <a href="https://manhajulhidaya.vercel.app/admission.html" target="_blank">https://manhajulhidaya.vercel.app/admission.html</a>[span_94](start_span)[span_94](end_span)</li>
+                        <li><strong>Manhaj Projects:</strong> <a href="https://manhajulhidaya.vercel.app/manhaj-projects.html" target="_blank">https://manhajulhidaya.vercel.app/manhaj-projects.html</a>[span_95](start_span)[span_95](end_span)</li>
+                        <li><strong>Alif Festival:</strong> <a href="https://manhajulhidaya.vercel.app/Manhajul-fest.html" target="_blank">https://manhajulhidaya.vercel.app/Manhajul-fest.html</a>[span_96](start_span)[span_96](end_span)</li>
+                        <li><strong>Alif Gallery:</strong> <a href="https://manhajulhidaya.vercel.app/alif-gallery.html" target="_blank">https://manhajulhidaya.vercel.app/alif-gallery.html</a>[span_97](start_span)[span_97](end_span)</li>
+                    </ul>
+
+                    <h3>Social Media Handles (Global Outreach):</h3>
+                    <ul>
+                        <li><strong>YouTube Channels:</strong> @manhajulhidaya / @manhajulhidaya2[span_98](start_span)[span_98](end_span)</li>
+                        <li><strong>Instagram Profiles:</strong> @manhajulhidaya / @manhajul_hidaya[span_99](start_span)[span_99](end_span)</li>
+                        <li><strong>Facebook Page:</strong> @manhajulhidaya[span_100](start_span)[span_100](end_span)</li>
+                    </ul>
                 </div>
             </div>
-            
-            <h3>Official Web Portals:</h3>
-            <ul>
-                <li>Main Website: <a href="https://manhajulhidaya.vercel.app/" target="_blank">manhajulhidaya.vercel.app</a>[span_62](start_span)[span_62](end_span)</li>
-                <li>Admissions: <a href="https://manhajulhidaya.vercel.app/admission.html" target="_blank">Admission Portal</a>[span_63](start_span)[span_63](end_span)</li>
-                <li>Manhaj Projects: <a href="https://manhajulhidaya.vercel.app/manhaj-projects.html" target="_blank">Projects Page</a>[span_64](start_span)[span_64](end_span)</li>
-                <li>Alif Festival: <a href="https://manhajulhidaya.vercel.app/Manhaj-fest.html" target="_blank">Festival Portal</a>[span_65](start_span)[span_65](end_span)</li>
-            </ul>
         </div>
 
         <!-- Footer -->
         <footer>
-            <p>Last Updated: August 2026[span_66](start_span)[span_66](end_span) | Manhajul Hidaya Islamic Academy</p>
+            <p>Last Updated: August 2026[span_101](start_span)[span_101](end_span) | Manhajul Hidaya Islamic Academy</p>
         </footer>
 
     </div>
