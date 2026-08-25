@@ -119,14 +119,14 @@
         }
         .btn-yellow:hover { transform: translateY(-2px); background-color: #ffd659; box-shadow: 0 6px 20px rgba(244, 197, 66, 0.6); }
 
-        /* --- HERO SECTION --- */
-        .hero-section { position: relative; overflow: hidden; width: 100%; min-height: 70vh; display: flex; align-items: center; justify-content: center; border-radius: 0 0 var(--radius-lg) var(--radius-lg); box-shadow: var(--shadow-md); }
-        .bg-video { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); min-width: 100%; min-height: 100%; object-fit: cover; z-index: -1; }
-        .overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.55); z-index: 0; }
-        .hero-content { position: relative; color: var(--white); z-index: 1; text-align: center; width: 100%; padding: 0 15px; }
+        /* --- HERO SECTION (FIXED CSS FOR VIDEO) --- */
+        .hero-section { position: relative; overflow: hidden; width: 100%; min-height: 70vh; display: flex; align-items: center; justify-content: center; border-radius: 0 0 var(--radius-lg) var(--radius-lg); background-color: #1e293b; box-shadow: var(--shadow-md); }
+        .bg-video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+        .overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.55); z-index: 1; }
+        .hero-content { position: relative; color: var(--white); z-index: 2; text-align: center; width: 100%; padding: 0 15px; }
         .hero-content h1 { font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.3; margin-bottom: 25px; font-weight: 700; letter-spacing: 1px; text-shadow: 2px 2px 10px rgba(0,0,0,0.4); }
         .audio-btn {
-            position: absolute; bottom: 20px; right: 20px; z-index: 10; background-color: rgba(0, 0, 0, 0.6);
+            position: absolute; bottom: 20px; right: 20px; z-index: 3; background-color: rgba(0, 0, 0, 0.6);
             color: var(--white); border: 2px solid var(--white); border-radius: 50%; width: 45px; height: 45px;
             font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease;
         }
@@ -326,9 +326,11 @@
         </div>
     </nav>
 
+    <!-- FIXED VIDEO SECTION -->
     <section class="hero-section">
+        <!-- Vercel Deployment Fix: added leading slash to path to ensure it loads from root -->
         <video id="bgVideo" class="bg-video" autoplay loop muted playsinline>
-            <source src="main/main/manhajul.webm" type="video/webm">
+            <source src="/main/main/manhajul.webm" type="video/webm">
         </video>
         <div class="overlay"></div>
         <button id="muteBtn" class="audio-btn"><i class="fas fa-volume-mute"></i></button>
@@ -525,13 +527,13 @@
             <button onclick="sendUserMessage()"><i class="fa-solid fa-paper-plane"></i></button>
         </div>
     </div>
-    <!-- ================= END AI CHATBOT ================= -->
 
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        // Scroll to Top Smooth Action
+        // Scroll Animation & Video Control Logic
         document.getElementById('scrollTopBtn').addEventListener('click', function() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
@@ -624,8 +626,6 @@
 
     <script>
         // ================= SECURE HYBRID AI LOGIC =================
-        // ഇവിടെ API Key ഇല്ല! സുരക്ഷിതത്വത്തിനായി വിവരങ്ങൾ പോകുന്നത് നിങ്ങളുടെ server.js-ലേക്കാണ്.
-        
         const MANHAJ_KNOWLEDGE = [
             {
                 keywords: ["എന്തൊക്കെ", "സഹായിക്കാൻ", "കഴിയും", "help", "capabilities", "അറിയാം"],
@@ -688,7 +688,6 @@
             input.value = "";
             showTypingIndicator();
             
-            // Step 1: Check Local Database first (Saves API Limits)
             let localResponse = calculateSmartResponse(msg);
             
             if (localResponse) {
@@ -697,7 +696,6 @@
                     appendMessage(localResponse, "chat-bot");
                 }, 800);
             } else {
-                // Step 2: If no local match, call YOUR SECURE BACKEND (/api/chat)
                 let aiResponse = await fetchSecureAPI(msg);
                 removeTypingIndicator();
                 appendMessage(aiResponse, "chat-bot");
@@ -726,14 +724,15 @@
                     bestResponse = intentObj.response;
                 }
             }
-            // Strict threshold to trigger API for complex questions
             return (bestMatchScore > 3) ? bestResponse : null; 
         }
 
-        // ഇവിടെയാണ് നമ്മൾ സുരക്ഷിതമായ ബാക്കെൻഡിനെ (server.js) വിളിക്കുന്നത്
         async function fetchSecureAPI(userMessage) {
+            // നിങ്ങളുടെ ബാക്കെൻഡ് റെൻഡർ ലിങ്ക് (ഉദാഹരണം: https://manhajulhidaya-backend.onrender.com/api/chat) 
+            const backendUrl = "https://നിങ്ങളുടെ-റെൻഡർ-ലിങ്ക്.onrender.com/api/chat"; 
+
             try {
-                const response = await fetch("/api/chat", {
+                const response = await fetch(backendUrl, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
@@ -741,13 +740,19 @@
                     body: JSON.stringify({ message: userMessage })
                 });
                 
+                if (!response.ok) {
+                    const errText = await response.text();
+                    throw new Error(`HTTP Error ${response.status}: ${errText}`);
+                }
+                
                 const data = await response.json();
                 if(data.error) throw new Error(data.error);
                 return data.reply;
                 
             } catch (error) {
                 console.error("Secure API Error:", error);
-                return "ക്ഷമിക്കണം, സാങ്കേതിക തകരാർ കാരണം എനിക്ക് ഇപ്പോൾ ഉത്തരം നൽകാൻ കഴിയുന്നില്ല. വെബ്സൈറ്റിൽ പരിശോധിക്കുക.";
+                // എറർ നേരിട്ട് കാണിക്കാൻ
+                return `⚠️ എറർ സംഭവിച്ചു: ${error.message}\n\n(പരിഹാരം: Render URL ശരിയാണോയെന്നും, CORS സെറ്റ് ചെയ്തിട്ടുണ്ടോയെന്നും പരിശോധിക്കുക.)`;
             }
         }
 
