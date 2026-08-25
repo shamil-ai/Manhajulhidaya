@@ -117,6 +117,58 @@ app.delete('/admin/contacts/:id', verifyToken, async (req, res) => {
     res.status(500).json({ success: false, error: err.message });
   }
 });
+// 8. AI Chatbot Route (Secure Groq API Call)
+app.post('/api/chat', async (req, res) => {
+  const userMessage = req.body.message;
+  // Render-ലെ Environment Variables-ൽ നൽകിയിട്ടുള്ള GROQ_API_KEY ഇവിടെ എടുക്കുന്നു
+  const apiKey = process.env.GROQ_API_KEY; 
+
+  if (!apiKey) {
+     return res.status(500).json({ error: "API Key missing in server configuration." });
+  }
+
+  const systemInstruction = `You are a polite AI assistant for Manhajul Hidaya Islamic Academy.
+  Facts: 
+  - Director: Usthad Ali Abdunoor Bukhari Pookkottur.
+  - Admissions: Open for 2026-27 (8th, 9th, 11th Standard).
+  - Alif 2k26: Arts and cultural festival.
+  - Projects: SABQ, Hizbul Qur'an, Knowledge Court.
+  - Location: Centre Nediyiruppu, Kondotty, Kerala.
+  - Phone: +91 98955 80156.
+  Rule: Answer naturally in Malayalam. Keep responses very short (maximum 2-3 sentences) and strictly based on these facts. Do not invent facts.`;
+
+  try {
+    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+        method: "POST",
+        headers: {
+            "Authorization": `Bearer ${apiKey}`,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            model: "llama3-8b-8192", // ചെറിയ മോഡൽ (ലിമിറ്റ് ലാഭിക്കാൻ)
+            messages: [
+                { role: "system", content: systemInstruction },
+                { role: "user", content: userMessage }
+            ],
+            max_tokens: 150,
+            temperature: 0.6
+        })
+    });
+
+    const data = await response.json();
+    
+    if (data.error) {
+        return res.status(500).json({ error: data.error.message });
+    }
+    
+    res.json({ reply: data.choices[0].message.content });
+
+  } catch (error) {
+    console.error("Groq API Error:", error);
+    res.status(500).json({ error: "സാങ്കേതിക തകരാർ കാരണം ഇപ്പോൾ ഉത്തരം നൽകാൻ കഴിയുന്നില്ല." });
+  }
+});
+
 
 // Start Server
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
