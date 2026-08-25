@@ -33,7 +33,6 @@
     <meta property="og:image:height" content="500">
 
     <!-- ================= SCHEMA MARKUP (For Google AI & Rich Results) ================= -->
-    <!-- AI-ക്ക് സ്ഥാപനത്തെപ്പറ്റി വ്യക്തമായ വിവരങ്ങൾ നൽകാൻ സോഷ്യൽ മീഡിയ ലിങ്കുകളും ചേർത്തിട്ടുണ്ട് -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -251,6 +250,34 @@
             .divider { display: none; }
             .slide-scroll { white-space: normal !important; }
         }
+
+        /* ================= SMART HYBRID AI CHATBOT CSS ================= */
+        .ai-chat-btn { position: fixed; bottom: 95px; right: 25px; background: linear-gradient(135deg, var(--primary-green) 0%, var(--light-green) 100%); color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 26px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 100; cursor: pointer; transition: 0.3s; border: none; }
+        .ai-chat-btn:hover { transform: scale(1.1); }
+        
+        .ai-chat-window { position: fixed; bottom: 165px; right: 25px; width: 340px; max-width: calc(100vw - 40px); background: var(--white); border-radius: 12px; box-shadow: var(--shadow-lg); z-index: 101; display: none; flex-direction: column; overflow: hidden; border: 1px solid rgba(0,0,0,0.1); }
+        .ai-chat-header { background: var(--primary-green); color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: 15px; }
+        .ai-chat-header button { background: none; border: none; color: white; font-size: 18px; cursor: pointer; }
+        .ai-chat-body { padding: 15px; height: 350px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; background: #f8fafc; scroll-behavior: smooth; }
+        
+        .chat-msg { max-width: 85%; padding: 10px 14px; border-radius: 12px; font-size: 13.5px; line-height: 1.5; word-wrap: break-word; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+        .chat-bot { background: #ffffff; color: var(--text-dark); align-self: flex-start; border-bottom-left-radius: 3px; border: 1px solid #e2e8f0; }
+        .chat-user { background: var(--primary-green); color: white; align-self: flex-end; border-bottom-right-radius: 3px; }
+        
+        /* Suggestions Buttons CSS */
+        .chat-suggestions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 5px; }
+        .chat-suggestions button { background: var(--pale-green); color: var(--primary-green); border: 1px solid var(--light-green); padding: 6px 12px; border-radius: 15px; font-size: 12px; cursor: pointer; transition: 0.2s; white-space: nowrap; }
+        .chat-suggestions button:hover { background: var(--light-green); color: white; }
+
+        .ai-chat-footer { padding: 12px; border-top: 1px solid #e2e8f0; display: flex; gap: 10px; background: white; }
+        .ai-chat-footer input { flex: 1; padding: 10px 15px; border: 1px solid #cbd5e1; border-radius: 20px; outline: none; font-size: 14px; background: #f1f5f9; }
+        .ai-chat-footer button { background: var(--primary-green); color: white; border: none; width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.2s; }
+        .ai-chat-footer button:hover { background: var(--light-green); transform: scale(1.05); }
+
+        .typing-indicator { display: flex; gap: 3px; align-items: center; padding: 12px 16px !important; width: fit-content; }
+        .typing-indicator span { width: 6px; height: 6px; background-color: var(--primary-green); border-radius: 50%; animation: typing 1.4s infinite both; }
+        .typing-indicator span:nth-child(1) { animation-delay: 0s; } .typing-indicator span:nth-child(2) { animation-delay: 0.2s; } .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes typing { 0%, 80%, 100% { transform: translateY(0); opacity: 0.4; } 40% { transform: translateY(-4px); opacity: 1; } }
     </style>
 </head>
 <body>
@@ -329,7 +356,6 @@
     <section class="director-section">
         <div class="container director-grid">
             <div class="director-image scroll-animate slide-left">
-                <!-- Alt text included for better Image SEO -->
                 <img src="main/main/usthad.jpg" alt="Director Ali Abdunoor Bukhari Pookkottur" onerror="this.src='https://via.placeholder.com/600x400?text=Director+Image'">
             </div>
             <div class="director-text scroll-animate slide-right">
@@ -358,7 +384,6 @@
                 <span class="sub-title">ABOUT US</span>
                 <div class="slide-scroll">Manhajul Hidaya is an Islamic institution affiliated with Bukhari Islamic Dawah College. The institution aims to produce Islamic scholars who can contribute positively to society. To achieve this goal, Manhajul Hidaya offers language studies in English, Arabic, Urdu, and other languages. By providing these language studies, the institution enables students to gain a deeper understanding of Islamic texts, communicate effectively with people from diverse backgrounds, and spread the message of Islam globally.</div>
                 <br><a href="readmore.html" class="btn-yellow" style="margin-top: 15px;">Read More</a>
-                
             </div>
             <div class="about-image scroll-animate slide-right">
                 <img src="main/main/dars.jpg" alt="Manhajul Hidaya Campus and Students" onerror="this.src='https://via.placeholder.com/600x400?text=Campus+Image'">
@@ -472,7 +497,35 @@
         </div>
     </footer>
 
+    <!-- WhatsApp Button -->
     <a href="https://wa.me/919895580156" class="whatsapp-float" target="_blank" aria-label="Chat on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+
+    <!-- ================= SMART SECURE HYBRID AI CHATBOT WIDGET ================= -->
+    <button class="ai-chat-btn" onclick="toggleChat()">
+        <i class="fa-solid fa-robot"></i>
+    </button>
+
+    <div class="ai-chat-window" id="aiChatWindow">
+        <div class="ai-chat-header">
+            <span><i class="fa-solid fa-sparkles"></i> Manhajul Hidaya AI</span>
+            <button onclick="toggleChat()"><i class="fa-solid fa-times"></i></button>
+        </div>
+        <div class="ai-chat-body" id="aiChatBody">
+            <div class="chat-msg chat-bot">
+                അസ്സലാമു അലൈക്കും! ഞാൻ മൻഹജുൽ ഹിദായയുടെ AI അസിസ്റ്റൻ്റാണ്. മൻഹജുൽ ഹിദായയെക്കുറിച്ചും, അഡ്മിഷൻ, കോഴ്സുകൾ എന്നിവയെക്കുറിച്ചും നിങ്ങൾക്ക് എന്നോട് ചോദിക്കാം. 😊
+            </div>
+            <div class="chat-suggestions">
+                <button onclick="sendSuggested('എന്തൊക്കെ സഹായിക്കാൻ കഴിയും?')">സഹായം വേണോ?</button>
+                <button onclick="sendSuggested('അഡ്മിഷൻ ഉണ്ടോ?')">അഡ്മിഷൻ</button>
+                <button onclick="sendSuggested('എന്താണ് അലിഫ് ഫെസ്റ്റ്?')">അലിഫ് ഫെസ്റ്റ്</button>
+            </div>
+        </div>
+        <div class="ai-chat-footer">
+            <input type="text" id="aiChatInput" placeholder="ചോദ്യങ്ങൾ ഇവിടെ ടൈപ്പ് ചെയ്യുക..." onkeypress="handleKeyPress(event)" autocomplete="off">
+            <button onclick="sendUserMessage()"><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
+    </div>
+    <!-- ================= END AI CHATBOT ================= -->
 
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -484,7 +537,6 @@
         });
 
         document.addEventListener("DOMContentLoaded", function() {
-            // Video Control System
             var video = document.getElementById("bgVideo");
             var muteBtn = document.getElementById("muteBtn");
             if (muteBtn && video) {
@@ -498,14 +550,12 @@
                 });
             }
 
-            // Scroll Animation Observer
             const animationElements = document.querySelectorAll('.scroll-animate');
             const animationObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => { entry.target.classList.toggle('animated', entry.isIntersecting); });
             }, { threshold: 0.15 });
             animationElements.forEach(el => animationObserver.observe(el));
 
-            // Dynamic Counter
             const counters = document.querySelectorAll('.counter-item h3');
             const runCounters = (el) => {
                 const target = parseInt(el.innerText.replace(/\D/g, ''));
@@ -523,7 +573,6 @@
                 }, { threshold: 0.3 }).observe(section);
             }
 
-            // Testimonial Slider Loop
             let current = 0;
             const slides = document.querySelectorAll('.slide');
             const dots = document.querySelectorAll('.dot');
@@ -537,7 +586,6 @@
             };
             if (slides.length > 0) setInterval(() => { currentSlide(current + 1); }, 5000);
 
-            // Typography Reveal Effects
             document.querySelectorAll('.slide-scroll').forEach(el => {
                 const text = el.textContent.trim().replace(/\s+/g, ' ');
                 el.innerHTML = '';
@@ -572,6 +620,161 @@
             var video = document.getElementById("bgVideo");
             if (video) video.play().catch(() => {});
         });
+    </script>
+
+    <script>
+        // ================= SECURE HYBRID AI LOGIC =================
+        // ഇവിടെ API Key ഇല്ല! സുരക്ഷിതത്വത്തിനായി വിവരങ്ങൾ പോകുന്നത് നിങ്ങളുടെ server.js-ലേക്കാണ്.
+        
+        const MANHAJ_KNOWLEDGE = [
+            {
+                keywords: ["എന്തൊക്കെ", "സഹായിക്കാൻ", "കഴിയും", "help", "capabilities", "അറിയാം"],
+                synonyms: ["what can you do", "how can you help", "എന്തൊക്കെ ചെയ്യാൻ", "സഹായിക്കാനാകും"],
+                response: "മൻഹജുൽ ഹിദായയെക്കുറിച്ചുള്ള നിങ്ങളുടെ സംശയങ്ങൾ തീർക്കുക എന്നതാണ് എൻ്റെ പ്രധാന ജോലി. അഡ്മിഷൻ വിവരങ്ങൾ, മൻഹജ് പ്രൊജക്റ്റുകൾ, അലിഫ് ഫെസ്റ്റ്, ഡയറക്ടർ എന്നിവയെക്കുറിച്ച് ചോദിക്കാം.",
+                weight: 5
+            },
+            {
+                keywords: ["അസ്സലാമു അലൈക്കും", "assalamu alaikum", "assalam", "സലാം", "salam"],
+                synonyms: ["അസ്സലാം", "മുഅലൈക്കും"],
+                response: "വഅലൈക്കും അസ്സലാം വറഹ്മത്തുല്ലാഹ്! മൻഹജുൽ ഹിദായയുടെ AI അസിസ്റ്റൻ്റായ എനിക്ക് നിങ്ങളെ എങ്ങനെ സഹായിക്കാനാകും?",
+                weight: 5
+            },
+            {
+                keywords: ["admission", "join", "apply", "course", "classes", "standard", "8th", "9th", "11th", "അഡ്മിഷൻ", "പ്രവേശനം", "ചേരാൻ"],
+                synonyms: ["അഡ്മിഷൻ തുടങ്ങിയോ", "എപ്പോഴാണ് അഡ്മിഷൻ", "ചേരാമോ"],
+                response: "2026-27 അധ്യയന വർഷത്തേക്കുള്ള അഡ്മിഷൻ (8, 9, 11 ക്ലാസുകളിലേക്ക്) ഇപ്പോൾ ആരംഭിച്ചിട്ടുണ്ട്! വെബ്സൈറ്റിലെ 'Admission Form' എന്ന പേജ് വഴി ഓൺലൈനായി അപേക്ഷിക്കാം.",
+                weight: 5
+            },
+            {
+                keywords: ["alif", "അലിഫ്", "ഫെസ്റ്റ്", "festival", "fest", "കലാമേള", "മത്സരം", "programs"],
+                synonyms: ["എന്താണ് അലിഫ്", "alif fest details", "എന്താണ് ഫെസ്റ്റ്"],
+                response: "അലിഫ് ഫെസ്റ്റ് (Alif 2k26) എന്നത് മൻഹജുൽ ഹിദായയുടെ വിദ്യാർത്ഥികൾക്കായി നടത്തുന്ന വിപുലമായ കലാ-സാംസ്കാരിക മേളയാണ്. 2 ദിവസങ്ങളിലായി 70-ലധികം മത്സര ഇനങ്ങളോടെയാണ് ഇത് സംഘടിപ്പിക്കുന്നത്.",
+                weight: 4
+            },
+            {
+                keywords: ["director", "principal", "head", "ഉസ്താദ്", "അലി അബ്ദുന്നൂർ", "ali abdunoor", "ഡയറക്ടർ", "ആരാണ്"],
+                synonyms: ["ആരാണ് ഡയറക്ടർ", "സ്ഥാപകൻ ആരാണ്", "who is the director"],
+                response: "ഞങ്ങളുടെ ഡയറക്ടർ ബഹുമാനപ്പെട്ട ഉസ്താദ് അലി അബ്ദുന്നൂർ ബുഖാരി പൂക്കോട്ടൂർ ആണ്. അദ്ദേഹം പ്രഗത്ഭനായ ഒരു ഇസ്ലാമിക പണ്ഡിതനാണ്.",
+                weight: 4
+            },
+            {
+                keywords: ["contact", "phone", "number", "email", "whatsapp", "call", "ഫോൺ", "നമ്പർ", "സ്ഥലം", "എവിടെ", "location"],
+                synonyms: ["എവിടെയാണ്", "റൂട്ട്", "where is it", "contact details"],
+                response: "📍 വിലാസം: Centre Nediyiruppu, Kondotty, Kerala – 673638\n📞 Phone/WhatsApp: +91 98955 80156\n📧 Email: manhajulhidayacm@gmail.com",
+                weight: 4
+            }
+        ];
+
+        function toggleChat() {
+            var chat = document.getElementById("aiChatWindow");
+            chat.style.display = (chat.style.display === "flex") ? "none" : "flex";
+        }
+
+        function handleKeyPress(e) {
+            if (e.key === 'Enter') sendUserMessage();
+        }
+
+        function sendSuggested(text) {
+            document.getElementById("aiChatInput").value = text;
+            sendUserMessage();
+        }
+
+        async function sendUserMessage() {
+            var input = document.getElementById("aiChatInput");
+            var msg = input.value.trim();
+            if (msg === "") return;
+            
+            appendMessage(msg, "chat-user");
+            input.value = "";
+            showTypingIndicator();
+            
+            // Step 1: Check Local Database first (Saves API Limits)
+            let localResponse = calculateSmartResponse(msg);
+            
+            if (localResponse) {
+                setTimeout(() => {
+                    removeTypingIndicator();
+                    appendMessage(localResponse, "chat-bot");
+                }, 800);
+            } else {
+                // Step 2: If no local match, call YOUR SECURE BACKEND (/api/chat)
+                let aiResponse = await fetchSecureAPI(msg);
+                removeTypingIndicator();
+                appendMessage(aiResponse, "chat-bot");
+            }
+        }
+
+        function calculateSmartResponse(userInput) {
+            let lowerInput = userInput.toLowerCase();
+            let bestMatchScore = 0;
+            let bestResponse = null;
+
+            for (let intentObj of MANHAJ_KNOWLEDGE) {
+                let currentScore = 0;
+                
+                if (intentObj.synonyms) {
+                    for (let syn of intentObj.synonyms) {
+                        if (lowerInput.includes(syn.toLowerCase())) currentScore += (intentObj.weight * 2);
+                    }
+                }
+                for (let word of intentObj.keywords) {
+                    if (lowerInput.includes(word.toLowerCase())) currentScore += intentObj.weight; 
+                }
+                
+                if (currentScore > bestMatchScore) {
+                    bestMatchScore = currentScore;
+                    bestResponse = intentObj.response;
+                }
+            }
+            // Strict threshold to trigger API for complex questions
+            return (bestMatchScore > 3) ? bestResponse : null; 
+        }
+
+        // ഇവിടെയാണ് നമ്മൾ സുരക്ഷിതമായ ബാക്കെൻഡിനെ (server.js) വിളിക്കുന്നത്
+        async function fetchSecureAPI(userMessage) {
+            try {
+                const response = await fetch("/api/chat", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ message: userMessage })
+                });
+                
+                const data = await response.json();
+                if(data.error) throw new Error(data.error);
+                return data.reply;
+                
+            } catch (error) {
+                console.error("Secure API Error:", error);
+                return "ക്ഷമിക്കണം, സാങ്കേതിക തകരാർ കാരണം എനിക്ക് ഇപ്പോൾ ഉത്തരം നൽകാൻ കഴിയുന്നില്ല. വെബ്സൈറ്റിൽ പരിശോധിക്കുക.";
+            }
+        }
+
+        function appendMessage(text, className) {
+            var chatBody = document.getElementById("aiChatBody");
+            var div = document.createElement("div");
+            div.className = "chat-msg " + className;
+            div.style.whiteSpace = "pre-line"; 
+            div.textContent = text;
+            chatBody.appendChild(div);
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        function showTypingIndicator() {
+            var chatBody = document.getElementById("aiChatBody");
+            var div = document.createElement("div");
+            div.className = "chat-msg chat-bot typing-indicator";
+            div.id = "typingIndicator";
+            div.innerHTML = '<span></span><span></span><span></span>';
+            chatBody.appendChild(div);
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        function removeTypingIndicator() {
+            var indicator = document.getElementById("typingIndicator");
+            if (indicator) indicator.remove();
+        }
     </script>
 </body>
 </html>
