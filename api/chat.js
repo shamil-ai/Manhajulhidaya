@@ -1,15 +1,19 @@
-// api/chat.js
 const QUESTIONS = require('./questions.js');
 
+// Comprehensive list of stop words across English, Malayalam, and Manglish
 const STOP_WORDS = new Set([
-  'what', 'is', 'are', 'am', 'was', 'were', 'be', 'a', 'an', 'the', 'in', 'on', 'of', 'for', 'to', 'about', 'tell', 'me', 'can', 'could', 'you', 'give', 'please', 'details', 'info',
-  'enthanu', 'entha', 'parayamo', 'paranjutharumo', 'parayoo', 'onnu', 'enikku', 'ariyanam', 'chodichotte', 'undo', 'aano', 'kaanam', 'kittum', 'ninnu',
-  'എന്താണ്', 'എന്താ', 'പറയാമോ', 'പറഞ്ഞുതരുമോ', 'പറയൂ', 'ഒന്ന്', 'എനിക്ക്', 'അറിയണം', 'ചോദിച്ചോട്ടെ', 'ഉള്ളത്', 'ഉണ്ടോ', 'ആണോ', 'എവിടെയാണ്', 'എങ്ങനെയാണ്', 'ലഭ്യമാണോ'
+  'what', 'is', 'are', 'am', 'was', 'were', 'be', 'been', 'being', 'a', 'an', 'the', 'in', 'on', 'of', 'for', 'to', 'about', 'tell', 'me', 'can', 'could', 'you', 'give', 'please', 'details', 'info', 'information', 'there', 'here', 'with', 'from', 'how', 'when', 'where', 'which', 'who', 'why', 'does', 'do', 'did', 'has', 'have', 'had', 'any', 'some', 'my', 'your', 'his', 'her', 'its', 'our', 'their', 'and', 'or', 'but', 'if', 'so',
+  'enthanu', 'entha', 'parayamo', 'paranjutharumo', 'parayoo', 'onnu', 'enikku', 'ariyanam', 'chodichotte', 'ullath', 'parayaamo', 'parayumaa', 'undo', 'aano', 'kaanam', 'kittum', 'ninnu', 'ethra', 'labhyamaano', 'visadheekarikkaamo', 'kaathirippaa', 'kodukku', 'tharoo', 'tharumo', 'ariyumo',
+  'എന്താണ്', 'എന്താ', 'പറയാമോ', 'പറഞ്ഞുതരുമോ', 'പറയൂ', 'ഒന്ന്', 'എനിക്ക്', 'അറിയണം', 'ചോദിച്ചോട്ടെ', 'ഉള്ളത്', 'ഉണ്ടോ', 'ആണോ', 'എവിടെയാണ്', 'എങ്ങനെയാണ്', 'ഏതാണ്', 'ആരാണ്', 'ലഭ്യമാണോ', 'വിശദീകരിക്കാമോ', 'തരുമോ', 'തരൂ'
 ]);
 
 function normalize(s) {
   if (!s || typeof s !== 'string') return '';
-  return s.toLowerCase().replace(/[^\w\s\u0D00-\u0D7F]/g, '').replace(/\s+/g, ' ').trim();
+  return s
+    .toLowerCase()
+    .replace(/[^\w\s\u0D00-\u0D7F]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
 function tokenize(s) {
@@ -18,6 +22,10 @@ function tokenize(s) {
   return norm.split(/\s+/).filter(t => t.length > 1);
 }
 
+// In-memory search indexes built at server startup
+console.log('[Search Engine] Initializing search indexes for 50,000+ questions...');
+const startTime = Date.now();
+
 const exactMap = new Map();
 const tokenIndex = new Map();
 const keywordIndex = new Map();
@@ -25,11 +33,15 @@ const domainVocabulary = new Set();
 
 QUESTIONS.forEach((item, index) => {
   const normQ = normalize(item.question);
-  if (!exactMap.has(normQ)) exactMap.set(normQ, item);
+  if (!exactMap.has(normQ)) {
+    exactMap.set(normQ, item);
+  }
 
   const tokens = tokenize(item.question);
   tokens.forEach(tok => {
-    if (!STOP_WORDS.has(tok)) domainVocabulary.add(tok);
+    if (!STOP_WORDS.has(tok)) {
+      domainVocabulary.add(tok);
+    }
     if (!tokenIndex.has(tok)) tokenIndex.set(tok, []);
     tokenIndex.get(tok).push(index);
   });
@@ -46,44 +58,71 @@ QUESTIONS.forEach((item, index) => {
   }
 });
 
+console.log(`[Search Engine] Indexes built in ${Date.now() - startTime}ms (${domainVocabulary.size} domain terms indexed).`);
+
 const FALLBACK_RESPONSE = {
-  success: true,
+  success: true, // Returning success: true with fallback answer as requested by API specs
   answer: "ക്ഷമിക്കണം, ലഭ്യമായ വിവരങ്ങളിൽ ഈ ചോദ്യത്തിന് കൃത്യമായ മറുപടി കണ്ടെത്താനായില്ല. ദയവായി ചോദ്യം മറ്റൊരു രീതിയിൽ ചോദിക്കൂ.",
   intent: "UNKNOWN_FALLBACK_INTENT",
   confidence: 0.0
 };
 
 function search(userQuery) {
-  if (!userQuery || typeof userQuery !== 'string' || userQuery.trim() === '') return FALLBACK_RESPONSE;
+  if (!userQuery || typeof userQuery !== 'string' || userQuery.trim() === '') {
+    return FALLBACK_RESPONSE;
+  }
+
   const normQuery = normalize(userQuery);
 
+  // 1. Exact Match Check (Confidence = 1.0)
   if (exactMap.has(normQuery)) {
     const item = exactMap.get(normQuery);
-    return { success: true, answer: item.answer, intent: item.intent, confidence: 1.0 };
+    return {
+      success: true,
+      answer: item.answer,
+      intent: item.intent,
+      confidence: 1.0
+    };
   }
 
   const qTokens = tokenize(userQuery);
   if (qTokens.length === 0) return FALLBACK_RESPONSE;
 
+  // Filter content tokens (non-stopwords) against domain vocabulary
   const userContentTokens = qTokens.filter(t => !STOP_WORDS.has(t));
   const matchedDomainTokens = userContentTokens.filter(t => domainVocabulary.has(t));
 
-  if (userContentTokens.length > 0 && matchedDomainTokens.length === 0) return FALLBACK_RESPONSE;
+  if (userContentTokens.length > 0 && matchedDomainTokens.length === 0) {
+    // Content words present, but none exist in domain vocabulary -> Unrelated query
+    return FALLBACK_RESPONSE;
+  }
 
+  // 2. Candidate Search & Scoring
   const candidateScores = new Map();
+
+  // Keyword exact/phrase matching bonus
   qTokens.forEach(tok => {
     if (keywordIndex.has(tok)) {
-      keywordIndex.get(tok).forEach(idx => candidateScores.set(idx, (candidateScores.get(idx) || 0) + 3.0));
+      keywordIndex.get(tok).forEach(idx => {
+        candidateScores.set(idx, (candidateScores.get(idx) || 0) + 3.0);
+      });
     }
   });
 
+  // Token overlap scoring
   const searchTokens = matchedDomainTokens.length > 0 ? matchedDomainTokens : qTokens;
   searchTokens.forEach(tok => {
     const list = tokenIndex.get(tok);
-    if (list) list.forEach(idx => candidateScores.set(idx, (candidateScores.get(idx) || 0) + 1.5));
+    if (list) {
+      list.forEach(idx => {
+        candidateScores.set(idx, (candidateScores.get(idx) || 0) + 1.5);
+      });
+    }
   });
 
-  if (candidateScores.size === 0) return FALLBACK_RESPONSE;
+  if (candidateScores.size === 0) {
+    return FALLBACK_RESPONSE;
+  }
 
   let bestIdx = -1;
   let maxScore = 0;
@@ -92,23 +131,27 @@ function search(userQuery) {
     const item = QUESTIONS[idx];
     const itemTokens = tokenize(item.question);
     const similarity = (2 * score) / (qTokens.length + itemTokens.length + 1);
-    if (similarity > maxScore) { maxScore = similarity; bestIdx = idx; }
+    if (similarity > maxScore) {
+      maxScore = similarity;
+      bestIdx = idx;
+    }
   });
 
   if (bestIdx !== -1 && maxScore >= 0.25) {
     const item = QUESTIONS[bestIdx];
     const confidence = Math.min(0.98, Number(Math.max(0.65, maxScore * 1.5).toFixed(2)));
-    return { success: true, answer: item.answer, intent: item.intent, confidence: confidence };
+    return {
+      success: true,
+      answer: item.answer,
+      intent: item.intent,
+      confidence: confidence
+    };
   }
+
   return FALLBACK_RESPONSE;
 }
 
-// Vercel Serverless API Handler
-export default function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
-  const { query } = req.body;
-  const result = search(query);
-  res.status(200).json(result);
-}
+module.exports = {
+  search,
+  QUESTIONS_COUNT: QUESTIONS.length
+};
