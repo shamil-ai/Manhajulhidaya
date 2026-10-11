@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <title>Alif Gallery - Manhajul Hidaya | Event Photos</title>
+    <meta name="description" content="Explore the Alif Gallery of Manhajul Hidaya. View event photos, memorable moments, and cultural festival highlights from our Da'wa Campus.">
+    <meta name="keywords" content="Alif Gallery, Manhajul Hidaya Gallery, Manhaj Festival Photos, Islamic Campus Kerala, Event Photos Nediyiruppu">
+    <meta name="author" content="Manhajul Hidaya">
+    
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-green': '#0e9f6e',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        #gallery-scroll-container::-webkit-scrollbar { width: 5px; }
+        #gallery-scroll-container::-webkit-scrollbar-track { background: #f1f1f1; }
+        #gallery-scroll-container::-webkit-scrollbar-thumb { background: #0e9f6e; border-radius: 3px; }
+
+        .img-card img { transition: transform 0.4s ease, opacity 0.3s ease; }
+        .img-card:hover img, .img-card:active img { transform: scale(1.08); }
+        #lightbox-img { touch-action: none; user-select: none; -webkit-user-drag: none; }
+
+        .custom-footer { background-color: #0f172a; color: #e2e8f0; padding: 40px 0 20px; line-height: 1.4; width: 100%; margin-top: 40px; }
+        .footer-container { display: flex; justify-content: space-between; max-width: 1200px; margin: 0 auto; padding: 0 20px; flex-wrap: wrap; gap: 40px; }
+        .footer-left { flex: 1.5; min-width: 250px; }
+        img.footer-emblem-fixed { width: 90px !important; max-width: 90px !important; height: auto !important; display: block !important; margin-bottom: 15px !important; }
+        img.logo-arabic-fixed { width: 180px !important; max-width: 180px !important; height: auto !important; display: block !important; margin-bottom: 15px !important; }
+        .footer-desc { font-size: 14px; line-height: 1.6; color: #cbd5e1; padding-right: 20px; }
+        .footer-center { flex: 1; min-width: 150px; }
+        .footer-links { list-style: none; padding: 0; margin: 0; }
+        .footer-links li { margin-bottom: 12px; }
+        .footer-links a { color: #f8fafc; text-decoration: none; font-size: 14px; font-weight: 400; transition: color 0.3s ease; }
+        .footer-links a:hover { color: #10b981; }
+        .footer-right { flex: 1.5; min-width: 200px; font-size: 14px; color: #f8fafc; }
+        .footer-address { margin-bottom: 20px; line-height: 1.8; color: #f8fafc; }
+        .footer-contact-item { margin-bottom: 8px; display: block; color: #f8fafc; text-decoration: none; transition: color 0.3s ease; }
+        .footer-contact-item:hover { color: #10b981; }
+        .footer-bottom { max-width: 1200px; margin: 30px auto 0; padding: 20px 20px 0; border-top: 1px solid rgba(255, 255, 255, 0.1); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .copyright-text { font-size: 13px; color: #f8fafc; display: flex; align-items: center; gap: 8px; }
+        .divider { color: #64748b; }
+        .footer-social { display: flex; align-items: center; gap: 20px; }
+        .footer-social a { color: #f8fafc; font-size: 16px; text-decoration: none; transition: transform 0.3s ease, color 0.3s ease; }
+        .footer-social a:hover { color: #10b981; transform: translateY(-3px); }
+        .scroll-top-btn { background: none; border: none; color: #f8fafc; font-size: 20px; cursor: pointer; margin-left: 10px; transition: color 0.3s ease; padding: 0; }
+        .scroll-top-btn:hover { color: #10b981; }
+
+        @media (max-width: 768px) {
+            .footer-container { flex-direction: column; gap: 30px; }
+            .footer-bottom { flex-direction: column; justify-content: center; text-align: center; }
+            .copyright-text { flex-direction: column; gap: 5px; }
+            .divider { display: none; }
+            .footer-desc { padding-right: 0; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 h-screen flex flex-col overflow-hidden text-gray-800">
+
+    <!-- HEADER -->
+    <header class="flex-none bg-brand-green text-white py-4 px-4 text-center shadow-md z-10">
+        <h1 class="text-2xl sm:text-3xl font-bold">Alif Gallery</h1>
+        <p class="text-emerald-100 text-xs sm:text-sm mt-0.5 mb-3">Explore event photos and memorable moments</p>
+        
+        <!-- Folder Tabs -->
+        <div id="folder-tabs" class="flex flex-wrap justify-center gap-2 mb-3">
+            <!-- Tabs will load dynamically -->
+        </div>
+
+        <div class="mt-2">
+            <a href="Manhajul-fest.html" class="inline-flex items-center text-xs text-brand-green bg-white px-3.5 py-1.5 rounded-full font-medium shadow hover:bg-emerald-50 transition">
+                ← Back to Manhaj Festival
+            </a>
+        </div>
+    </header>
+
+    <!-- CONTENT -->
+    <main id="gallery-scroll-container" class="flex-1 overflow-y-auto">
+        <div class="max-w-7xl mx-auto p-2 sm:p-4 min-h-[60vh]">
+            <div id="gallery-container" class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-1.5 sm:gap-2">
+                <p class="text-gray-500 col-span-full text-center py-12 text-sm">Loading photos...</p>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <footer class="custom-footer">
+            <div class="footer-container">
+                <div class="footer-left">
+                    <img src="https://manhajulhidaya.vercel.app/Logo-w.png" alt="Manhajul Hidaya Emblem" class="footer-emblem-fixed" onerror="this.onerror=null; this.src='main/main/logo.png';">
+                    <img src="main/main/caligraphy-dars-w.png" alt="Arabic Calligraphy" class="logo-arabic-fixed" onerror="this.onerror=null; this.src='https://via.placeholder.com/200x50?text=Calligraphy';">
+                    <p class="footer-desc">
+                        An institution dedicated to the synthesis of traditional values and dynamic contemporary educational advancements, nurturing a generation with values and quality education.
+                    </p>
+                </div>
+                <div class="footer-center">
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html#about">About</a></li>
+                        <li><a href="manhaj-projects.html">Projects</a></li>
+                        <li><a href="alif-gallery.html">Gallery</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-right">
+                    <div class="footer-address">
+                        Al Manhajul Hidaya,<br>
+                        Nediyiruppu, Malappuram DT,<br>
+                        Kerala, India – 673638
+                    </div>
+                    <a href="tel:+919895580156" class="footer-contact-item">+91 9895580156</a>
+                    <a href="mailto:manhajulhidayacm@gmail.com" class="footer-contact-item">manhajulhidayacm@gmail.com</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="copyright-text">
+                    <span>© 2026 Al Manhajul Hidaya</span>
+                    <span class="divider">|</span>
+                    <span>All Rights Reserved</span>
+                </div>
+                <div class="footer-social">
+                    <a href="alif-gallery.html#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="alif-gallery.html#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="alif-gallery.html#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    <button class="scroll-top-btn" id="scrollTopBtn" aria-label="Scroll to top"><i class="fa-solid fa-chevron-up"></i></button>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <!-- LIGHTBOX -->
+    <div id="lightbox" class="fixed inset-0 bg-black/95 z-50 hidden flex-col justify-between p-4 backdrop-blur-sm select-none">
+        <div class="flex justify-end w-full">
+            <button onclick="closeLightbox()" class="text-white bg-white/20 hover:bg-white/40 rounded-full w-10 h-10 flex items-center justify-center text-2xl font-bold transition">
+                &times;
+            </button>
+        </div>
+        <div id="lightbox-img-container" class="flex-1 flex items-center justify-center overflow-hidden touch-none">
+            <img id="lightbox-img" src="alif-gallery.html" alt="Enlarged View" class="max-h-[72vh] max-w-[95vw] object-contain rounded-lg shadow-2xl">
+        </div>
+        <div class="w-full max-w-4xl mx-auto flex items-center justify-between pt-3 px-2">
+            <div id="photo-counter" class="text-white font-bold text-sm sm:text-base min-w-[50px]">
+                1 / 1
+            </div>
+            <button id="download-btn" onclick="downloadCurrentPhoto()" class="inline-flex items-center gap-2 text-xs sm:text-sm bg-brand-green hover:bg-emerald-600 text-white font-medium px-4 py-2 sm:px-5 sm:py-2.5 rounded-full shadow-lg transition active:scale-95">
+                <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z"/></svg> Download Photo
+            </button>
+            <div class="flex items-center gap-2">
+                <button onclick="prevPhoto(event)" class="bg-gray-800 hover:bg-gray-700 text-white w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center border border-gray-600 transition active:scale-95">❮</button>
+                <button onclick="nextPhoto(event)" class="bg-gray-800 hover:bg-gray-700 text-white w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center border border-gray-600 transition active:scale-95">❯</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        let allPhotos = [];
+        let currentIndex = 0;
+        let galleryData = {};
+
+        function openLightbox(index) {
+            currentIndex = index;
+            updateLightbox();
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.remove('hidden');
+            lightbox.classList.add('flex');
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.add('hidden');
+            lightbox.classList.remove('flex');
+        }
+
+        function updateLightbox() {
+            if (allPhotos.length === 0) return;
+            document.getElementById('lightbox-img').src = allPhotos[currentIndex];
+            document.getElementById('photo-counter').innerText = `${currentIndex + 1} / ${allPhotos.length}`;
+        }
+
+        function nextPhoto(event) {
+            if (event) event.stopPropagation();
+            if (allPhotos.length === 0) return;
+            currentIndex = (currentIndex + 1) % allPhotos.length;
+            updateLightbox();
+        }
+
+        function prevPhoto(event) {
+            if (event) event.stopPropagation();
+            if (allPhotos.length === 0) return;
+            currentIndex = (currentIndex - 1 + allPhotos.length) % allPhotos.length;
+            updateLightbox();
+        }
+
+        async function downloadSinglePhoto(imageUrl, event) {
+            if (event) event.stopPropagation();
+            try {
+                const response = await fetch(imageUrl);
+                const blob = await response.blob();
+                const blobUrl = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = blobUrl;
+                a.download = imageUrl.split('/').pop() || 'photo.jpg';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(blobUrl);
+            } catch (error) {
+                window.open(imageUrl, '_blank');
+            }
+        }
+
+        async function downloadCurrentPhoto() {
+            if (allPhotos.length > 0) {
+                downloadSinglePhoto(allPhotos[currentIndex]);
+            }
+        }
+
+        document.getElementById('lightbox').addEventListener('click', function(e) {
+            if (e.target === this) closeLightbox();
+        });
+
+        let touchStartX = 0, touchEndX = 0;
+        const lightboxContainer = document.getElementById('lightbox-img-container');
+        lightboxContainer.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+        lightboxContainer.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            if (touchEndX < touchStartX - 40) nextPhoto();
+            else if (touchEndX > touchStartX + 40) prevPhoto();
+        }, { passive: true });
+
+        const scrollTopBtn = document.getElementById('scrollTopBtn');
+        const scrollContainer = document.getElementById('gallery-scroll-container');
+        if (scrollTopBtn && scrollContainer) {
+            scrollTopBtn.addEventListener('click', () => scrollContainer.scrollTo({ top: 0, behavior: 'smooth' }));
+        }
+
+        function renderGallery(folderName) {
+            const container = document.getElementById('gallery-container');
+            container.innerHTML = '';
+            allPhotos = [];
+
+            document.querySelectorAll('.folder-tab').forEach(tab => {
+                if (tab.dataset.folder === folderName) {
+                    tab.classList.remove('bg-white/20', 'text-white', 'border-white/30');
+                    tab.classList.add('bg-white', 'text-brand-green', 'border-white');
+                } else {
+                    tab.classList.remove('bg-white', 'text-brand-green', 'border-white');
+                    tab.classList.add('bg-white/20', 'text-white', 'border-white/30');
+                }
+            });
+
+            const images = galleryData[folderName] || [];
+
+            if (images.length === 0) {
+                container.innerHTML = '<p class="text-gray-500 col-span-full text-center py-12 text-sm">No photos found in this folder.</p>';
+                return;
+            }
+
+            images.forEach(imagePath => {
+                if (/\.(jpg|jpeg|png|webp)$/i.test(imagePath)) {
+                    
+                    let finalPath = imagePath;
+                    if (!imagePath.startsWith(folderName + '/')) {
+                        finalPath = `${folderName}/${imagePath}`;
+                    }
+                    
+                    const imageUrl = `https://raw.githubusercontent.com/shamil-ai/Grs/main/${encodeURI(finalPath)}`;
+                    
+                    const photoIndex = allPhotos.length;
+                    allPhotos.push(imageUrl);
+
+                    const card = document.createElement('div');
+                    card.className = "img-card bg-white rounded overflow-hidden shadow-sm border border-gray-200 cursor-pointer aspect-square relative group";
+                    card.onclick = () => openLightbox(photoIndex);
+
+                    const img = document.createElement('img');
+                    img.src = imageUrl;
+                    img.alt = "Gallery Event Photo";
+                    img.className = "w-full h-full object-cover bg-gray-100";
+                    img.loading = "lazy";
+                    img.onerror = function() {
+                        this.src = "https://via.placeholder.com/150?text=Image+Error";
+                    };
+
+                    const dlBtn = document.createElement('button');
+                    dlBtn.className = "absolute bottom-1 right-1 bg-black/60 hover:bg-brand-green text-white p-1 rounded-full shadow transition z-10 flex items-center justify-center";
+                    dlBtn.setAttribute('title', 'Download Photo');
+                    dlBtn.innerHTML = `<svg class="w-3 h-3 fill-current" viewBox="0 0 20 20"><path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z"/></svg>`;
+                    dlBtn.onclick = (e) => downloadSinglePhoto(imageUrl, e);
+
+                    card.appendChild(img);
+                    card.appendChild(dlBtn);
+                    container.appendChild(card);
+                }
+            });
+        }
+
+        // Fetching Gallery Data directly from Root
+        fetch('https://raw.githubusercontent.com/shamil-ai/Grs/main/gallery.json?t=' + new Date().getTime())
+            .then(response => {
+                if (!response.ok) throw new Error('Gallery data not found');
+                return response.json();
+            })
+            .then(data => {
+                galleryData = data;
+                const tabsContainer = document.getElementById('folder-tabs');
+                tabsContainer.innerHTML = '';
+                
+                const folders = Object.keys(data).sort().reverse();
+                
+                if (folders.length === 0) {
+                    document.getElementById('gallery-container').innerHTML = '<p class="text-gray-500 col-span-full text-center py-12 text-sm">No valid photos uploaded yet.</p>';
+                    return;
+                }
+
+                folders.forEach(folder => {
+                    const btn = document.createElement('button');
+                    
+                    // Format Folder Names
+                    let displayName = folder;
+                    const lowerFolder = folder.toLowerCase();
+
+                    if (lowerFolder.startsWith('alif-')) {
+                        displayName = folder.replace(/alif-/i, 'Alif ').replace('-', '.');
+                    } else if (lowerFolder.includes('alifmanhaj')) {
+                        displayName = 'Alif Manhaj';
+                    } else {
+                        displayName = folder.charAt(0).toUpperCase() + folder.slice(1);
+                    }
+                    
+                    btn.className = "folder-tab text-xs font-medium px-4 py-1.5 rounded-full shadow transition border hover:bg-white/40 cursor-pointer";
+                    btn.innerText = displayName;
+                    btn.dataset.folder = folder;
+                    
+                    // --- പാസ്‌വേഡ് സിസ്റ്റം (പുതുക്കിയത്) ---
+                    btn.onclick = () => {
+                        // പേരിൽ എവിടെയെങ്കിലും "5.0" ഉണ്ടെങ്കിൽ പാസ്‌വേഡ് ചോദിക്കില്ല
+                        if (folder.includes('5.0') || displayName.includes('5.0')) {
+                            renderGallery(folder); 
+                        } else {
+                            const userPass = prompt("Please enter the password to view " + displayName + ":");
+                            if (userPass === "msa") {
+                                renderGallery(folder); 
+                            } else if (userPass !== null) {
+                                alert("Incorrect Password! Access Denied.");
+                            }
+                        }
+                    };
+                    
+                    tabsContainer.appendChild(btn);
+                });
+
+                // വെബ്സൈറ്റ് ആദ്യം ലോഡ് ആകുമ്പോൾ പാസ്‌വേഡ് ചോദിക്കാതെ Alif 5.0 (അല്ലെങ്കിൽ 5.0 ഉള്ള ഫോൾഡർ) തുറക്കാൻ:
+                const alif5Folder = folders.find(f => f.includes('5.0'));
+                if (alif5Folder) {
+                    renderGallery(alif5Folder);
+                } else {
+                    document.getElementById('gallery-container').innerHTML = '<p class="text-gray-500 col-span-full text-center py-12 text-sm">Please select a folder to view photos.</p>';
+                }
+            })
+            .catch(error => {
+                console.error('Error loading gallery:', error);
+                const container = document.getElementById('gallery-container');
+                container.innerHTML = '<p class="text-red-500 col-span-full text-center py-12 text-sm">Failed to load photos. Please try again later.</p>';
+            });
+    </script>
+    <script src="questions.js"></script>
+    <script src="generate_questions.js"></script>
+    <script src="custom_updates.js"></script>
+    <script src="auto_website_brain.js"></script>
+</body>
+</html>
