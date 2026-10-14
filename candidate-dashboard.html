@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Candidate Dashboard | Manhajul Hidaya</title>
+    
+    <link rel="icon" type="image/png" sizes="48x48" href="main/main/logo.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    
+    <link rel="stylesheet" href="css/candidate-dashboard.css">
+</head>
+<body>
+
+    <header class="top-navbar-green">
+        <div class="container d-flex justify-content-between align-items-center">
+            <div>MANHAJUL HIDAYA</div>
+            <button onclick="logout()" class="btn-logout-top"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        </div>
+    </header>
+
+    <div class="dashboard-header sticky-top">
+        <div class="container d-flex justify-content-between align-items-center">
+            <a href="index.html" class="dashboard-logo"><img src="main/main/caligraphy-dars-g.png" alt="Logo" onerror="this.src='https://via.placeholder.com/150x40'"></a>
+            <span class="badge badge-success px-3 py-2">Active Student</span>
+        </div>
+    </div>
+
+    <main class="py-4">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-lg-5">
+                    <div class="profile-card-wrapper">
+                        <div class="profile-top-section">
+                            <img id="dashAvatar" src="main/main/logo.png" class="student-avatar" alt="Photo" onerror="this.src='https://via.placeholder.com/100?text=PHOTO'">
+                            <h3 id="dashName" class="student-name">Loading...</h3>
+                            <p class="mb-1 text-muted" style="font-size: 13px;"><i class="fas fa-envelope text-success"></i> <span id="dashEmail">-</span></p>
+                            <p class="mb-0 text-muted" style="font-size: 13px;"><i class="fas fa-phone text-success"></i> <span id="dashPhone">-</span></p>
+                        </div>
+                        <div class="welcome-banner-blue">
+                            <h5 style="font-weight: 700; font-size: 15px; margin-bottom: 5px;" id="dashCourse">-</h5>
+                            <span style="font-size: 12px; opacity: 0.9;">Academic Session 2026-27</span><br>
+                            <div class="id-badges">
+                                Reg ID: <strong id="dashReg">-</strong> &nbsp;|&nbsp; Adm No: <strong id="dashAdm">-</strong>
+                            </div>
+                        </div>
+                        <div class="meta-info-grid">
+                            <div><span class="text-muted d-block mb-1">Father's Name</span><strong id="dashFather">-</strong></div>
+                            <div><span class="text-muted d-block mb-1">Mother's Name</span><strong id="dashMother">-</strong></div>
+                            <div><span class="text-muted d-block mb-1">Qualification</span><strong id="dashQual">-</strong></div>
+                            <div><span class="text-muted d-block mb-1">WhatsApp</span><strong id="dashWhatsapp">-</strong></div>
+                            <div><span class="text-muted d-block mb-1">Campus</span><strong>Nediyiruppu</strong></div>
+                            <div><span class="text-muted d-block mb-1">Fee Status</span><strong class="text-success">Verified</strong></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-7">
+                    <div class="section-box" style="background: #eef2ff; border-color: #c7d2fe;">
+                        <h6 class="font-weight-bold text-primary mb-2"><i class="fas fa-bullhorn"></i> Important Announcement</h6>
+                        <p class="mb-2" style="font-size: 13px;">Your registration for the upcoming academic year is completed successfully. You can download your Digital ID Card below.</p>
+                        <button onclick="window.print()" class="btn btn-sm btn-primary font-weight-bold mt-2"><i class="fas fa-download"></i> Print / Save ID Details</button>
+                    </div>
+
+                    <div class="services-grid">
+                        <a href="manhaj-projects.html" class="service-action-card">
+                            <i class="fas fa-book-open"></i><span>Syllabus</span>
+                        </a>
+                        <a href="Manhajul-fest.html#results" class="service-action-card">
+                            <i class="fas fa-award"></i><span>Fest Results</span>
+                        </a>
+                        <a href="contact.html" class="service-action-card">
+                            <i class="fas fa-headset"></i><span>Help / Support</span>
+                        </a>
+                        <a href="javascript:void(0)" onclick="alert('No pending assignments.')" class="service-action-card">
+                            <i class="fas fa-file-signature"></i><span>Assignments</span>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    
+    <script src="js/candidate-dashboard.js"></script>
+</body>
+</html>

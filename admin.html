@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Admin Portal | Manhajul Hidaya Da'wa Campus</title>
+    
+    <link rel="icon" type="image/png" sizes="48x48" href="main/main/logo.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+    <!-- Header Navbar -->
+    <header class="admin-nav sticky-top">
+        <div class="container-fluid px-4 d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-shield-alt fa-lg text-success mr-2"></i>
+                <h5 class="m-0 font-weight-bold">MANHAJUL HIDAYA — ADMIN CONSOLE</h5>
+            </div>
+            <div>
+                <a href="index.html" class="btn btn-sm btn-outline-light mr-2"><i class="fas fa-globe"></i> Website</a>
+                <button onclick="lockAdmin()" class="btn btn-sm btn-danger"><i class="fas fa-lock"></i> Exit</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container-fluid px-4 py-4">
+        
+        <!-- Metrics -->
+        <div class="row">
+            <div class="col-md-4">
+                <div class="stat-box">
+                    <p>TOTAL ADMISSIONS</p>
+                    <h3 id="totalCount">0</h3>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stat-box" style="border-left-color: #0284c7;">
+                    <p>TOTAL CONTACT MESSAGES</p>
+                    <h3 id="msgCount" style="color: #0284c7;">0</h3>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stat-box" style="border-left-color: #f59e0b;">
+                    <p>SYSTEM STATUS</p>
+                    <h3 style="color: #f59e0b; font-size: 20px;"><i class="fas fa-check-circle text-success"></i> Operational</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Card with Tabs -->
+        <div class="admin-card">
+            
+            <ul class="nav nav-tabs mb-4" id="adminTabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="admissions-tab" data-toggle="tab" href="#admissions" role="tab"><i class="fas fa-user-graduate mr-1"></i> Admissions</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="contacts-tab" data-toggle="tab" href="#contacts" role="tab"><i class="fas fa-envelope mr-1"></i> Contact Messages</a>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+                
+                <!-- 1. ADMISSIONS TAB -->
+                <div class="tab-pane fade show active" id="admissions" role="tabpanel">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+                        <div class="d-flex align-items-center mb-2">
+                            <input type="text" id="searchInput" onkeyup="filterStudents()" class="form-control form-control-sm mr-2" placeholder="Search admissions..." style="width: 250px;">
+                        </div>
+                        <div class="mb-2">
+                            <button onclick="exportToCSV('admissions')" class="btn btn-sm btn-success font-weight-bold mr-2"><i class="fas fa-file-excel mr-1"></i> Export Admissions</button>
+                            <button onclick="clearData('admissions')" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash-alt mr-1"></i> Reset Data</button>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover table-bordered mb-0">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Photo</th>
+                                    <th>Reg ID</th>
+                                    <th>Student Name</th>
+                                    <th>Class / Course</th>
+                                    <th>Phone</th>
+                                    <th>Email</th>
+                                    <th class="text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="studentTableBody">
+                                <!-- Student Rows dynamically added here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 2. CONTACT MESSAGES TAB -->
+                <div class="tab-pane fade" id="contacts" role="tabpanel">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+                        <div class="d-flex align-items-center mb-2">
+                            <input type="text" id="searchMsgInput" onkeyup="filterMessages()" class="form-control form-control-sm mr-2" placeholder="Search messages..." style="width: 250px;">
+                        </div>
+                        <div class="mb-2">
+                            <button onclick="exportToCSV('contacts')" class="btn btn-sm btn-info font-weight-bold mr-2"><i class="fas fa-file-excel mr-1"></i> Export Messages</button>
+                            <button onclick="clearData('contacts')" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash-alt mr-1"></i> Clear Messages</button>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover table-bordered mb-0">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Date</th>
+                                    <th>Sender Name</th>
+                                    <th>Phone / Email</th>
+                                    <th>Subject</th>
+                                    <th>Message Preview</th>
+                                    <th class="text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="messageTableBody">
+                                <!-- Message Rows dynamically added here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Student Detail Modal -->
+    <div class="modal fade" id="studentModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h6 class="modal-title font-weight-bold" id="modalStudentName">Applicant Profile</h6>
+                    <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body text-center" id="modalContent"></div>
+                <div class="modal-footer"><button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Message Modal -->
+    <div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-info text-white">
+                    <h6 class="modal-title font-weight-bold">Message Details</h6>
+                    <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body" id="modalMsgContent"></div>
+                <div class="modal-footer"><button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    
+    <script src="js/admin.js"></script>
+</body>
+</html>

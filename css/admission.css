@@ -1,0 +1,97 @@
+/* --- RESPONSIVE BASE RESET --- */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    width: 100%;
+    min-height: 100vh;
+    overflow-x: hidden;
+    line-height: 1.6;
+    -webkit-text-size-adjust: 100%;
+}
+
+img, video, iframe, svg {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+.container {
+    width: 92%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+:root { --primary-green: #059669; --light-green: #10b981; --bg-color: #f4f4f9; --text-dark: #0f172a; }
+        body { background: var(--bg-color); font-family: 'Poppins', sans-serif; color: var(--text-dark); }
+        
+        .top-navbar-green { background-color: var(--primary-green); padding: 8px 0; font-size: 13px; }
+        .top-navbar-green .social-links a { color: rgba(255,255,255,0.9); margin-left: 20px; font-size: 16px; }
+        .main-navbar { background-color: #ffffff; border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .navbar-light .navbar-nav .nav-link { color: var(--text-dark) !important; font-weight: 500; }
+        .navbar-light .navbar-nav .nav-link:hover, .navbar-light .navbar-nav .nav-item.active .nav-link { color: var(--primary-green) !important; }
+
+        .main-wrapper { display: flex; justify-content: center; align-items: center; padding: 40px 20px; min-height: 80vh; }
+        .form-container { background: #fff; padding: 40px 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); width: 100%; max-width: 700px; border: 1px solid #e2e8f0; }
+        .form-container h2 { text-align: center; color: var(--primary-green); margin-bottom: 30px; font-weight: 700; text-transform: uppercase; }
+        
+        .input-group-custom { margin-bottom: 20px; }
+        .input-group-custom label { display: block; margin-bottom: 6px; color: var(--text-dark); font-weight: 600; font-size: 13.5px; }
+        .input-group-custom input, .input-group-custom select, .input-group-custom textarea { width: 100%; padding: 12px 15px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; outline: none; transition: 0.3s; background: #f8fafc; }
+        .input-group-custom input:focus, .input-group-custom select:focus, .input-group-custom textarea:focus { border-color: var(--primary-green); background: #fff; box-shadow: 0 0 0 3px rgba(5,150,105,0.1); }
+        
+        .section-title { font-size: 16px; color: var(--primary-green); font-weight: 700; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 20px; margin-top: 10px; }
+
+        .submit-btn { background-color: var(--primary-green); color: #fff; padding: 14px; width: 100%; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; text-transform: uppercase; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 12px rgba(5,150,105,0.2); margin-top: 15px; }
+        .submit-btn:hover { background-color: var(--light-green); transform: translateY(-2px); }
+        
+        .custom-footer { background-color: #0f172a; color: #e2e8f0; padding: 40px 0 20px; font-size: 13px; margin-top: auto; }
+
+
+/* --- MEDIA QUERIES (Mobile to TV) --- */
+
+/* 1. ചെറിയ ഫോണുകൾ (Small Phones: 600px-ൽ താഴെ) */
+@media (max-width: 600px) {
+    body {
+        font-size: 14px;
+    }
+    .container {
+        width: 96%;
+        padding: 5px;
+    }
+    .row, .flex, [class*="flex-row"] {
+        flex-direction: column !important;
+    }
+}
+
+/* 2. ടാബ്‌ലെറ്റുകൾ (Tablets: 601px മുതൽ 1024px വരെ) */
+@media (min-width: 601px) and (max-width: 1024px) {
+    body {
+        font-size: 15px;
+    }
+    .container {
+        width: 90%;
+    }
+}
+
+/* 3. ഡെസ്ക്ടോപ്പ് മോണിറ്ററുകൾ (1025px മുതൽ 1440px വരെ) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+    body {
+        font-size: 16px;
+    }
+}
+
+/* 4. സ്മാർട്ട് ടിവി & വലിയ സ്ക്രീനുകൾ (TV / Ultra-wide: 1441px-ന് മുകളിൽ) */
+@media (min-width: 1441px) {
+    body {
+        font-size: 19px;
+    }
+    .container {
+        max-width: 1650px;
+    }
+}

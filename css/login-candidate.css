@@ -1,0 +1,100 @@
+/* --- RESPONSIVE BASE RESET --- */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    width: 100%;
+    min-height: 100vh;
+    overflow-x: hidden;
+    line-height: 1.6;
+    -webkit-text-size-adjust: 100%;
+}
+
+img, video, iframe, svg {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+.container {
+    width: 92%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+:root { --primary-green: #059669; --bg-color: #f8fafc; --text-dark: #0f172a; --white: #ffffff; }
+        body { background-color: var(--bg-color); font-family: 'Poppins', sans-serif; min-height: 100vh; display: flex; flex-direction: column; }
+        
+        .top-navbar-green { background-color: var(--primary-green); padding: 8px 0; font-size: 13px; color: white; }
+        .main-navbar { background-color: var(--white); padding: 12px 0; border-bottom: 1px solid #e2e8f0; }
+        
+        main { flex: 1; display: flex; align-items: center; padding: 40px 0; }
+        .login-wrapper { background: var(--white); border-radius: 20px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; }
+        
+        .login-video-container { position: relative; width: 100%; height: 100%; min-height: 400px; background: #0f172a; }
+        .login-video-container video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
+        .video-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(180deg, rgba(15,23,42,0.2) 0%, rgba(5,150,105,0.8) 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 30px; color: white; }
+        
+        .login-form-area { padding: 40px 35px; }
+        .login-badge { background: #d1fae5; color: var(--primary-green); font-size: 11.5px; font-weight: 600; padding: 4px 12px; border-radius: 20px; display: inline-block; margin-bottom: 10px; }
+        .login-title { color: var(--primary-green); font-weight: 700; font-size: 24px; margin-bottom: 25px; }
+        
+        .custom-input-group { background: #f1f5f9; border-radius: 10px; border: 1px solid #e2e8f0; display: flex; align-items: center; margin-bottom: 20px; overflow: hidden; }
+        .custom-input-group .icon-box { padding: 12px 16px; color: var(--primary-green); }
+        .custom-input-group input { border: none; background: transparent; width: 100%; padding: 12px 15px 12px 0; outline: none; }
+        
+        .btn-submit-login { background: var(--primary-green); color: white; font-weight: 600; padding: 12px; border-radius: 10px; border: none; width: 100%; cursor: pointer; text-transform: uppercase; margin-top: 10px; transition: 0.3s; }
+        .btn-submit-login:hover { background: #047857; transform: translateY(-2px); }
+        
+        .custom-footer { background-color: #0f172a; color: #e2e8f0; padding: 20px 0; text-align: center; font-size: 13px; }
+        
+        @media (max-width: 767px) { .login-video-container { min-height: 200px; } .login-form-area { padding: 30px 20px; } }
+
+
+/* --- MEDIA QUERIES (Mobile to TV) --- */
+
+/* 1. ചെറിയ ഫോണുകൾ (Small Phones: 600px-ൽ താഴെ) */
+@media (max-width: 600px) {
+    body {
+        font-size: 14px;
+    }
+    .container {
+        width: 96%;
+        padding: 5px;
+    }
+    .row, .flex, [class*="flex-row"] {
+        flex-direction: column !important;
+    }
+}
+
+/* 2. ടാബ്‌ലെറ്റുകൾ (Tablets: 601px മുതൽ 1024px വരെ) */
+@media (min-width: 601px) and (max-width: 1024px) {
+    body {
+        font-size: 15px;
+    }
+    .container {
+        width: 90%;
+    }
+}
+
+/* 3. ഡെസ്ക്ടോപ്പ് മോണിറ്ററുകൾ (1025px മുതൽ 1440px വരെ) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+    body {
+        font-size: 16px;
+    }
+}
+
+/* 4. സ്മാർട്ട് ടിവി & വലിയ സ്ക്രീനുകൾ (TV / Ultra-wide: 1441px-ന് മുകളിൽ) */
+@media (min-width: 1441px) {
+    body {
+        font-size: 19px;
+    }
+    .container {
+        max-width: 1650px;
+    }
+}

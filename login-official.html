@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Official Login | Manhajul Hidaya</title>
+    <meta name="description" content="Official and Counsellor Login Portal for Manhajul Hidaya Da'wa Campus, Nediyiruppu, Kondotty.">
+    
+    <!-- FAVICON -->
+    <link rel="icon" type="image/png" sizes="48x48" href="main/main/logo.png">
+    <link rel="apple-touch-icon" href="main/main/logo.png">
+
+    <!-- CSS Links -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google reCAPTCHA -->
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+
+    
+    <link rel="stylesheet" href="css/login-official.css">
+</head>
+<body>
+
+    <!-- ================= TOP GREEN BAR ================= -->
+    <header class="top-navbar-green">
+        <div class="container d-flex justify-content-between align-items-center">
+            <div class="text-white font-weight-bold brand-title" style="text-transform: uppercase;">
+                MANHAJUL HIDAYA
+            </div>
+
+            <div class="social-links">
+                <a href="https://www.youtube.com/@manhajulhidaya" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+                <a href="https://www.instagram.com/manhajulhidaya" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.facebook.com/manhajulhidaya" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+            </div>
+
+            <div class="dropdown">
+                <a class="btn-top-login dropdown-toggle" href="#" id="profileDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-lock"></i> Login/Register
+                </a>
+                <ul class="dropdown-menu dropdown-menu-right login-dropdown-menu pt-3" aria-labelledby="profileDropdown">
+                    <li class="px-3">
+                        <div>
+                            <b class="role-title">Candidate</b>
+                            <p class="small m-0">
+                                <a href="login-candidate.html" class="btn-login-primary my-1">Login</a>
+                            </p>
+                            <p class="small m-0">
+                                <a href="verify-registration.html" class="btn-login-dark">Registration</a>
+                            </p>
+                        </div>
+                        <hr class="my-2">
+                    </li>
+                    <li class="px-3 mb-2">
+                        <div>
+                            <b class="role-title">Official</b>
+                            <p class="small m-0">
+                                <a href="login-official.html" class="btn-login-primary my-1">Login</a>
+                            </p>
+                            <p class="small m-0">
+                                <a href="registration-official.html" class="btn-login-dark">Registration</a>
+                            </p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <!-- ================= MAIN NAVBAR ================= -->
+    <nav class="navbar navbar-expand-lg navbar-light main-navbar sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="main/main/caligraphy-dars-g.png" alt="Manhajul Hidaya Logo" onerror="this.src='https://via.placeholder.com/150x40?text=LOGO'">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="manhaj-projects.html">Manhaj Projects</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Manhaj Festival</a>
+                        <div class="dropdown-menu shadow-sm" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="Manhajul-fest.html">Alif 2k26 (Home)</a>
+                            <a class="dropdown-item" href="Manhajul-fest.html#about">ABOUT Fest</a>
+                            <a class="dropdown-item" href="Manhajul-fest.html#programs">WHAT IS WAITING FOR YOU?</a>
+                            <a class="dropdown-item" href="Manhajul-fest.html#results">Check Results</a>
+                        </div>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="admission.html">Admission Form</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact Us</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ================= MAIN LOGIN CONTENT ================= -->
+    <main>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10 col-xl-9">
+                    <div class="row login-wrapper no-gutters">
+                        
+                        <!-- ഇടതുഭാഗം / മുകൾഭാഗം: സൗണ്ട് ഇല്ലാതെ പ്ലേ ആകുന്ന വീഡിയോ -->
+                        <div class="col-md-6 p-0">
+                            <div class="login-video-container">
+                                <video id="loginBgVideo" autoplay loop muted playsinline>
+                                    <source src="main/main/manhajul.webm" type="video/webm">
+                                </video>
+                                <div class="video-overlay">
+                                    <h3>MANHAJUL HIDAYA</h3>
+                                    <p>Da'wa Campus Admission &amp; Portal</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- വലതുഭാഗം / താഴെഭാഗം: ലോഗിൻ ഫോം -->
+                        <div class="col-md-6">
+                            <div class="login-form-area">
+                                <h4 class="login-title">Official/Counsellor Login</h4>
+                                
+                                <form method="POST" action="#" name="login-form" id="login-form">
+                                    <input type="hidden" name="page-type" value="official">
+                                    
+                                    <!-- Email -->
+                                    <div class="mb-4">
+                                        <label for="logName" class="form-label">Email address *</label>
+                                        <div class="custom-input-group">
+                                            <span class="icon-box"><i class="fa fa-envelope"></i></span>
+                                            <input type="email" id="logName" name="logName" placeholder="E-mail" required>
+                                        </div>
+                                    </div>
+
+                                    <!-- Password -->
+                                    <div class="mb-4">
+                                        <label for="psWd" class="form-label">Password *</label>
+                                        <div class="custom-input-group">
+                                            <span class="icon-box"><i class="fas fa-lock"></i></span>
+                                            <input type="password" id="psWd" name="psWd" placeholder="password" autocomplete="off" required>
+                                        </div>
+                                        <div id="passwordHelpBlock" class="form-text-muted">
+                                            Your password must be 8 characters at least
+                                        </div>
+                                    </div>
+
+                                    <!-- Submit Button -->
+                                    <div class="mt-4">
+                                        <button type="submit" id="btnLogin" class="btn-submit-login">
+                                            Login
+                                        </button>
+                                    </div>
+                                </form>
+
+                                <a href="forgot-password.html" class="forgot-link">Forgot password?</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="custom-footer">
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-left">
+                    <img src="https://manhajulhidaya.vercel.app/Logo-w.png" alt="Manhajul Hidaya Emblem" class="footer-emblem-fixed" onerror="this.src='main/main/logo.png'">
+                    <img src="main/main/caligraphy-dars-w.png" alt="Arabic Calligraphy Logo" class="logo-arabic-fixed" onerror="this.src='https://via.placeholder.com/200x50?text=Calligraphy'">
+                    <p class="footer-desc">
+                        An institution dedicated to the synthesis of traditional values and dynamic contemporary educational advancements, nurturing a generation with values and quality education.
+                    </p>
+                </div>
+
+                <div class="footer-center">
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html#about">About</a></li>
+                        <li><a href="manhaj-projects.html">Projects</a></li>
+                        <li><a href="Manhajul-fest.html">Events</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-right">
+                    <div class="footer-address">
+                        Al Manhajul Hidaya,<br>
+                        Nediyiruppu, Malappuram DT,<br>
+                        Kerala, India – 673638
+                    </div>
+                    <a href="tel:+919895580156" class="footer-contact-item">+91 9895580156</a>
+                    <a href="mailto:manhajulhidayacm@gmail.com" class="footer-contact-item">manhajulhidayacm@gmail.com</a>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div class="copyright-text">
+                    <span>© 2026 Al Manhajul Hidaya</span>
+                    <span class="divider">|</span>
+                    <span>All Rights Reserved</span>
+                </div>
+                <div class="footer-social">
+                    <a href="https://www.facebook.com/manhajulhidaya" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.instagram.com/manhajulhidaya" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.youtube.com/@manhajulhidaya" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    
+    <script src="js/login-official.js"></script>
+</body>
+</html>

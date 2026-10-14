@@ -1,0 +1,134 @@
+/* --- RESPONSIVE BASE RESET --- */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    width: 100%;
+    min-height: 100vh;
+    overflow-x: hidden;
+    line-height: 1.6;
+    -webkit-text-size-adjust: 100%;
+}
+
+img, video, iframe, svg {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+.container {
+    width: 92%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+body { background: #f4f4f9; font-family: 'Poppins', sans-serif; }
+        
+        /* FORM WRAPPER & CONTAINER */
+        .main-wrapper { display: flex; justify-content: center; align-items: center; padding: 40px 20px; min-height: calc(100vh - 120px); }
+        .form-container { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(15px); padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 100%; max-width: 500px; }
+        h2 { text-align: center; color: #035933; margin-bottom: 25px; font-weight: 700; }
+        
+        /* INPUT FIELDS */
+        .input-group-custom { margin-bottom: 20px; }
+        .input-group-custom label { display: block; margin-bottom: 5px; color: #035933; font-weight: 600; font-size: 14px; }
+        input, select, textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; transition: all 0.3s ease; font-family: 'Poppins', sans-serif;}
+        input:focus, select:focus, textarea:focus { outline: none; border-color: #035933; box-shadow: 0 0 8px rgba(3, 89, 51, 0.2); }
+        input[type="file"] { padding: 8px; background: #fff; }
+        
+        /* BUTTONS & MESSAGES */
+        .submit-btn { background-color: #f4c542; color: #000; padding: 15px; width: 100%; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; text-transform: uppercase; transition: all 0.3s ease; box-shadow: 0 4px 10px rgba(244, 197, 66, 0.3); }
+        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(244, 197, 66, 0.5); background-color: #e5b533; }
+        .submit-btn:disabled { background-color: #ddd; color: #888; cursor: not-allowed; box-shadow: none; transform: none; }
+        #successMsg { display: none; color: #008751; text-align: center; margin-top: 15px; font-weight: bold; }
+
+        /* NAVBAR STYLES */
+        .top-navbar-green { background-color: #059669; padding: 8px 0; font-size: 13px; }
+        .top-navbar-green .social-links a { color: rgba(255, 255, 255, 0.9); margin-left: 20px; font-size: 16px; transition: color 0.3s ease; }
+        .top-navbar-green .social-links a:hover { color: #d1fae5; }
+        .main-navbar { background-color: #ffffff !important; border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .navbar-light .navbar-nav .nav-link { color: #0f172a !important; font-weight: 500; font-size: 14px; transition: color 0.3s ease; }
+        .navbar-light .navbar-nav .nav-link:hover, .navbar-light .navbar-nav .nav-item.active .nav-link { color: #059669 !important; }
+
+        /* PROFESSIONAL FOOTER CSS */
+        .custom-footer { background-color: #0f172a; color: #e2e8f0; padding: 40px 0 20px; line-height: 1.4; }
+        .footer-container { display: flex; justify-content: space-between; max-width: 1200px; margin: 0 auto; padding: 0 20px; flex-wrap: wrap; gap: 40px; }
+        .footer-left { flex: 1.5; min-width: 300px; }
+        img.footer-emblem-fixed { width: 90px !important; max-width: 90px !important; height: auto !important; display: block !important; margin-bottom: 15px !important; }
+        img.logo-arabic-fixed { width: 180px !important; max-width: 180px !important; height: auto !important; display: block !important; margin-bottom: 15px !important; }
+        .footer-desc { font-size: 14px; line-height: 1.6; color: #cbd5e1; padding-right: 20px; }
+        .footer-center { flex: 1; min-width: 150px; }
+        .footer-links { list-style: none; padding: 0; margin: 0; }
+        .footer-links li { margin-bottom: 12px; }
+        .footer-links a { color: #f8fafc; text-decoration: none; font-size: 14px; font-weight: 400; transition: color 0.3s ease; }
+        .footer-links a:hover { color: #10b981; }
+        .footer-right { flex: 1.5; min-width: 250px; font-size: 14px; color: #f8fafc; }
+        .footer-address { margin-bottom: 20px; line-height: 1.8; color: #f8fafc; }
+        .footer-contact-item { margin-bottom: 8px; display: block; color: #f8fafc; text-decoration: none; transition: color 0.3s ease; }
+        .footer-contact-item:hover { color: #10b981; }
+        .footer-bottom { max-width: 1200px; margin: 30px auto 0; padding: 20px 20px 0; border-top: 1px solid rgba(255, 255, 255, 0.1); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .copyright-text { font-size: 13px; color: #f8fafc; display: flex; align-items: center; gap: 8px; }
+        .divider { color: #64748b; }
+        .footer-social { display: flex; align-items: center; gap: 20px; }
+        .footer-social a { color: #f8fafc; font-size: 16px; text-decoration: none; transition: transform 0.3s ease, color 0.3s ease; }
+        .footer-social a:hover { color: #10b981; transform: translateY(-3px); }
+        .scroll-top-btn { background: none; border: none; color: #f8fafc; font-size: 20px; cursor: pointer; margin-left: 10px; transition: color 0.3s ease; padding: 0; }
+        .scroll-top-btn:hover { color: #10b981; }
+        
+        /* RESPONSIVE FIXES */
+        @media (max-width: 768px) {
+            .footer-container { flex-direction: column; gap: 30px; }
+            .footer-bottom { flex-direction: column; justify-content: center; text-align: center; }
+            .copyright-text { flex-direction: column; gap: 5px; }
+            .divider { display: none; }
+            .footer-desc { padding-right: 0; }
+        }
+
+
+/* --- MEDIA QUERIES (Mobile to TV) --- */
+
+/* 1. ചെറിയ ഫോണുകൾ (Small Phones: 600px-ൽ താഴെ) */
+@media (max-width: 600px) {
+    body {
+        font-size: 14px;
+    }
+    .container {
+        width: 96%;
+        padding: 5px;
+    }
+    .row, .flex, [class*="flex-row"] {
+        flex-direction: column !important;
+    }
+}
+
+/* 2. ടാബ്‌ലെറ്റുകൾ (Tablets: 601px മുതൽ 1024px വരെ) */
+@media (min-width: 601px) and (max-width: 1024px) {
+    body {
+        font-size: 15px;
+    }
+    .container {
+        width: 90%;
+    }
+}
+
+/* 3. ഡെസ്ക്ടോപ്പ് മോണിറ്ററുകൾ (1025px മുതൽ 1440px വരെ) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+    body {
+        font-size: 16px;
+    }
+}
+
+/* 4. സ്മാർട്ട് ടിവി & വലിയ സ്ക്രീനുകൾ (TV / Ultra-wide: 1441px-ന് മുകളിൽ) */
+@media (min-width: 1441px) {
+    body {
+        font-size: 19px;
+    }
+    .container {
+        max-width: 1650px;
+    }
+}

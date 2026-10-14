@@ -1,0 +1,157 @@
+/* --- RESPONSIVE BASE RESET --- */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    width: 100%;
+    min-height: 100vh;
+    overflow-x: hidden;
+    line-height: 1.6;
+    -webkit-text-size-adjust: 100%;
+}
+
+img, video, iframe, svg {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+.container {
+    width: 92%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+:root {
+            --primary-green: #059669; --light-green: #10b981; --pale-green: #d1fae5; 
+            --bg-color: #f8fafc; --card-bg: #ffffff; --text-dark: #0f172a; --text-muted: #64748b;
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05); --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --radius-md: 12px; --radius-lg: 20px;
+        }
+        html, body {
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+        html { 
+            scroll-behavior: smooth; 
+        }
+
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background-color: var(--bg-color); 
+            color: var(--text-dark); 
+            line-height: 1.6; 
+            -webkit-font-smoothing: antialiased; 
+            position: relative;
+        }
+
+        .top-navbar-green { background-color: var(--primary-green); padding: 8px 0; font-size: 13px; }
+        .top-navbar-green .social-links a { color: rgba(255, 255, 255, 0.9); margin-left: 20px; font-size: 16px; transition: color 0.3s ease; }
+        .top-navbar-green .social-links a:hover { color: var(--pale-green); }
+        .main-navbar { background-color: var(--card-bg) !important; border-bottom: 1px solid rgba(0,0,0,0.05); padding: 12px 0; box-shadow: var(--shadow-sm); }
+        .navbar-brand img { height: 45px; width: auto; object-fit: contain; }
+        .navbar-light .navbar-nav .nav-link { color: var(--text-dark) !important; font-weight: 500; font-size: 14px; letter-spacing: 0.3px; padding: 10px 15px; transition: color 0.3s ease; }
+        .navbar-light .navbar-nav .nav-link:hover, .navbar-light .navbar-nav .nav-item.active .nav-link { color: var(--primary-green) !important; }
+        .navbar-toggler { border: none; outline: none !important; }
+        .navbar-toggler-icon { background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(5, 150, 105, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E"); }
+
+        .page-banner { background: linear-gradient(135deg, var(--primary-green) 0%, var(--light-green) 100%); color: white; text-align: center; padding: 80px 20px; border-radius: 0 0 var(--radius-lg) var(--radius-lg); box-shadow: var(--shadow-md); margin-bottom: 40px; }
+        .page-banner h1 { font-size: clamp(2.2rem, 5vw, 3.5rem); font-weight: 700; margin-bottom: 5px; letter-spacing: 2px; text-transform: uppercase; text-shadow: 2px 2px 8px rgba(0,0,0,0.1); }
+        .page-banner p { color: var(--pale-green); font-size: 1rem; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0; }
+
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 30px; padding: 20px 20px 60px; max-width: 1140px; margin: 0 auto; }
+        .project-card { background: var(--card-bg); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-md); border: 1px solid #f1f5f9; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease; }
+        .project-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+        .card-img-wrapper { width: 100%; height: 220px; overflow: hidden; position: relative; background-color: var(--pale-green); }
+        .project-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .project-card:hover img { transform: scale(1.05); }
+        .card-content { padding: 25px 20px; }
+        .project-card h3 { font-size: 1.25rem; color: var(--text-dark); text-transform: uppercase; margin-bottom: 12px; font-weight: 700; letter-spacing: 0.5px; position: relative; padding-bottom: 8px; }
+        .project-card h3::after { content: ''; position: absolute; left: 0; bottom: 0; width: 40px; height: 3px; background-color: var(--light-green); border-radius: 2px; }
+        .project-card p { font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 0; }
+
+        /* PROFESSIONAL FOOTER CSS */
+        .custom-footer { background-color: #0f172a; color: #e2e8f0; padding: 40px 0 20px; line-height: 1.4; }
+        .footer-container { display: flex; justify-content: space-between; max-width: 1200px; margin: 0 auto; padding: 0 20px; flex-wrap: wrap; gap: 40px; }
+        .footer-left { flex: 1.5; min-width: 300px; }
+        img.footer-emblem-fixed { width: 90px !important; max-width: 90px !important; height: auto !important; display: block !important; margin-bottom: 15px !important; }
+        img.logo-arabic-fixed { width: 180px !important; max-width: 180px !important; height: auto !important; display: block !important; margin-bottom: 15px !important; }
+        .footer-desc { font-size: 14px; line-height: 1.6; color: #cbd5e1; padding-right: 20px; }
+        .footer-center { flex: 1; min-width: 150px; }
+        .footer-links { list-style: none; padding: 0; margin: 0; }
+        .footer-links li { margin-bottom: 12px; }
+        .footer-links a { color: #f8fafc; text-decoration: none; font-size: 14px; font-weight: 400; transition: color 0.3s ease; }
+        .footer-links a:hover { color: #10b981; }
+        .footer-right { flex: 1.5; min-width: 250px; font-size: 14px; color: #f8fafc; }
+        .footer-address { margin-bottom: 20px; line-height: 1.8; color: #f8fafc; }
+        .footer-contact-item { margin-bottom: 8px; display: block; color: #f8fafc; text-decoration: none; transition: color 0.3s ease; }
+        .footer-contact-item:hover { color: #10b981; }
+        .footer-bottom { max-width: 1200px; margin: 30px auto 0; padding: 20px 20px 0; border-top: 1px solid rgba(255, 255, 255, 0.1); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .copyright-text { font-size: 13px; color: #f8fafc; display: flex; align-items: center; gap: 8px; }
+        .divider { color: #64748b; }
+        .footer-social { display: flex; align-items: center; gap: 20px; }
+        .footer-social a { color: #f8fafc; font-size: 16px; text-decoration: none; transition: transform 0.3s ease, color 0.3s ease; }
+        .footer-social a:hover { color: #10b981; transform: translateY(-3px); }
+        .scroll-top-btn { background: none; border: none; color: #f8fafc; font-size: 20px; cursor: pointer; margin-left: 10px; transition: color 0.3s ease; padding: 0; }
+        .scroll-top-btn:hover { color: #10b981; }
+
+        @media (max-width: 768px) {
+            .projects-grid { grid-template-columns: 1fr; gap: 25px; padding: 20px 15px 40px; }
+            .page-banner { padding: 60px 20px; border-radius: 0 0 var(--radius-md) var(--radius-md); }
+            .footer-container { flex-direction: column; gap: 30px; }
+            .footer-bottom { flex-direction: column; justify-content: center; text-align: center; }
+            .copyright-text { flex-direction: column; gap: 5px; }
+            .divider { display: none; }
+            .footer-desc { padding-right: 0; }
+        }
+
+
+/* --- MEDIA QUERIES (Mobile to TV) --- */
+
+/* 1. ചെറിയ ഫോണുകൾ (Small Phones: 600px-ൽ താഴെ) */
+@media (max-width: 600px) {
+    body {
+        font-size: 14px;
+    }
+    .container {
+        width: 96%;
+        padding: 5px;
+    }
+    .row, .flex, [class*="flex-row"] {
+        flex-direction: column !important;
+    }
+}
+
+/* 2. ടാബ്‌ലെറ്റുകൾ (Tablets: 601px മുതൽ 1024px വരെ) */
+@media (min-width: 601px) and (max-width: 1024px) {
+    body {
+        font-size: 15px;
+    }
+    .container {
+        width: 90%;
+    }
+}
+
+/* 3. ഡെസ്ക്ടോപ്പ് മോണിറ്ററുകൾ (1025px മുതൽ 1440px വരെ) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+    body {
+        font-size: 16px;
+    }
+}
+
+/* 4. സ്മാർട്ട് ടിവി & വലിയ സ്ക്രീനുകൾ (TV / Ultra-wide: 1441px-ന് മുകളിൽ) */
+@media (min-width: 1441px) {
+    body {
+        font-size: 19px;
+    }
+    .container {
+        max-width: 1650px;
+    }
+}
